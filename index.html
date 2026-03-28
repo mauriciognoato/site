@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Condomínio Maurício Gnoato</title>
+  <title>Condomínio Maurício Gnoato - Gestão Transparente</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -243,7 +243,7 @@
 
   <section class="section section--branca" id="contato"><div class="container"><h2 class="section-title">Fale com o Síndico</h2><hr class="section-divider"/><form class="contact-form" onsubmit="sendContact(event)"><div class="form-group"><input type="text" placeholder="Seu nome / Casa" required/></div><div class="form-group"><select required><option>Dúvida sobre cobrança</option><option>Reclamação</option><option>Sugestão</option></select></div><div class="form-group"><textarea rows="3" placeholder="Mensagem..."></textarea></div><button type="submit" class="btn btn-primary btn-full">Enviar</button></form></div></section>
 
-  <footer><div class="container"><div class="footer-grid"><div><h4>Condomínio Maurício Gnoato</h4><p>📍 Endereço<br/>📞 (XX) XXXXX-XXXX<br/>✉️ sindico@condominio.com.br</p></div><div><h4>Links</h4><ul><li><a href="#sobre">Sobre</a></li><li><a href="#financeiro">Financeiro</a></li><li><a href="#documentos">Documentos</a></li></ul></div><div><h4>Acesso Rápido</h4><ul><li><a href="#">Boleto</a></li><li><a href="#">Regimento</a></li></ul></div></div><div class="footer-bottom">© 2026 Condomínio Maurício Gnoato</div></div></footer>
+  <footer><div class="container"><div class="footer-grid"><div><h4>Condomínio Maurício Gnoato</h4><p>📍 Endereço do Condomínio<br/>📞 (XX) XXXXX-XXXX<br/>✉️ sindico@condominio.com.br</p></div><div><h4>Links</h4><ul><li><a href="#sobre">Sobre</a></li><li><a href="#financeiro">Financeiro</a></li><li><a href="#documentos">Documentos</a></li></ul></div><div><h4>Acesso Rápido</h4><ul><li><a href="#">Boleto</a></li><li><a href="#">Regimento</a></li></ul></div></div><div class="footer-bottom">© 2026 Condomínio Maurício Gnoato</div></div></footer>
 </div>
 
 <!-- ÁREA DO SÍNDICO -->
@@ -270,28 +270,15 @@
 </div>
 
 <script>
-  // CONFIGURAÇÃO DO FIREBASE - SUBSTITUIR PELOS SEUS DADOS
-  // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCwXXGdSZmtlhaOTt5QyjQUWMukTURbSRU",
-  authDomain: "condominio-mg.firebaseapp.com",
-  projectId: "condominio-mg",
-  storageBucket: "condominio-mg.firebasestorage.app",
-  messagingSenderId: "827098014353",
-  appId: "1:827098014353:web:cc36db91f7216ef7a59530",
-  measurementId: "G-BPWN7F8HL0"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+  // CONFIGURAÇÃO DO FIREBASE - CREDENCIAIS FORNECIDAS
+  const firebaseConfig = {
+    apiKey: "AIzaSyCwXXGdSZmtlhaOTt5QyjQUWMukTURbSRU",
+    authDomain: "condominio-mg.firebaseapp.com",
+    projectId: "condominio-mg",
+    storageBucket: "condominio-mg.firebasestorage.app",
+    messagingSenderId: "827098014353",
+    appId: "1:827098014353:web:cc36db91f7216ef7a59530",
+    measurementId: "G-BPWN7F8HL0"
   };
 
   firebase.initializeApp(firebaseConfig);
@@ -302,7 +289,12 @@ const analytics = getAnalytics(app);
   let currentUser = null;
   let isAdmin = false;
 
-  function showToast(msg, type = '') { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+  function showToast(msg) { 
+    const t = document.getElementById('toast'); 
+    t.textContent = msg; 
+    t.classList.add('show'); 
+    setTimeout(() => t.classList.remove('show'), 3000); 
+  }
 
   function switchLoginTab(tab, el) {
     document.querySelectorAll('.login-tab').forEach(btn => btn.classList.remove('active'));
@@ -323,7 +315,17 @@ const analytics = getAnalytics(app);
   async function loginGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
-      await auth.signInWithPopup(provider);
+      const result = await auth.signInWithPopup(provider);
+      const user = result.user;
+      const userDoc = await db.collection('users').doc(user.uid).get();
+      if (!userDoc.exists) {
+        await db.collection('users').doc(user.uid).set({
+          nome: user.displayName || user.email.split('@')[0],
+          email: user.email,
+          isAdmin: false,
+          createdAt: new Date()
+        });
+      }
       showToast('Login com Google realizado!');
     } catch(e) { document.getElementById('l-error').textContent = e.message; }
   }
@@ -339,7 +341,13 @@ const analytics = getAnalytics(app);
     }
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
-      await db.collection('users').doc(cred.user.uid).set({ nome, casa: parseInt(casa), email, isAdmin: false, createdAt: new Date() });
+      await db.collection('users').doc(cred.user.uid).set({ 
+        nome, 
+        casa: parseInt(casa), 
+        email, 
+        isAdmin: false, 
+        createdAt: new Date() 
+      });
       showToast('Cadastro realizado!');
     } catch(e) { document.getElementById('r-error').textContent = e.message; }
   }
@@ -351,7 +359,10 @@ const analytics = getAnalytics(app);
 
   function toggleMenu() { document.getElementById('main-nav').classList.toggle('open'); }
   function toggleSidebar() { document.getElementById('sindico-sidebar').classList.toggle('open'); }
-  function goSindico() { document.getElementById('page-site').classList.remove('active'); document.getElementById('page-sindico').classList.add('active'); }
+  function goSindico() { 
+    document.getElementById('page-site').classList.remove('active'); 
+    document.getElementById('page-sindico').classList.add('active'); 
+  }
 
   function showSindicoSection(sectionId, el) {
     document.querySelectorAll('.sindico-section').forEach(s => s.classList.remove('active'));
@@ -422,6 +433,7 @@ const analytics = getAnalytics(app);
     for (const doc of enquetesSnap.docs) {
       const p = doc.data();
       const totalVotos = p.totalVotos || 0;
+      const jaVotou = currentUser && p.votos && p.votos[currentUser.uid];
       pollHtml += `<div class="poll-card"><h3>${p.titulo}</h3><p>${p.descricao || ''}</p>`;
       p.opcoes.forEach(opt => {
         const votos = p.votos?.[opt] || 0;
@@ -429,10 +441,16 @@ const analytics = getAnalytics(app);
         pollHtml += `<div class="poll-option"><span class="poll-option-text">${opt}</span><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:${percent}%"></div><span class="poll-bar-label">${percent}%</span></div></div>`;
       });
       pollHtml += `<p class="poll-meta">🗳️ ${totalVotos} votos · Encerra em ${new Date(p.endDate).toLocaleDateString()}</p>`;
-      if (currentUser && !p.votos?.[currentUser.uid] && new Date(p.endDate) > new Date()) {
+      if (currentUser && !jaVotou && new Date(p.endDate) > new Date()) {
         pollHtml += `<div class="grid2" style="margin-bottom:10px">${p.opcoes.map(opt => `<button class="btn-secondary btn-sm" onclick="votarEnquete('${doc.id}','${opt}')">${opt}</button>`).join('')}</div>`;
+      } else if (jaVotou) {
+        pollHtml += `<p><em>✓ Você já votou nesta enquete</em></p>`;
       }
-      pollHtml += `<div class="comments-section"><div id="coments-${doc.id}"></div><div class="comment-form"><input id="coment-${doc.id}" placeholder="Comentar..."/><button class="btn-secondary btn-sm" onclick="comentarEnquete('${doc.id}')">Enviar</button></div></div></div>`;
+      pollHtml += `<div class="comments-section"><div id="coments-${doc.id}"></div>`;
+      if (currentUser) {
+        pollHtml += `<div class="comment-form"><input id="coment-${doc.id}" placeholder="Comentar..."/><button class="btn-secondary btn-sm" onclick="comentarEnquete('${doc.id}')">Enviar</button></div>`;
+      }
+      pollHtml += `</div></div>`;
       carregarComentarios(doc.id);
     }
     document.getElementById('enquetes-dinamico').innerHTML = pollHtml || '<p>Nenhuma enquete ativa.</p>';
@@ -450,9 +468,11 @@ const analytics = getAnalytics(app);
   async function votarEnquete(pollId, option) {
     if (!currentUser) { showToast('Faça login para votar'); return; }
     const pollRef = db.collection('polls').doc(pollId);
-    const poll = (await pollRef.get()).data();
-    if (poll.votos?.[currentUser.uid]) { showToast('Você já votou'); return; }
-    const newVotos = { ...poll.votos, [currentUser.uid]: option, [option]: (poll.votos?.[option] || 0) + 1 };
+    const pollDoc = await pollRef.get();
+    const poll = pollDoc.data();
+    if (poll.votos && poll.votos[currentUser.uid]) { showToast('Você já votou'); return; }
+    const newVotos = { ...poll.votos, [currentUser.uid]: option };
+    newVotos[option] = (newVotos[option] || 0) + 1;
     await pollRef.update({ votos: newVotos, totalVotos: (poll.totalVotos || 0) + 1 });
     showToast('Voto registrado!');
     carregarDadosPublicos();
@@ -461,7 +481,12 @@ const analytics = getAnalytics(app);
   async function comentarEnquete(pollId) {
     const texto = document.getElementById(`coment-${pollId}`).value;
     if (!texto.trim()) return;
-    await db.collection(`polls/${pollId}/comments`).add({ texto, userId: currentUser.uid, userNome: currentUser.email.split('@')[0], createdAt: new Date() });
+    await db.collection(`polls/${pollId}/comments`).add({ 
+      texto, 
+      userId: currentUser.uid, 
+      userNome: currentUser.email.split('@')[0], 
+      createdAt: new Date() 
+    });
     document.getElementById(`coment-${pollId}`).value = '';
     carregarComentarios(pollId);
   }
@@ -491,7 +516,7 @@ const analytics = getAnalytics(app);
     let projList = '';
     projetosSnap.forEach(doc => {
       const p = doc.data();
-      projList += `<div class="document-item" style="display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid #eee"><span><strong>${p.titulo}</strong> - ${p.progresso}%</span><button class="btn-danger btn-sm" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
+      projList += `<div style="display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid #eee"><span><strong>${p.titulo}</strong> - ${p.progresso}%</span><button class="btn-danger btn-sm" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
     });
     document.getElementById('lista-projetos').innerHTML = projList || '<p>Nenhum projeto</p>';
 
@@ -507,7 +532,7 @@ const analytics = getAnalytics(app);
     let docsList = '';
     docsSnap.forEach(doc => {
       const d = doc.data();
-      docsList += `<div class="document-item" style="display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid #eee"><span><strong>${d.titulo}</strong></span><button class="btn-danger btn-sm" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
+      docsList += `<div style="display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid #eee"><span><strong>${d.titulo}</strong></span><button class="btn-danger btn-sm" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
     });
     document.getElementById('lista-documentos').innerHTML = docsList || '<p>Nenhum documento</p>';
   }
@@ -576,6 +601,7 @@ const analytics = getAnalytics(app);
 
   function sendContact(e) { e.preventDefault(); showToast('Mensagem enviada! O síndico responderá em breve.'); }
 
+  // Expor funções globalmente
   window.switchLoginTab = switchLoginTab;
   window.loginEmail = loginEmail;
   window.loginGoogle = loginGoogle;
