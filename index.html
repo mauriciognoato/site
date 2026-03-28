@@ -357,7 +357,7 @@
       font-size: 0.8rem;
     }
 
-    /* HERO — fundo azul COM CONTAINER ESCURO PARA LEGIBILIDADE */
+    /* HERO - COM FUNDO ESCURO GARANTIDO */
     .hero {
       background: var(--azul);
       padding: 80px 24px;
@@ -365,21 +365,24 @@
       position: relative;
       overflow: hidden;
     }
-    /* Container escuro sobre o fundo azul para melhor contraste */
-    .hero-dark-bg {
+    /* OVERLAY ESCURO PARA GARANTIR LEGIBILIDADE */
+    .hero::before {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0, 0, 0, 0.65);
       z-index: 1;
     }
-    .hero::before {
+    .hero::after {
       content: '';
       position: absolute;
       inset: 0;
       background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4A776' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
     }
     .hero-content { 
       position: relative; 
@@ -389,7 +392,7 @@
     }
     .hero-badge {
       display: inline-block;
-      background: rgba(196,167,118,0.25);
+      background: rgba(196,167,118,0.3);
       border: 1px solid var(--dourado);
       color: var(--dourado);
       font-size: 0.7rem;
@@ -398,7 +401,7 @@
       padding: 6px 16px;
       border-radius: 100px;
       margin-bottom: 24px;
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(4px);
     }
     .hero h1 {
       font-family: 'Roboto', sans-serif;
@@ -407,15 +410,15 @@
       font-weight: 700;
       line-height: 1.2;
       margin-bottom: 16px;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
     .hero h1 em { color: var(--dourado); font-style: normal; }
     .hero p {
-      color: rgba(255,255,255,0.9);
+      color: rgba(255,255,255,0.95);
       font-size: 1rem;
       line-height: 1.8;
       margin-bottom: 32px;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
     .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
     .btn-gold {
@@ -439,7 +442,7 @@
       padding: 14px 28px;
       background: transparent;
       color: var(--branco);
-      border: 1.5px solid rgba(255,255,255,0.6);
+      border: 1.5px solid rgba(255,255,255,0.7);
       border-radius: 8px;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.82rem;
@@ -451,21 +454,9 @@
       transition: all 0.2s;
       display: inline-block;
     }
-    .btn-outline-white:hover { border-color: var(--dourado); color: var(--dourado); }
+    .btn-outline-white:hover { border-color: var(--dourado); color: var(--dourado); background: rgba(0,0,0,0.2); }
 
-    /* ESTADO VAZIO (hero sem dados) */
-    .hero-empty {
-      background: rgba(255,255,255,0.07);
-      border: 1px dashed rgba(196,167,118,0.4);
-      border-radius: 12px;
-      padding: 32px;
-      margin-top: 20px;
-      color: rgba(255,255,255,0.45);
-      font-size: 0.85rem;
-      line-height: 1.7;
-    }
-
-    /* ===================== STATS BAR — FONTES EM AZUL ===================== */
+    /* STATS BAR */
     .stats-bar { background: var(--branco); border-bottom: 3px solid var(--dourado); }
     .stats-inner {
       max-width: 1200px;
@@ -484,14 +475,14 @@
       font-family: 'Roboto', sans-serif;
       font-size: 2rem;
       font-weight: 700;
-      color: var(--azul);        /* ← azul */
+      color: var(--azul);
     }
     .stat-number span.empty { color: #ccc; font-size: 1rem; font-family: 'Montserrat', sans-serif; font-weight: 400; }
     .stat-label {
       font-size: 0.72rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--azul);        /* ← azul */
+      color: var(--azul);
       font-weight: 600;
       margin-top: 4px;
     }
@@ -575,8 +566,6 @@
     .finance-card .amount.negative { color: var(--vermelho); }
     .finance-card .amount.empty-val { font-size: 0.88rem; color: #ccc; font-weight: 400; }
     .finance-card p { font-size: 0.82rem; color: #888; margin-top: 4px; }
-    .progress-bar { margin-top: 12px; background: var(--borda); border-radius: 100px; height: 6px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 100px; background: var(--dourado); transition: width 1s ease; }
 
     /* TABLE */
     .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--borda); }
@@ -729,14 +718,14 @@
 
     .sindico-tab {
       flex: 1;
-      min-width: 120px;
+      min-width: 100px;
       padding: 10px 14px;
       background: transparent;
       border: none;
       border-radius: 7px;
       color: rgba(255,255,255,0.5);
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -838,7 +827,6 @@
       margin-top: 12px;
     }
     .btn-save:hover { background: var(--dourado-hover); transform: translateY(-1px); }
-    .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
     .btn-danger {
       padding: 8px 16px;
@@ -887,7 +875,7 @@
 
     .s-stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 16px;
       margin-bottom: 28px;
     }
@@ -900,7 +888,7 @@
     }
     .s-stat-card .num {
       font-family: 'Roboto', sans-serif;
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 700;
       color: var(--dourado);
     }
@@ -954,18 +942,6 @@
     }
     .btn-add-opt:hover { background: rgba(196,167,118,0.25); }
 
-    /* HERO TEXT EDITOR (síndico) */
-    .s-hero-preview {
-      background: var(--azul);
-      border-radius: 10px;
-      padding: 24px;
-      margin-top: 16px;
-      text-align: center;
-    }
-    .s-hero-preview h3 { color: var(--branco); font-family: 'Roboto', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
-    .s-hero-preview p { color: rgba(255,255,255,0.6); font-size: 0.83rem; line-height: 1.6; }
-
-    /* MOBILE */
     @media (max-width: 768px) {
       .hamburger { display: flex; }
       nav {
@@ -990,7 +966,7 @@
       .auth-body { padding: 24px; }
       .auth-header { padding: 28px 24px 22px; }
       .sindico-topbar { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .s-form-grid { grid-template-columns: 1fr; }
+      .sindico-tab { min-width: 80px; font-size: 0.65rem; padding: 8px 6px; }
     }
 
     html { scroll-behavior: smooth; }
@@ -1002,7 +978,7 @@
 <div id="auth-overlay">
   <div class="auth-box">
     <div class="auth-header">
-      <img src="logo.png" alt="Logo" style="width:90px;height:90px;border-radius:12px;border:3px solid var(--dourado);object-fit:cover;display:block;margin:0 auto 16px;"/>
+      <div class="auth-logo-fallback">MG</div>
       <h1>Condomínio<br>Maurício Gnoato</h1>
       <p>Portal do Condômino</p>
     </div>
@@ -1055,7 +1031,7 @@
   <header>
     <div class="header-inner">
       <a href="#" class="brand">
-        <img src="logo.png" alt="Logo" style="width:44px;height:44px;border-radius:8px;border:2px solid var(--dourado);object-fit:cover;"/>
+        <div class="brand-logo-fb">MG</div>
         <div class="brand-text">
           <span class="brand-name">Maurício Gnoato</span>
           <span class="brand-sub">Condomínio Residencial</span>
@@ -1080,9 +1056,8 @@
     </div>
   </header>
 
-  <!-- HERO: CAMADA ESCURA ADICIONADA -->
+  <!-- HERO COM FUNDO ESCURO -->
   <section class="hero">
-    <div class="hero-dark-bg"></div> <!-- Container escuro para garantir legibilidade -->
     <div class="hero-content">
       <div class="hero-badge" id="hero-badge">✦ Portal do Condomínio</div>
       <h1 id="hero-titulo">Bem-vindo ao Portal do <em>Condomínio</em></h1>
@@ -1294,7 +1269,6 @@
       <button class="sindico-tab" onclick="sindicoTab('enquetes', this)">🗳 Enquetes</button>
       <button class="sindico-tab" onclick="sindicoTab('stats', this)">🏢 Estatísticas</button>
       <button class="sindico-tab" onclick="sindicoTab('contatos', this)">✉️ Mensagens</button>
-      <!-- Nova aba: Moradores -->
       <button class="sindico-tab" onclick="sindicoTab('moradores', this)">👥 Moradores</button>
     </div>
 
@@ -1317,9 +1291,8 @@
           <strong style="color:var(--dourado)">enquetes</strong>, lançar 
           <strong style="color:var(--dourado)">transações financeiras</strong>, atualizar os 
           <strong style="color:var(--dourado)">números e estatísticas</strong>, as 
-          <strong style="color:var(--dourado)">informações de contato</strong>, e ler as 
-          <strong style="color:var(--dourado)">mensagens</strong> enviadas pelos moradores. Também é possível ver a lista de moradores cadastrados.<br><br>
-          Todas as alterações refletem imediatamente no portal.
+          <strong style="color:var(--dourado)">informações de contato</strong>, ler as 
+          <strong style="color:var(--dourado)">mensagens</strong> e visualizar os <strong style="color:var(--dourado)">moradores cadastrados</strong>.
         </p>
       </div>
     </div>
@@ -1338,7 +1311,7 @@
       </div>
     </div>
 
-    <!-- FINANCEIRO (mantido igual) -->
+    <!-- FINANCEIRO -->
     <div class="sindico-section" id="s-financeiro">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Resumo Financeiro</h3><p>Atualize os valores exibidos nos cards do site</p></div></div>
@@ -1384,7 +1357,7 @@
       </div>
     </div>
 
-    <!-- PROJETOS (mantido igual) -->
+    <!-- PROJETOS -->
     <div class="sindico-section" id="s-projetos">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Novo Projeto</h3><p>Adicione um projeto à linha do tempo</p></div></div>
@@ -1410,7 +1383,7 @@
       </div>
     </div>
 
-    <!-- COMUNICADOS (mantido igual) -->
+    <!-- COMUNICADOS -->
     <div class="sindico-section" id="s-comunicados">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Novo Comunicado</h3><p>Publique um aviso para todos os moradores</p></div></div>
@@ -1429,7 +1402,7 @@
       </div>
     </div>
 
-    <!-- ENQUETES (mantido igual) -->
+    <!-- ENQUETES -->
     <div class="sindico-section" id="s-enquetes">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Nova Enquete</h3><p>Crie uma enquete para os moradores votarem</p></div></div>
@@ -1461,7 +1434,7 @@
       </div>
     </div>
 
-    <!-- ESTATÍSTICAS (mantido igual) -->
+    <!-- ESTATÍSTICAS -->
     <div class="sindico-section" id="s-stats">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Números do Condomínio</h3><p>Atualize as estatísticas exibidas na barra de destaques</p></div></div>
@@ -1487,7 +1460,7 @@
       </div>
     </div>
 
-    <!-- MENSAGENS (mantido igual) -->
+    <!-- MENSAGENS -->
     <div class="sindico-section" id="s-contatos">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Mensagens Recebidas</h3><p>Formulários enviados pelos moradores</p></div></div>
@@ -1495,7 +1468,7 @@
       </div>
     </div>
 
-    <!-- ===================== NOVA ABA: MORADORES ===================== -->
+    <!-- MORADORES - NOVA ABA CORRIGIDA -->
     <div class="sindico-section" id="s-moradores">
       <div class="s-card">
         <div class="s-card-header"><div><h3>👥 Lista de Moradores Cadastrados</h3><p>Relação de todos os condôminos registrados no portal</p></div></div>
@@ -1507,7 +1480,6 @@
   </div>
 </div>
 
-<!-- ===================== FIREBASE ===================== -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
@@ -1515,7 +1487,7 @@
     signOut, onAuthStateChanged, updateProfile
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import {
-    getDatabase, ref, set, push, get, remove, onValue, update
+    getDatabase, ref, set, push, get, remove, onValue
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
@@ -1532,58 +1504,35 @@
   const auth = getAuth(app);
   const db = getDatabase(app);
 
-  const SINDICO_EMAILS = [
-    'sindico@condmauriciognoato.com.br'
-  ];
+  const SINDICO_EMAILS = ['sindico@condmauriciognoato.com.br'];
 
-  // Expor globais
-  window._auth = auth;
-  window._db = db;
-  window._ref = ref;
-  window._set = set;
-  window._push = push;
-  window._get = get;
-  window._remove = remove;
-  window._onValue = onValue;
-  window._update = update;
-  window._createUser = createUserWithEmailAndPassword;
-  window._signIn = signInWithEmailAndPassword;
-  window._signOut = signOut;
-  window._updateProfile = updateProfile;
-  window.SINDICO_EMAILS = SINDICO_EMAILS;
+  window.auth = auth;
+  window.db = db;
+  window.ref = ref;
+  window.set = set;
+  window.push = push;
+  window.get = get;
+  window.remove = remove;
+  window.onValue = onValue;
 
-  // ===== AUTH STATE =====
+  // AUTH STATE
   onAuthStateChanged(auth, (user) => {
     if (user) {
       document.getElementById('auth-overlay').style.display = 'none';
       document.getElementById('main-site').style.display = 'block';
-
-      // Recarrega o perfil para pegar o displayName mais atualizado
-      user.reload().then(() => {
-        const currentUser = auth.currentUser;
-        const name = currentUser.displayName || currentUser.email.split('@')[0];
-        const initials = name.charAt(0).toUpperCase();
-        document.getElementById('user-avatar').textContent = initials;
-        document.getElementById('user-name-header').textContent = name;
-      }).catch(() => {
-        const name = user.displayName || user.email.split('@')[0];
-        const initials = name.charAt(0).toUpperCase();
-        document.getElementById('user-avatar').textContent = initials;
-        document.getElementById('user-name-header').textContent = name;
-      });
+      
+      const name = user.displayName || user.email.split('@')[0];
+      const initials = name.charAt(0).toUpperCase();
+      document.getElementById('user-avatar').textContent = initials;
+      document.getElementById('user-name-header').textContent = name;
 
       const btnSindico = document.getElementById('btn-sindico-nav');
-      const emailLower = (user.email || '').toLowerCase().trim();
-      const isSindico = SINDICO_EMAILS.some(e => e.toLowerCase().trim() === emailLower);
-
+      const isSindico = SINDICO_EMAILS.some(e => e.toLowerCase() === (user.email || '').toLowerCase());
       if (isSindico) {
         btnSindico.classList.remove('hidden');
-        btnSindico.style.display = 'inline-block';
       } else {
         btnSindico.classList.add('hidden');
-        btnSindico.style.display = 'none';
       }
-
       loadDynamicData();
     } else {
       document.getElementById('auth-overlay').style.display = 'flex';
@@ -1592,22 +1541,21 @@
     }
   });
 
-  // ===== CARREGAR DADOS DINÂMICOS (incluindo moradores) =====
-  window.loadDynamicData = function() {
-
-    // Hero, Stats, Finance, Contact (códigos mantidos)
+  function loadDynamicData() {
+    // Hero
     onValue(ref(db, 'config/hero'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
         if (d.badge) document.getElementById('hero-badge').textContent = d.badge;
         if (d.titulo) document.getElementById('hero-titulo').innerHTML = d.titulo;
         if (d.subtitulo) document.getElementById('hero-subtitulo').textContent = d.subtitulo;
-        // sync inputs
         if (d.badge) document.getElementById('s-hero-badge').value = d.badge;
         if (d.titulo) document.getElementById('s-hero-titulo').value = d.titulo;
         if (d.subtitulo) document.getElementById('s-hero-subtitulo').value = d.subtitulo;
       }
     });
+
+    // Stats
     onValue(ref(db, 'config/stats'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
@@ -1617,6 +1565,8 @@
         if (d.projetos) { document.getElementById('stat-projetos').textContent = d.projetos; document.getElementById('s-st-projetos').value = d.projetos; }
       }
     });
+
+    // Finance Cards
     onValue(ref(db, 'config/financeCards'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
@@ -1631,6 +1581,8 @@
         }
       }
     });
+
+    // Contact Info
     onValue(ref(db, 'config/contactInfo'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
@@ -1674,13 +1626,13 @@
           </div>`;
         }).join('');
       } else {
-        noticesList.innerHTML = `<div class="empty-state"><div class="empty-icon">📢</div><p>Nenhum comunicado publicado ainda.<br><strong>O síndico pode publicar comunicados no painel administrativo.</strong></p></div>`;
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum comunicado cadastrado ainda.</p>';
+        noticesList.innerHTML = `<div class="empty-state"><div class="empty-icon">📢</div><p>Nenhum comunicado publicado ainda.</p></div>`;
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum comunicado cadastrado.</p>';
       }
       document.getElementById('d-comunicados').textContent = count;
     });
 
-    // Projetos (omitido para encurtar, mas mantido)
+    // Projetos (resumido)
     onValue(ref(db, 'projetos'), (snap) => {
       const timeline = document.getElementById('projects-timeline');
       const sList = document.getElementById('s-pr-list');
@@ -1692,7 +1644,7 @@
         count = keys.length;
         const empty = document.getElementById('projects-empty');
         if (empty) empty.remove();
-        sList.innerHTML = keys.map(key => {
+        keys.forEach(key => {
           const d = items[key];
           const newItem = document.createElement('div');
           newItem.className = 'project-item dynamic-project';
@@ -1704,6 +1656,9 @@
             <span class="badge ${d.status === 'done' ? 'badge-green' : d.status === 'progress' ? 'badge-yellow' : 'badge-blue'}">${d.badge}</span>
           `;
           timeline.appendChild(newItem);
+        });
+        sList.innerHTML = keys.map(key => {
+          const d = items[key];
           return `<div class="s-list-item">
             <div class="s-list-item-info">
               <strong>${d.titulo}</strong>
@@ -1716,9 +1671,9 @@
         }).join('');
       } else {
         if (!document.getElementById('projects-empty')) {
-          timeline.innerHTML = `<div class="empty-state" id="projects-empty"><div class="empty-icon">🏗️</div><p>Nenhum projeto cadastrado ainda.<br><strong>O síndico pode adicionar projetos no painel administrativo.</strong></p></div>`;
+          timeline.innerHTML = `<div class="empty-state" id="projects-empty"><div class="empty-icon">🏗️</div><p>Nenhum projeto cadastrado ainda.</p></div>`;
         }
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum projeto cadastrado ainda.</p>';
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum projeto cadastrado.</p>';
       }
       document.getElementById('d-projetos').textContent = count;
     });
@@ -1738,18 +1693,9 @@
           const cor = isPositive ? 'var(--verde)' : 'var(--vermelho)';
           const sinal = isPositive ? '+' : '-';
           const badgeClass = d.status === 'Pago' || d.status === 'Recebido' ? 'badge-green' : d.status === 'Pendente' ? 'badge-yellow' : 'badge-red';
-          return `<tr>
-            <td>${d.descricao}</td>
-            <td>${d.categoria}</td>
-            <td>${d.data}</td>
-            <td style="color:${cor};font-weight:600">${sinal} R$ ${d.valor}</td>
-            <td><span class="badge ${badgeClass}">${d.status}</span></td>
-          </tr>`;
+          return `<tr><td>${d.descricao}</td><td>${d.categoria}</td><td>${d.data}</td><td style="color:${cor};font-weight:600">${sinal} R$ ${d.valor}</td><td><span class="badge ${badgeClass}">${d.status}</span></td>45</tr>`;
         }).join('');
-        tableWrap.innerHTML = `<div class="table-wrap"><table>
-          <thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table></div>`;
+        tableWrap.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
         sList.innerHTML = keys.map(key => {
           const d = items[key];
           return `<div class="s-list-item">
@@ -1763,8 +1709,8 @@
           </div>`;
         }).join('');
       } else {
-        tableWrap.innerHTML = `<div class="empty-state"><div class="empty-icon">🧾</div><p>Nenhuma transação cadastrada ainda.<br><strong>O síndico pode adicionar transações no painel administrativo.</strong></p></div>`;
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma transação cadastrada ainda.</p>';
+        tableWrap.innerHTML = `<div class="empty-state"><div class="empty-icon">🧾</div><p>Nenhuma transação cadastrada ainda.</p></div>`;
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhuma transação cadastrada.</p>';
       }
       document.getElementById('d-transacoes').textContent = count;
     });
@@ -1781,7 +1727,7 @@
         count = keys.length;
         const empty = document.getElementById('polls-empty');
         if (empty) empty.remove();
-        sList.innerHTML = keys.map(key => {
+        keys.forEach(key => {
           const d = items[key];
           const opts = d.opcoes || [];
           const optsHtml = opts.map((op, i) => `
@@ -1806,6 +1752,9 @@
               <button class="btn-sm" onclick="votePoll(this)">Votar</button>
             </div>`;
           grid.appendChild(card);
+        });
+        sList.innerHTML = keys.map(key => {
+          const d = items[key];
           return `<div class="s-list-item">
             <div class="s-list-item-info">
               <strong>${d.titulo}</strong>
@@ -1822,10 +1771,10 @@
           emptyDiv.id = 'polls-empty';
           emptyDiv.style.gridColumn = '1/-1';
           emptyDiv.className = 'empty-state';
-          emptyDiv.innerHTML = `<div class="empty-icon">🗳️</div><p>Nenhuma enquete ativa no momento.<br><strong>O síndico pode criar enquetes no painel administrativo.</strong></p>`;
+          emptyDiv.innerHTML = `<div class="empty-icon">🗳️</div><p>Nenhuma enquete ativa no momento.</p>`;
           grid.appendChild(emptyDiv);
         }
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma enquete cadastrada ainda.</p>';
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhuma enquete cadastrada.</p>';
       }
       document.getElementById('d-enquetes').textContent = count;
     });
@@ -1853,12 +1802,12 @@
           </div>`;
         }).join('');
       } else {
-        list.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma mensagem recebida ainda.</p>';
+        list.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhuma mensagem recebida.</p>';
       }
       document.getElementById('d-mensagens').textContent = count;
     });
 
-    // ========== MORADORES (nova aba) ==========
+    // ========== MORADORES ==========
     onValue(ref(db, 'condominios'), (snap) => {
       const listContainer = document.getElementById('s-moradores-list');
       let count = 0;
@@ -1867,7 +1816,7 @@
         const keys = Object.keys(items);
         count = keys.length;
         if (keys.length === 0) {
-          listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum morador cadastrado ainda.</p>';
+          listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum morador cadastrado ainda.</p>';
         } else {
           listContainer.innerHTML = keys.map(key => {
             const morador = items[key];
@@ -1880,15 +1829,14 @@
           }).join('');
         }
       } else {
-        listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum morador cadastrado ainda.</p>';
+        listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum morador cadastrado ainda.</p>';
       }
       document.getElementById('d-moradores').textContent = count;
     });
-  };
+  }
 </script>
 
 <script>
-  // ===== AUTH =====
   function switchTab(tab) {
     document.querySelectorAll('.auth-tab').forEach((t, i) => {
       t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
@@ -1917,51 +1865,40 @@
     const pwd = document.getElementById('login-pwd').value;
     if (!email || !pwd) return showMsg('login-msg', 'Preencha todos os campos.', 'error');
     try {
-      await window._signIn(window._auth, email, pwd);
+      await window.signInWithEmailAndPassword(window.auth, email, pwd);
     } catch(e) {
       let msg = 'Erro ao entrar. Verifique seus dados.';
       if (e.code === 'auth/user-not-found') msg = 'Usuário não encontrado.';
       if (e.code === 'auth/wrong-password') msg = 'Senha incorreta.';
       if (e.code === 'auth/invalid-email') msg = 'E-mail inválido.';
-      if (e.code === 'auth/invalid-credential') msg = 'Credenciais inválidas.';
       showMsg('login-msg', msg, 'error');
     }
   }
 
   async function doRegister() {
-    const name    = document.getElementById('reg-name').value.trim();
-    const unit    = document.getElementById('reg-unit').value.trim();
-    const email   = document.getElementById('reg-email').value.trim();
-    const pwd     = document.getElementById('reg-pwd').value;
+    const name = document.getElementById('reg-name').value.trim();
+    const unit = document.getElementById('reg-unit').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pwd = document.getElementById('reg-pwd').value;
 
-    if (!name || !unit || !email || !pwd) {
-      return showMsg('register-msg', 'Preencha todos os campos.', 'error');
-    }
-    if (pwd.length < 6) {
-      return showMsg('register-msg', 'A senha deve ter ao menos 6 caracteres.', 'error');
-    }
+    if (!name || !unit || !email || !pwd) return showMsg('register-msg', 'Preencha todos os campos.', 'error');
+    if (pwd.length < 6) return showMsg('register-msg', 'Senha deve ter ao menos 6 caracteres.', 'error');
 
     const btn = document.getElementById('btn-register');
     btn.disabled = true;
     btn.textContent = 'Cadastrando...';
 
     try {
-      const cred = await window._createUser(window._auth, email, pwd);
-      await window._updateProfile(cred.user, { displayName: name });
-      await window._set(
-        window._ref(window._db, 'condominios/' + cred.user.uid),
-        { name, unit, email, createdAt: new Date().toISOString() }
-      );
-      showMsg('register-msg', '✅ Cadastro realizado com sucesso! Entrando...', 'success');
-      ['reg-name', 'reg-unit', 'reg-email', 'reg-pwd'].forEach(id => {
-        document.getElementById(id).value = '';
-      });
+      const cred = await window.createUserWithEmailAndPassword(window.auth, email, pwd);
+      await window.updateProfile(cred.user, { displayName: name });
+      await window.set(window.ref(window.db, 'condominios/' + cred.user.uid), { name, unit, email, createdAt: new Date().toISOString() });
+      showMsg('register-msg', '✅ Cadastro realizado com sucesso!', 'success');
+      ['reg-name', 'reg-unit', 'reg-email', 'reg-pwd'].forEach(id => { document.getElementById(id).value = ''; });
     } catch(e) {
-      let msg = 'Erro ao cadastrar. Tente novamente.';
-      if (e.code === 'auth/email-already-in-use') msg = 'Este e-mail já está cadastrado.';
-      if (e.code === 'auth/invalid-email')        msg = 'E-mail inválido.';
-      if (e.code === 'auth/weak-password')        msg = 'Senha muito fraca. Use ao menos 6 caracteres.';
-      if (e.code === 'auth/network-request-failed') msg = 'Erro de conexão. Verifique sua internet.';
+      let msg = 'Erro ao cadastrar.';
+      if (e.code === 'auth/email-already-in-use') msg = 'E-mail já cadastrado.';
+      if (e.code === 'auth/invalid-email') msg = 'E-mail inválido.';
+      if (e.code === 'auth/weak-password') msg = 'Senha muito fraca.';
       showMsg('register-msg', msg, 'error');
     } finally {
       btn.disabled = false;
@@ -1969,13 +1906,11 @@
     }
   }
 
-  document.getElementById('btn-logout').addEventListener('click', async function() {
+  document.getElementById('btn-logout').addEventListener('click', async () => {
     try {
       closeSindico();
-      await window._signOut(window._auth);
-    } catch(e) {
-      console.error('Erro ao sair:', e);
-    }
+      await window.signOut(window.auth);
+    } catch(e) { console.error(e); }
   });
 
   function toggleMenu() {
@@ -1995,11 +1930,11 @@
     const message = document.getElementById('contact-message').value.trim();
     if (!name || !email || !subject || !message) return showMsg('contact-msg', 'Preencha todos os campos.', 'error');
     try {
-      await window._push(window._ref(window._db, 'contatos'), { name, email, subject, message, createdAt: new Date().toISOString() });
+      await window.push(window.ref(window.db, 'contatos'), { name, email, subject, message, createdAt: new Date().toISOString() });
       showMsg('contact-msg', 'Mensagem enviada com sucesso!', 'success');
       ['contact-name','contact-email','contact-subject','contact-message'].forEach(id => { document.getElementById(id).value = ''; });
     } catch(e) {
-      showMsg('contact-msg', 'Erro ao enviar mensagem.', 'error');
+      showMsg('contact-msg', 'Erro ao enviar.', 'error');
     }
   }
 
@@ -2026,12 +1961,12 @@
       titulo: document.getElementById('s-hero-titulo').value.trim(),
       subtitulo: document.getElementById('s-hero-subtitulo').value.trim()
     };
-    if (!data.titulo) return showSMsg('msg-hero', 'Preencha ao menos o título.', 'error');
+    if (!data.titulo) return showSMsg('msg-hero', 'Preencha o título.', 'error');
     try {
-      await window._set(window._ref(window._db, 'config/hero'), data);
-      showSMsg('msg-hero', '✓ Hero atualizado com sucesso!', 'success');
+      await window.set(window.ref(window.db, 'config/hero'), data);
+      showSMsg('msg-hero', '✓ Hero atualizado!', 'success');
     } catch(e) {
-      showSMsg('msg-hero', 'Erro ao salvar. Verifique as permissões do Firebase.', 'error');
+      showSMsg('msg-hero', 'Erro ao salvar.', 'error');
     }
   }
 
@@ -2044,10 +1979,10 @@
       mes: document.getElementById('s-fc-mes').value.trim()
     };
     try {
-      await window._set(window._ref(window._db, 'config/financeCards'), data);
-      showSMsg('msg-finance-cards', '✓ Resumo financeiro atualizado com sucesso!', 'success');
+      await window.set(window.ref(window.db, 'config/financeCards'), data);
+      showSMsg('msg-finance-cards', '✓ Resumo atualizado!', 'success');
     } catch(e) {
-      showSMsg('msg-finance-cards', 'Erro ao salvar. Verifique as permissões do Firebase.', 'error');
+      showSMsg('msg-finance-cards', 'Erro ao salvar.', 'error');
     }
   }
 
@@ -2062,8 +1997,8 @@
     };
     if (!data.descricao || !data.valor || !data.data) return showSMsg('msg-transaction', 'Preencha todos os campos.', 'error');
     try {
-      await window._push(window._ref(window._db, 'transacoes'), data);
-      showSMsg('msg-transaction', '✓ Transação adicionada com sucesso!', 'success');
+      await window.push(window.ref(window.db, 'transacoes'), data);
+      showSMsg('msg-transaction', '✓ Transação adicionada!', 'success');
       ['s-tx-desc','s-tx-date','s-tx-valor'].forEach(id => { document.getElementById(id).value = ''; });
     } catch(e) {
       showSMsg('msg-transaction', 'Erro ao salvar.', 'error');
@@ -2081,8 +2016,8 @@
     };
     if (!data.titulo || !data.desc) return showSMsg('msg-project', 'Preencha título e descrição.', 'error');
     try {
-      await window._push(window._ref(window._db, 'projetos'), data);
-      showSMsg('msg-project', '✓ Projeto adicionado com sucesso!', 'success');
+      await window.push(window.ref(window.db, 'projetos'), data);
+      showSMsg('msg-project', '✓ Projeto adicionado!', 'success');
       ['s-pr-titulo','s-pr-desc','s-pr-data','s-pr-badge'].forEach(id => { document.getElementById(id).value = ''; });
     } catch(e) {
       showSMsg('msg-project', 'Erro ao salvar.', 'error');
@@ -2099,8 +2034,8 @@
     };
     if (!data.titulo || !data.texto) return showSMsg('msg-notice', 'Preencha título e texto.', 'error');
     try {
-      await window._push(window._ref(window._db, 'comunicados'), data);
-      showSMsg('msg-notice', '✓ Comunicado publicado com sucesso!', 'success');
+      await window.push(window.ref(window.db, 'comunicados'), data);
+      showSMsg('msg-notice', '✓ Comunicado publicado!', 'success');
       ['s-nc-icon','s-nc-data','s-nc-titulo','s-nc-texto'].forEach(id => { document.getElementById(id).value = ''; });
     } catch(e) {
       showSMsg('msg-notice', 'Erro ao publicar.', 'error');
@@ -2123,10 +2058,8 @@
     const opcoes = Array.from(document.querySelectorAll('.eq-opt')).map(i => i.value.trim()).filter(v => v);
     if (!titulo || !pergunta || opcoes.length < 2) return showSMsg('msg-poll', 'Preencha título, pergunta e ao menos 2 opções.', 'error');
     try {
-      await window._push(window._ref(window._db, 'enquetes'), {
-        titulo, status, pergunta, opcoes, votos: {}, createdAt: new Date().toISOString()
-      });
-      showSMsg('msg-poll', '✓ Enquete publicada com sucesso!', 'success');
+      await window.push(window.ref(window.db, 'enquetes'), { titulo, status, pergunta, opcoes, votos: {}, createdAt: new Date().toISOString() });
+      showSMsg('msg-poll', '✓ Enquete publicada!', 'success');
       document.getElementById('s-eq-titulo').value = '';
       document.getElementById('s-eq-pergunta').value = '';
       document.querySelectorAll('.eq-opt').forEach(i => { i.value = ''; });
@@ -2143,8 +2076,8 @@
       projetos: document.getElementById('s-st-projetos').value.trim()
     };
     try {
-      await window._set(window._ref(window._db, 'config/stats'), data);
-      showSMsg('msg-stats', '✓ Estatísticas atualizadas com sucesso!', 'success');
+      await window.set(window.ref(window.db, 'config/stats'), data);
+      showSMsg('msg-stats', '✓ Estatísticas atualizadas!', 'success');
     } catch(e) {
       showSMsg('msg-stats', 'Erro ao salvar.', 'error');
     }
@@ -2158,19 +2091,19 @@
       horario: document.getElementById('s-ct-horario').value.trim()
     };
     try {
-      await window._set(window._ref(window._db, 'config/contactInfo'), data);
-      showSMsg('msg-contact-info', '✓ Informações de contato atualizadas!', 'success');
+      await window.set(window.ref(window.db, 'config/contactInfo'), data);
+      showSMsg('msg-contact-info', '✓ Contato atualizado!', 'success');
     } catch(e) {
       showSMsg('msg-contact-info', 'Erro ao salvar.', 'error');
     }
   }
 
   async function deleteItem(collection, key) {
-    if (!confirm('Confirma a remoção deste item?')) return;
+    if (!confirm('Confirmar remoção?')) return;
     try {
-      await window._remove(window._ref(window._db, collection + '/' + key));
+      await window.remove(window.ref(window.db, collection + '/' + key));
     } catch(e) {
-      alert('Erro ao remover item.');
+      alert('Erro ao remover.');
     }
   }
 
