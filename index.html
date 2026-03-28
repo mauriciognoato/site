@@ -1,640 +1,583 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Condomínio Maurício Gnoato</title>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #F5F0E6; padding: 20px; }
-    .container { max-width: 1200px; margin: 0 auto; }
-    .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .btn { background: #1F3140; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; }
-    .btn-secondary { background: #C4A776; }
-    .btn-danger { background: #c0392b; }
-    input, textarea, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; }
-    .login-page, .site-page, .sindico-page { display: none; }
-    .login-page.active, .site-page.active, .sindico-page.active { display: block; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-    .header { background: #1F3140; color: white; padding: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
-    .logo span { font-size: 1.2rem; font-weight: bold; }
-    nav a { color: white; margin: 0 10px; text-decoration: none; }
-    .toast { position: fixed; bottom: 20px; right: 20px; background: #1F3140; color: white; padding: 12px 20px; border-radius: 8px; display: none; }
-    .toast.show { display: block; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
-    th { background: #f5f5f5; }
-    .morador-item { padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; }
-    .sidebar { background: #17232F; color: white; width: 250px; min-height: 100vh; position: fixed; left: 0; top: 0; padding: 20px; }
-    .sidebar a { display: block; color: white; padding: 12px; text-decoration: none; margin: 5px 0; border-radius: 6px; }
-    .sidebar a:hover { background: #C4A776; color: #1F3140; }
-    .main-content { margin-left: 270px; padding: 20px; }
-    @media (max-width: 768px) {
-      .sidebar { width: 100%; position: relative; min-height: auto; }
-      .main-content { margin-left: 0; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Condomínio Maurício Gnoato</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #F5F0E6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn { background: #1F3140; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-amarelo { background: #C4A776; }
+        .btn-vermelho { background: #c0392b; }
+        input, textarea, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; }
+        .login-page, .site-page, .admin-page { display: none; }
+        .active { display: block !important; }
+        .header { background: #1F3140; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo img { width: 50px; height: 50px; border-radius: 12px; }
+        nav a { color: white; text-decoration: none; margin: 0 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f5f5f5; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #1F3140; color: white; padding: 12px 20px; border-radius: 8px; display: none; z-index: 9999; }
+        .toast.show { display: block; }
+        .sidebar { width: 250px; background: #17232F; color: white; position: fixed; left: 0; top: 0; bottom: 0; padding: 20px; overflow-y: auto; }
+        .sidebar a { display: block; color: white; padding: 12px; text-decoration: none; margin: 5px 0; border-radius: 6px; cursor: pointer; }
+        .sidebar a:hover { background: #C4A776; color: #1F3140; }
+        .content { margin-left: 270px; padding: 20px; }
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; position: relative; }
+            .content { margin-left: 0; }
+        }
+    </style>
 </head>
 <body>
 
 <div id="toast" class="toast"></div>
 
-<!-- ========== PÁGINA DE LOGIN ========== -->
+<!-- TELA DE LOGIN -->
 <div id="loginPage" class="login-page active">
-  <div class="container" style="max-width: 400px; margin-top: 100px;">
-    <div class="card" style="text-align: center;">
-      <img src="logo.png" style="width: 80px; height: 80px; border-radius: 20px; margin-bottom: 20px;" onerror="this.src='https://via.placeholder.com/80'">
-      <h2>Condomínio Maurício Gnoato</h2>
-      <p>Faça login para acessar</p>
-      <input type="email" id="loginEmail" placeholder="E-mail">
-      <input type="password" id="loginSenha" placeholder="Senha">
-      <button class="btn" onclick="login()">Entrar</button>
-      <hr style="margin: 20px 0;">
-      <h3>Cadastrar-se</h3>
-      <input type="text" id="cadNome" placeholder="Nome completo">
-      <input type="number" id="cadCasa" placeholder="Número da casa (1-25)">
-      <input type="email" id="cadEmail" placeholder="E-mail">
-      <input type="password" id="cadSenha" placeholder="Senha (mínimo 6 caracteres)">
-      <button class="btn btn-secondary" onclick="cadastrar()">Cadastrar</button>
-      <p style="margin-top: 20px; font-size: 12px; color: #666;">Acesso Admin: sindico@condominio.com / sindico123</p>
-      <p id="msgErro" style="color: red; margin-top: 10px;"></p>
+    <div class="container" style="max-width: 450px; margin-top: 80px;">
+        <div class="card" style="text-align: center;">
+            <img src="logo.png" style="width: 80px; height: 80px; border-radius: 20px; margin-bottom: 20px;" onerror="this.src='https://via.placeholder.com/80'">
+            <h2>Condomínio Maurício Gnoato</h2>
+            <p>Faça login para acessar</p>
+            <input type="email" id="loginEmail" placeholder="E-mail">
+            <input type="password" id="loginSenha" placeholder="Senha">
+            <button class="btn" onclick="login()">Entrar</button>
+            <hr style="margin: 20px 0;">
+            <h3>Cadastrar</h3>
+            <input type="text" id="cadNome" placeholder="Nome completo">
+            <input type="number" id="cadCasa" placeholder="Nº da casa (1-25)">
+            <input type="email" id="cadEmail" placeholder="E-mail">
+            <input type="password" id="cadSenha" placeholder="Senha (mínimo 6)">
+            <button class="btn btn-amarelo" onclick="cadastrar()">Cadastrar</button>
+            <p style="margin-top: 15px; font-size: 12px; color: #666;">Admin: sindico@condominio.com / sindico123</p>
+            <p id="erroMsg" style="color: red; margin-top: 10px;"></p>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- ========== SITE PÚBLICO ========== -->
+<!-- SITE PÚBLICO -->
 <div id="sitePage" class="site-page">
-  <div class="header">
-    <div class="logo">
-      <img src="logo.png" onerror="this.src='https://via.placeholder.com/50'">
-      <span>Condomínio Maurício Gnoato</span>
-    </div>
-    <div>
-      <span id="userName">Visitante</span>
-      <button class="btn" id="btnSindico" style="display:none; margin-left: 10px;" onclick="abrirSindico()">⚙️ Síndico</button>
-      <button class="btn btn-secondary" onclick="logout()" style="margin-left: 10px;">Sair</button>
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="card">
-      <h2>📢 Avisos do Condomínio</h2>
-      <div id="tickerPublico" style="background: #C4A776; padding: 10px; border-radius: 8px; margin-top: 10px;"></div>
+    <div class="header">
+        <div class="logo">
+            <img src="logo.png" onerror="this.src='https://via.placeholder.com/50'">
+            <span>Condomínio Maurício Gnoato</span>
+        </div>
+        <div>
+            <span id="nomeUsuario">Visitante</span>
+            <button id="btnAdmin" style="display:none; margin-left: 10px;" class="btn" onclick="abrirAdmin()">⚙️ Admin</button>
+            <button class="btn btn-amarelo" onclick="logout()" style="margin-left: 10px;">Sair</button>
+        </div>
     </div>
 
-    <div class="card">
-      <h2>💰 Finanças</h2>
-      <div id="financasPublico"></div>
-    </div>
+    <div class="container">
+        <!-- Avisos -->
+        <div class="card">
+            <h2>📢 Avisos</h2>
+            <div id="avisosPublico" style="background: #C4A776; padding: 10px; border-radius: 8px;"></div>
+        </div>
 
-    <div class="card">
-      <h2>🔨 Projetos</h2>
-      <div id="projetosPublico" class="grid"></div>
-    </div>
+        <!-- Finanças -->
+        <div class="card">
+            <h2>💰 Finanças</h2>
+            <div id="financasPublico"></div>
+        </div>
 
-    <div class="card">
-      <h2>🗳️ Enquetes</h2>
-      <div id="enquetesPublico"></div>
-    </div>
+        <!-- Projetos -->
+        <div class="card">
+            <h2>🔨 Projetos</h2>
+            <div id="projetosPublico" class="grid"></div>
+        </div>
 
-    <div class="card">
-      <h2>📄 Documentos</h2>
-      <div id="documentosPublico"></div>
+        <!-- Enquetes -->
+        <div class="card">
+            <h2>🗳️ Enquetes</h2>
+            <div id="enquetesPublico"></div>
+        </div>
+
+        <!-- Documentos -->
+        <div class="card">
+            <h2>📄 Documentos</h2>
+            <div id="documentosPublico"></div>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- ========== ÁREA DO SÍNDICO ========== -->
-<div id="sindicoPage" class="sindico-page">
-  <div class="sidebar">
-    <h3>⚙️ Painel Síndico</h3>
-    <a href="#" onclick="mostrarSecao('financeiro')">💰 Financeiro</a>
-    <a href="#" onclick="mostrarSecao('projetos')">🔨 Projetos</a>
-    <a href="#" onclick="mostrarSecao('enquetes')">🗳️ Enquetes</a>
-    <a href="#" onclick="mostrarSecao('documentos')">📁 Documentos</a>
-    <a href="#" onclick="mostrarSecao('ticker')">📢 Avisos</a>
-    <a href="#" onclick="mostrarSecao('moradores')">👥 Moradores</a>
-    <a href="#" onclick="voltarSite()" style="margin-top: 20px;">🌐 Ver Site</a>
-    <a href="#" onclick="logout()">🚪 Sair</a>
-  </div>
-  <div class="main-content">
-    <!-- Financeiro -->
-    <div id="secFinanceiro" class="card">
-      <h2>💰 Adicionar Finanças</h2>
-      <input type="month" id="finMes" placeholder="Mês/Ano">
-      <input type="number" id="finReceitas" placeholder="Receitas (R$)">
-      <input type="number" id="finDespesas" placeholder="Despesas (R$)">
-      <button class="btn" onclick="salvarFinanceiro()">Salvar</button>
-      <hr>
-      <h3>Histórico</h3>
-      <div id="listaFinanceiro"></div>
+<!-- ÁREA ADMIN -->
+<div id="adminPage" class="admin-page">
+    <div class="sidebar">
+        <h3>⚙️ Painel Admin</h3>
+        <a onclick="mostrarPainel('financeiro')">💰 Financeiro</a>
+        <a onclick="mostrarPainel('projetos')">🔨 Projetos</a>
+        <a onclick="mostrarPainel('enquetes')">🗳️ Enquetes</a>
+        <a onclick="mostrarPainel('documentos')">📁 Documentos</a>
+        <a onclick="mostrarPainel('avisos')">📢 Avisos</a>
+        <a onclick="mostrarPainel('moradores')">👥 Moradores</a>
+        <a onclick="voltarSite()" style="margin-top: 20px;">🌐 Ver Site</a>
+        <a onclick="logout()">🚪 Sair</a>
     </div>
+    <div class="content">
+        <!-- Financeiro -->
+        <div id="painelFinanceiro" class="card">
+            <h2>💰 Adicionar Finanças</h2>
+            <input type="month" id="finMes" placeholder="Mês/Ano">
+            <input type="number" id="finReceitas" placeholder="Receitas (R$)">
+            <input type="number" id="finDespesas" placeholder="Despesas (R$)">
+            <button class="btn" onclick="salvarFinanceiro()">Salvar</button>
+            <hr style="margin: 20px 0;">
+            <h3>Histórico</h3>
+            <div id="listaFinanceiro"></div>
+        </div>
 
-    <!-- Projetos -->
-    <div id="secProjetos" class="card" style="display: none;">
-      <h2>🔨 Adicionar Projeto</h2>
-      <input type="text" id="projTitulo" placeholder="Título do projeto">
-      <select id="projStatus">
-        <option value="andamento">Em andamento</option>
-        <option value="planejado">Planejado</option>
-        <option value="concluido">Concluído</option>
-      </select>
-      <input type="number" id="projProgresso" placeholder="Progresso (%)" min="0" max="100">
-      <textarea id="projDescricao" rows="3" placeholder="Descrição"></textarea>
-      <button class="btn" onclick="salvarProjeto()">Salvar</button>
-      <hr>
-      <h3>Projetos Cadastrados</h3>
-      <div id="listaProjetos"></div>
-    </div>
+        <!-- Projetos -->
+        <div id="painelProjetos" class="card" style="display: none;">
+            <h2>🔨 Adicionar Projeto</h2>
+            <input type="text" id="projTitulo" placeholder="Título">
+            <select id="projStatus">
+                <option value="andamento">Em andamento</option>
+                <option value="planejado">Planejado</option>
+                <option value="concluido">Concluído</option>
+            </select>
+            <input type="number" id="projProgresso" placeholder="Progresso (%)">
+            <textarea id="projDescricao" rows="3" placeholder="Descrição"></textarea>
+            <button class="btn" onclick="salvarProjeto()">Salvar</button>
+            <hr style="margin: 20px 0;">
+            <h3>Projetos</h3>
+            <div id="listaProjetos"></div>
+        </div>
 
-    <!-- Enquetes -->
-    <div id="secEnquetes" class="card" style="display: none;">
-      <h2>🗳️ Criar Enquete</h2>
-      <input type="text" id="pollTitulo" placeholder="Título da enquete">
-      <textarea id="pollDesc" rows="2" placeholder="Descrição"></textarea>
-      <input type="text" id="pollOpcoes" placeholder="Opções (separadas por vírgula)">
-      <input type="datetime-local" id="pollFim">
-      <button class="btn" onclick="criarEnquete()">Criar Enquete</button>
-      <hr>
-      <h3>Enquetes Criadas</h3>
-      <div id="listaEnquetes"></div>
-    </div>
+        <!-- Enquetes -->
+        <div id="painelEnquetes" class="card" style="display: none;">
+            <h2>🗳️ Criar Enquete</h2>
+            <input type="text" id="pollTitulo" placeholder="Título">
+            <textarea id="pollDesc" rows="2" placeholder="Descrição"></textarea>
+            <input type="text" id="pollOpcoes" placeholder="Opções (separadas por vírgula)">
+            <input type="datetime-local" id="pollFim">
+            <button class="btn" onclick="criarEnquete()">Criar</button>
+            <hr style="margin: 20px 0;">
+            <h3>Enquetes</h3>
+            <div id="listaEnquetes"></div>
+        </div>
 
-    <!-- Documentos -->
-    <div id="secDocumentos" class="card" style="display: none;">
-      <h2>📁 Upload de Documento</h2>
-      <input type="text" id="docTitulo" placeholder="Título do documento">
-      <textarea id="docDesc" rows="2" placeholder="Descrição"></textarea>
-      <input type="file" id="docArquivo" accept=".pdf">
-      <button class="btn" onclick="uploadDocumento()">Enviar</button>
-      <hr>
-      <h3>Documentos Enviados</h3>
-      <div id="listaDocumentos"></div>
-    </div>
+        <!-- Documentos -->
+        <div id="painelDocumentos" class="card" style="display: none;">
+            <h2>📁 Upload Documento</h2>
+            <input type="text" id="docTitulo" placeholder="Título">
+            <textarea id="docDesc" rows="2" placeholder="Descrição"></textarea>
+            <input type="file" id="docArquivo" accept=".pdf">
+            <button class="btn" onclick="uploadDocumento()">Enviar</button>
+            <hr style="margin: 20px 0;">
+            <h3>Documentos</h3>
+            <div id="listaDocumentos"></div>
+        </div>
 
-    <!-- Ticker / Avisos -->
-    <div id="secTicker" class="card" style="display: none;">
-      <h2>📢 Gerenciar Avisos (Scroller)</h2>
-      <textarea id="novaMensagem" rows="3" placeholder="Digite um novo aviso..."></textarea>
-      <button class="btn" onclick="adicionarAviso()">Adicionar Aviso</button>
-      <button class="btn btn-secondary" onclick="limparAvisos()">Limpar Todos</button>
-      <hr>
-      <h3>Avisos Ativos</h3>
-      <div id="listaAvisos"></div>
-    </div>
+        <!-- Avisos -->
+        <div id="painelAvisos" class="card" style="display: none;">
+            <h2>📢 Gerenciar Avisos</h2>
+            <textarea id="novoAviso" rows="3" placeholder="Digite um aviso..."></textarea>
+            <button class="btn" onclick="adicionarAviso()">Adicionar</button>
+            <button class="btn btn-vermelho" onclick="limparAvisos()">Limpar Todos</button>
+            <hr style="margin: 20px 0;">
+            <h3>Avisos Ativos</h3>
+            <div id="listaAvisos"></div>
+        </div>
 
-    <!-- Moradores -->
-    <div id="secMoradores" class="card" style="display: none;">
-      <h2>👥 Moradores Cadastrados</h2>
-      <div id="listaMoradores"></div>
+        <!-- Moradores -->
+        <div id="painelMoradores" class="card" style="display: none;">
+            <h2>👥 Moradores</h2>
+            <div id="listaMoradores"></div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>
-  // Firebase Config
-  const firebaseConfig = {
-    apiKey: "AIzaSyCwXXGdSZmtlhaOTt5QyjQUWMukTURbSRU",
-    authDomain: "condominio-mg.firebaseapp.com",
-    projectId: "condominio-mg",
-    storageBucket: "condominio-mg.firebasestorage.app",
-    messagingSenderId: "827098014353",
-    appId: "1:827098014353:web:cc36db91f7216ef7a59530"
-  };
+    const firebaseConfig = {
+        apiKey: "AIzaSyCwXXGdSZmtlhaOTt5QyjQUWMukTURbSRU",
+        authDomain: "condominio-mg.firebaseapp.com",
+        projectId: "condominio-mg",
+        storageBucket: "condominio-mg.firebasestorage.app",
+        messagingSenderId: "827098014353",
+        appId: "1:827098014353:web:cc36db91f7216ef7a59530"
+    };
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-
-  let usuarioAtual = null;
-  let isAdmin = false;
-
-  function mostrarToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-  }
-
-  // ========== AUTENTICAÇÃO ==========
-  async function login() {
-    const email = document.getElementById('loginEmail').value;
-    const senha = document.getElementById('loginSenha').value;
-    try {
-      const result = await auth.signInWithEmailAndPassword(email, senha);
-      mostrarToast('Login realizado!');
-      document.getElementById('loginPage').classList.remove('active');
-      document.getElementById('sitePage').classList.add('active');
-      
-      isAdmin = (result.user.email === 'sindico@condominio.com');
-      if (isAdmin) {
-        document.getElementById('btnSindico').style.display = 'inline-block';
-        document.getElementById('userName').textContent = 'Síndico';
-      } else {
-        document.getElementById('userName').textContent = result.user.email.split('@')[0];
-      }
-      usuarioAtual = result.user;
-      carregarDadosPublicos();
-    } catch(e) {
-      document.getElementById('msgErro').textContent = e.message;
-    }
-  }
-
-  async function cadastrar() {
-    const nome = document.getElementById('cadNome').value;
-    const casa = document.getElementById('cadCasa').value;
-    const email = document.getElementById('cadEmail').value;
-    const senha = document.getElementById('cadSenha').value;
-    if (!nome || !casa || !email || senha.length < 6) {
-      document.getElementById('msgErro').textContent = 'Preencha todos os campos (senha: mínimo 6)';
-      return;
-    }
-    try {
-      const cred = await auth.createUserWithEmailAndPassword(email, senha);
-      await db.collection('users').doc(cred.user.uid).set({
-        nome, casa: parseInt(casa), email, isAdmin: false, createdAt: new Date()
-      });
-      mostrarToast('Cadastro realizado! Faça login.');
-      document.getElementById('cadNome').value = '';
-      document.getElementById('cadCasa').value = '';
-      document.getElementById('cadEmail').value = '';
-      document.getElementById('cadSenha').value = '';
-      document.getElementById('msgErro').textContent = '';
-    } catch(e) {
-      document.getElementById('msgErro').textContent = e.message;
-    }
-  }
-
-  async function logout() {
-    await auth.signOut();
-    document.getElementById('sitePage').classList.remove('active');
-    document.getElementById('sindicoPage').classList.remove('active');
-    document.getElementById('loginPage').classList.add('active');
-    mostrarToast('Logout realizado');
-  }
-
-  function abrirSindico() {
-    document.getElementById('sitePage').classList.remove('active');
-    document.getElementById('sindicoPage').classList.add('active');
-    carregarDadosAdmin();
-  }
-
-  function voltarSite() {
-    document.getElementById('sindicoPage').classList.remove('active');
-    document.getElementById('sitePage').classList.add('active');
-  }
-
-  function mostrarSecao(secao) {
-    document.getElementById('secFinanceiro').style.display = 'none';
-    document.getElementById('secProjetos').style.display = 'none';
-    document.getElementById('secEnquetes').style.display = 'none';
-    document.getElementById('secDocumentos').style.display = 'none';
-    document.getElementById('secTicker').style.display = 'none';
-    document.getElementById('secMoradores').style.display = 'none';
-    document.getElementById('sec' + secao.charAt(0).toUpperCase() + secao.slice(1)).style.display = 'block';
-  }
-
-  // ========== DADOS PÚBLICOS ==========
-  async function carregarDadosPublicos() {
-    await carregarTicker();
-    await carregarFinancas();
-    await carregarProjetos();
-    await carregarEnquetes();
-    await carregarDocumentos();
-  }
-
-  async function carregarTicker() {
-    const doc = await db.collection('config').doc('ticker').get();
-    const avisos = doc.exists ? doc.data().avisos : ['📢 Reunião: 15/04/2026 às 19h', '🔧 Manutenção portão: 02/04'];
-    document.getElementById('tickerPublico').innerHTML = avisos.map(a => `📢 ${a}`).join(' &nbsp;&nbsp;|&nbsp;&nbsp; ');
-  }
-
-  async function carregarFinancas() {
-    const snap = await db.collection('finances').orderBy('mes', 'desc').limit(3).get();
-    let html = '';
-    snap.forEach(doc => {
-      const d = doc.data();
-      const saldo = d.receitas - d.despesas;
-      html += `<div style="border:1px solid #ddd; padding:10px; margin:10px 0; border-radius:8px;">
-        <strong>${d.mes}</strong><br>
-        Receitas: R$ ${d.receitas.toFixed(2)}<br>
-        Despesas: R$ ${d.despesas.toFixed(2)}<br>
-        Saldo: R$ ${saldo.toFixed(2)}
-      </div>`;
-    });
-    document.getElementById('financasPublico').innerHTML = html || '<p>Nenhum dado financeiro.</p>';
-  }
-
-  async function carregarProjetos() {
-    const snap = await db.collection('projects').orderBy('createdAt', 'desc').get();
-    let html = '';
-    snap.forEach(doc => {
-      const p = doc.data();
-      let statusClass = '';
-      let statusText = '';
-      if (p.status === 'andamento') { statusText = '🚧 Em andamento'; }
-      else if (p.status === 'planejado') { statusText = '📋 Planejado'; }
-      else { statusText = '✅ Concluído'; }
-      html += `<div class="card" style="padding:15px;">
-        <h3>${p.titulo}</h3>
-        <p>${p.descricao}</p>
-        <p>${statusText} - ${p.progresso}%</p>
-        <div style="background:#eee; height:8px; border-radius:4px;"><div style="width:${p.progresso}%; background:#C4A776; height:8px; border-radius:4px;"></div></div>
-      </div>`;
-    });
-    document.getElementById('projetosPublico').innerHTML = html || '<p>Nenhum projeto.</p>';
-  }
-
-  async function carregarEnquetes() {
-    const snap = await db.collection('polls').orderBy('createdAt', 'desc').get();
-    let html = '';
-    for (const doc of snap.docs) {
-      const p = doc.data();
-      const total = p.totalVotos || 0;
-      html += `<div class="card" style="margin-bottom:15px;">
-        <h3>${p.titulo}</h3>
-        <p>${p.descricao || ''}</p>`;
-      p.opcoes.forEach(opt => {
-        const votos = p.votos?.[opt] || 0;
-        const percent = total > 0 ? (votos/total*100).toFixed(1) : 0;
-        html += `<div style="margin:10px 0;">
-          <span>${opt}</span>
-          <div style="background:#eee; height:20px; border-radius:10px;"><div style="width:${percent}%; background:#1F3140; height:20px; border-radius:10px; text-align:right; padding-right:5px; color:white;">${percent}%</div></div>
-        </div>`;
-      });
-      html += `<p style="font-size:12px; color:#666;">🗳️ ${total} votos · Encerra: ${new Date(p.endDate).toLocaleDateString()}</p>`;
-      if (usuarioAtual && !p.votos?.[usuarioAtual.uid] && new Date(p.endDate) > new Date()) {
-        html += `<div style="display:flex; gap:10px;">${p.opcoes.map(opt => `<button class="btn btn-secondary" style="padding:5px 10px;" onclick="votar('${doc.id}','${opt}')">${opt}</button>`).join('')}</div>`;
-      }
-      html += `</div>`;
-      carregarComentarios(doc.id);
-    }
-    document.getElementById('enquetesPublico').innerHTML = html || '<p>Nenhuma enquete.</p>';
-  }
-
-  async function carregarComentarios(pollId) {
-    const snap = await db.collection(`polls/${pollId}/comments`).orderBy('createdAt', 'desc').get();
-    const container = document.getElementById(`comentarios-${pollId}`);
-    if (!container) return;
-    container.innerHTML = '';
-    snap.forEach(doc => {
-      const c = doc.data();
-      container.innerHTML += `<div><strong>${c.userNome}</strong>: ${c.texto}</div>`;
-    });
-  }
-
-  async function votar(pollId, option) {
-    if (!usuarioAtual) return mostrarToast('Faça login');
-    const pollRef = db.collection('polls').doc(pollId);
-    const poll = (await pollRef.get()).data();
-    if (poll.votos && poll.votos[usuarioAtual.uid]) return mostrarToast('Você já votou');
-    const newVotos = { ...poll.votos, [usuarioAtual.uid]: option };
-    newVotos[option] = (newVotos[option] || 0) + 1;
-    await pollRef.update({ votos: newVotos, totalVotos: (poll.totalVotos || 0) + 1 });
-    mostrarToast('Voto registrado!');
-    carregarEnquetes();
-  }
-
-  async function carregarDocumentos() {
-    const snap = await db.collection('documents').orderBy('createdAt', 'desc').get();
-    let html = '';
-    snap.forEach(doc => {
-      const d = doc.data();
-      html += `<div class="card" style="padding:15px; display:flex; justify-content:space-between; align-items:center;">
-        <div><strong>${d.titulo}</strong><br>${d.descricao}</div>
-        <a href="${d.url}" target="_blank" class="btn btn-secondary" style="padding:5px 10px;">Baixar</a>
-      </div>`;
-    });
-    document.getElementById('documentosPublico').innerHTML = html || '<p>Nenhum documento.</p>';
-  }
-
-  // ========== ADMIN ==========
-  async function carregarDadosAdmin() {
-    await carregarListaFinanceiro();
-    await carregarListaProjetos();
-    await carregarListaEnquetes();
-    await carregarListaDocumentos();
-    await carregarListaAvisos();
-    await carregarListaMoradores();
-  }
-
-  async function carregarListaFinanceiro() {
-    const snap = await db.collection('finances').orderBy('mes', 'desc').get();
-    let html = '<table><tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr>';
-    snap.forEach(doc => {
-      const d = doc.data();
-      html += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
-    });
-    html += '</table>';
-    document.getElementById('listaFinanceiro').innerHTML = html || '<p>Nenhum dado</p>';
-  }
-
-  async function carregarListaProjetos() {
-    const snap = await db.collection('projects').orderBy('createdAt', 'desc').get();
-    let html = '';
-    snap.forEach(doc => {
-      const p = doc.data();
-      html += `<div class="morador-item"><span><strong>${p.titulo}</strong> - ${p.progresso}% (${p.status})</span><button class="btn-danger" style="padding:5px 10px;" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
-    });
-    document.getElementById('listaProjetos').innerHTML = html || '<p>Nenhum projeto</p>';
-  }
-
-  async function carregarListaEnquetes() {
-    const snap = await db.collection('polls').orderBy('createdAt', 'desc').get();
-    let html = '';
-    snap.forEach(doc => {
-      const p = doc.data();
-      html += `<div class="morador-item"><span><strong>${p.titulo}</strong> - ${p.totalVotos || 0} votos</span><button class="btn-danger" style="padding:5px 10px;" onclick="deletarEnquete('${doc.id}')">Excluir</button></div>`;
-    });
-    document.getElementById('listaEnquetes').innerHTML = html || '<p>Nenhuma enquete</p>';
-  }
-
-  async function carregarListaDocumentos() {
-    const snap = await db.collection('documents').orderBy('createdAt', 'desc').get();
-    let html = '';
-    snap.forEach(doc => {
-      const d = doc.data();
-      html += `<div class="morador-item"><span><strong>${d.titulo}</strong><br>${d.descricao}</span><button class="btn-danger" style="padding:5px 10px;" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
-    });
-    document.getElementById('listaDocumentos').innerHTML = html || '<p>Nenhum documento</p>';
-  }
-
-  async function carregarListaAvisos() {
-    const doc = await db.collection('config').doc('ticker').get();
-    const avisos = doc.exists ? doc.data().avisos : [];
-    let html = '';
-    avisos.forEach((aviso, idx) => {
-      html += `<div class="morador-item"><span>${aviso}</span><button class="btn-danger" style="padding:5px 10px;" onclick="removerAviso(${idx})">Excluir</button></div>`;
-    });
-    document.getElementById('listaAvisos').innerHTML = html || '<p>Nenhum aviso</p>';
-  }
-
-  async function carregarListaMoradores() {
-    const snap = await db.collection('users').orderBy('casa').get();
-    let html = '<table><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr>';
-    snap.forEach(doc => {
-      const u = doc.data();
-      html += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
-    });
-    html += '</table>';
-    document.getElementById('listaMoradores').innerHTML = html || '<p>Nenhum morador</p>';
-  }
-
-  async function salvarFinanceiro() {
-    const mes = document.getElementById('finMes').value;
-    const receitas = parseFloat(document.getElementById('finReceitas').value);
-    const despesas = parseFloat(document.getElementById('finDespesas').value);
-    if (!mes || isNaN(receitas) || isNaN(despesas)) { mostrarToast('Preencha todos os campos'); return; }
-    await db.collection('finances').doc(mes).set({ mes, receitas, despesas, updatedAt: new Date() });
-    mostrarToast('Salvo!');
-    carregarDadosPublicos();
-    carregarListaFinanceiro();
-    document.getElementById('finMes').value = '';
-    document.getElementById('finReceitas').value = '';
-    document.getElementById('finDespesas').value = '';
-  }
-
-  async function salvarProjeto() {
-    const titulo = document.getElementById('projTitulo').value;
-    if (!titulo) { mostrarToast('Informe o título'); return; }
-    await db.collection('projects').add({
-      titulo,
-      status: document.getElementById('projStatus').value,
-      progresso: parseInt(document.getElementById('projProgresso').value),
-      descricao: document.getElementById('projDescricao').value,
-      createdAt: new Date()
-    });
-    mostrarToast('Projeto salvo!');
-    carregarDadosPublicos();
-    carregarListaProjetos();
-    document.getElementById('projTitulo').value = '';
-    document.getElementById('projProgresso').value = '';
-    document.getElementById('projDescricao').value = '';
-  }
-
-  async function deletarProjeto(id) {
-    await db.collection('projects').doc(id).delete();
-    carregarDadosPublicos();
-    carregarListaProjetos();
-    mostrarToast('Projeto removido');
-  }
-
-  async function criarEnquete() {
-    const titulo = document.getElementById('pollTitulo').value;
-    const opcoes = document.getElementById('pollOpcoes').value.split(',').map(o => o.trim());
-    const endDate = document.getElementById('pollFim').value;
-    if (!titulo || opcoes.length < 2 || !endDate) { mostrarToast('Preencha todos os campos'); return; }
-    await db.collection('polls').add({
-      titulo,
-      descricao: document.getElementById('pollDesc').value,
-      opcoes,
-      endDate: new Date(endDate),
-      votos: {},
-      totalVotos: 0,
-      createdAt: new Date()
-    });
-    mostrarToast('Enquete criada!');
-    carregarDadosPublicos();
-    carregarListaEnquetes();
-    document.getElementById('pollTitulo').value = '';
-    document.getElementById('pollDesc').value = '';
-    document.getElementById('pollOpcoes').value = '';
-    document.getElementById('pollFim').value = '';
-  }
-
-  async function deletarEnquete(id) {
-    await db.collection('polls').doc(id).delete();
-    carregarDadosPublicos();
-    carregarListaEnquetes();
-    mostrarToast('Enquete removida');
-  }
-
-  async function uploadDocumento() {
-    const file = document.getElementById('docArquivo').files[0];
-    const titulo = document.getElementById('docTitulo').value;
-    if (!file || !titulo) { mostrarToast('Selecione um arquivo e informe o título'); return; }
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
     const storage = firebase.storage();
-    const storageRef = storage.ref(`documentos/${Date.now()}_${file.name}`);
-    await storageRef.put(file);
-    const url = await storageRef.getDownloadURL();
-    await db.collection('documents').add({
-      titulo,
-      descricao: document.getElementById('docDesc').value,
-      url,
-      createdAt: new Date()
+
+    let usuarioAtual = null;
+
+    function mostrarToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ========== LOGIN / CADASTRO ==========
+    async function login() {
+        const email = document.getElementById('loginEmail').value;
+        const senha = document.getElementById('loginSenha').value;
+        try {
+            await auth.signInWithEmailAndPassword(email, senha);
+            mostrarToast('Login realizado!');
+        } catch(e) {
+            document.getElementById('erroMsg').textContent = e.message;
+        }
+    }
+
+    async function cadastrar() {
+        const nome = document.getElementById('cadNome').value;
+        const casa = document.getElementById('cadCasa').value;
+        const email = document.getElementById('cadEmail').value;
+        const senha = document.getElementById('cadSenha').value;
+        if (!nome || !casa || !email || senha.length < 6) {
+            document.getElementById('erroMsg').textContent = 'Preencha todos os campos';
+            return;
+        }
+        try {
+            const cred = await auth.createUserWithEmailAndPassword(email, senha);
+            await db.collection('users').doc(cred.user.uid).set({
+                nome, casa: parseInt(casa), email, isAdmin: false, createdAt: new Date()
+            });
+            mostrarToast('Cadastro realizado! Faça login.');
+            document.getElementById('cadNome').value = '';
+            document.getElementById('cadCasa').value = '';
+            document.getElementById('cadEmail').value = '';
+            document.getElementById('cadSenha').value = '';
+        } catch(e) {
+            document.getElementById('erroMsg').textContent = e.message;
+        }
+    }
+
+    async function logout() {
+        await auth.signOut();
+        location.reload();
+    }
+
+    function abrirAdmin() {
+        document.getElementById('sitePage').classList.remove('active');
+        document.getElementById('adminPage').classList.add('active');
+        carregarDadosAdmin();
+    }
+
+    function voltarSite() {
+        document.getElementById('adminPage').classList.remove('active');
+        document.getElementById('sitePage').classList.add('active');
+    }
+
+    function mostrarPainel(painel) {
+        document.getElementById('painelFinanceiro').style.display = 'none';
+        document.getElementById('painelProjetos').style.display = 'none';
+        document.getElementById('painelEnquetes').style.display = 'none';
+        document.getElementById('painelDocumentos').style.display = 'none';
+        document.getElementById('painelAvisos').style.display = 'none';
+        document.getElementById('painelMoradores').style.display = 'none';
+        document.getElementById('painel' + painel.charAt(0).toUpperCase() + painel.slice(1)).style.display = 'block';
+    }
+
+    // ========== CARREGAR DADOS PÚBLICOS ==========
+    async function carregarDadosPublicos() {
+        await carregarAvisos();
+        await carregarFinancas();
+        await carregarProjetos();
+        await carregarEnquetes();
+        await carregarDocumentos();
+    }
+
+    async function carregarAvisos() {
+        const doc = await db.collection('config').doc('avisos').get();
+        const avisos = doc.exists ? doc.data().lista : ['Reunião 15/04/2026 às 19h', 'Manutenção portão 02/04'];
+        document.getElementById('avisosPublico').innerHTML = avisos.map(a => `📢 ${a}`).join(' &nbsp;&nbsp;|&nbsp;&nbsp; ');
+    }
+
+    async function carregarFinancas() {
+        const snap = await db.collection('finances').orderBy('mes', 'desc').limit(3).get();
+        let html = '';
+        snap.forEach(doc => {
+            const d = doc.data();
+            html += `<div style="border:1px solid #ddd; padding:10px; margin:10px 0; border-radius:8px;">
+                <strong>${d.mes}</strong><br>
+                Receitas: R$ ${d.receitas.toFixed(2)}<br>
+                Despesas: R$ ${d.despesas.toFixed(2)}<br>
+                Saldo: R$ ${(d.receitas - d.despesas).toFixed(2)}
+            </div>`;
+        });
+        document.getElementById('financasPublico').innerHTML = html || '<p>Sem dados</p>';
+    }
+
+    async function carregarProjetos() {
+        const snap = await db.collection('projects').orderBy('createdAt', 'desc').get();
+        let html = '';
+        snap.forEach(doc => {
+            const p = doc.data();
+            let statusText = p.status === 'andamento' ? '🚧 Em andamento' : (p.status === 'planejado' ? '📋 Planejado' : '✅ Concluído');
+            html += `<div class="card" style="padding:15px;">
+                <h3>${p.titulo}</h3>
+                <p>${p.descricao}</p>
+                <p>${statusText} - ${p.progresso}%</p>
+                <div style="background:#eee; height:8px; border-radius:4px;"><div style="width:${p.progresso}%; background:#C4A776; height:8px; border-radius:4px;"></div></div>
+            </div>`;
+        });
+        document.getElementById('projetosPublico').innerHTML = html || '<p>Sem projetos</p>';
+    }
+
+    async function carregarEnquetes() {
+        const snap = await db.collection('polls').orderBy('createdAt', 'desc').get();
+        let html = '';
+        for (const doc of snap.docs) {
+            const p = doc.data();
+            const total = p.totalVotos || 0;
+            html += `<div class="card" style="margin-bottom:15px;">
+                <h3>${p.titulo}</h3>
+                <p>${p.descricao || ''}</p>`;
+            p.opcoes.forEach(opt => {
+                const votos = p.votos?.[opt] || 0;
+                const percent = total > 0 ? (votos/total*100).toFixed(1) : 0;
+                html += `<div style="margin:10px 0;">
+                    <span>${opt}</span>
+                    <div style="background:#eee; height:20px; border-radius:10px;"><div style="width:${percent}%; background:#1F3140; height:20px; border-radius:10px; text-align:right; padding-right:5px; color:white;">${percent}%</div></div>
+                </div>`;
+            });
+            html += `<p style="font-size:12px;">🗳️ ${total} votos · Encerra: ${new Date(p.endDate).toLocaleDateString()}</p>`;
+            if (usuarioAtual && !p.votos?.[usuarioAtual.uid] && new Date(p.endDate) > new Date()) {
+                html += `<div>${p.opcoes.map(opt => `<button class="btn btn-amarelo" style="padding:5px 10px;" onclick="votar('${doc.id}','${opt}')">${opt}</button>`).join('')}</div>`;
+            }
+            html += `</div>`;
+        }
+        document.getElementById('enquetesPublico').innerHTML = html || '<p>Sem enquetes</p>';
+    }
+
+    async function votar(pollId, option) {
+        if (!usuarioAtual) return mostrarToast('Faça login');
+        const pollRef = db.collection('polls').doc(pollId);
+        const poll = (await pollRef.get()).data();
+        if (poll.votos && poll.votos[usuarioAtual.uid]) return mostrarToast('Você já votou');
+        const newVotos = { ...poll.votos, [usuarioAtual.uid]: option };
+        newVotos[option] = (newVotos[option] || 0) + 1;
+        await pollRef.update({ votos: newVotos, totalVotos: (poll.totalVotos || 0) + 1 });
+        mostrarToast('Voto registrado!');
+        carregarEnquetes();
+    }
+
+    async function carregarDocumentos() {
+        const snap = await db.collection('documents').orderBy('createdAt', 'desc').get();
+        let html = '';
+        snap.forEach(doc => {
+            const d = doc.data();
+            html += `<div style="border:1px solid #ddd; padding:10px; margin:10px 0; border-radius:8px; display:flex; justify-content:space-between;">
+                <div><strong>${d.titulo}</strong><br>${d.descricao}</div>
+                <a href="${d.url}" target="_blank" class="btn btn-amarelo" style="padding:5px 10px;">Baixar</a>
+            </div>`;
+        });
+        document.getElementById('documentosPublico').innerHTML = html || '<p>Sem documentos</p>';
+    }
+
+    // ========== ADMIN ==========
+    async function carregarDadosAdmin() {
+        await carregarListaFinanceiro();
+        await carregarListaProjetos();
+        await carregarListaEnquetes();
+        await carregarListaDocumentos();
+        await carregarListaAvisos();
+        await carregarListaMoradores();
+    }
+
+    async function carregarListaFinanceiro() {
+        const snap = await db.collection('finances').orderBy('mes', 'desc').get();
+        let html = '耒<th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th>耒';
+        snap.forEach(doc => {
+            const d = doc.data();
+            html += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
+        });
+        html += '耒';
+        document.getElementById('listaFinanceiro').innerHTML = html || '<p>Sem dados</p>';
+    }
+
+    async function carregarListaProjetos() {
+        const snap = await db.collection('projects').orderBy('createdAt', 'desc').get();
+        let html = '';
+        snap.forEach(doc => {
+            const p = doc.data();
+            html += `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #ddd;">
+                <span><strong>${p.titulo}</strong> - ${p.progresso}% (${p.status})</span>
+                <button class="btn btn-vermelho" style="padding:5px 10px;" onclick="deletarProjeto('${doc.id}')">Excluir</button>
+            </div>`;
+        });
+        document.getElementById('listaProjetos').innerHTML = html || '<p>Sem projetos</p>';
+    }
+
+    async function carregarListaEnquetes() {
+        const snap = await db.collection('polls').orderBy('createdAt', 'desc').get();
+        let html = '';
+        snap.forEach(doc => {
+            const p = doc.data();
+            html += `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #ddd;">
+                <span><strong>${p.titulo}</strong> - ${p.totalVotos || 0} votos</span>
+                <button class="btn btn-vermelho" style="padding:5px 10px;" onclick="deletarEnquete('${doc.id}')">Excluir</button>
+            </div>`;
+        });
+        document.getElementById('listaEnquetes').innerHTML = html || '<p>Sem enquetes</p>';
+    }
+
+    async function carregarListaDocumentos() {
+        const snap = await db.collection('documents').orderBy('createdAt', 'desc').get();
+        let html = '';
+        snap.forEach(doc => {
+            const d = doc.data();
+            html += `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #ddd;">
+                <span><strong>${d.titulo}</strong><br>${d.descricao}</span>
+                <button class="btn btn-vermelho" style="padding:5px 10px;" onclick="deletarDocumento('${doc.id}')">Excluir</button>
+            </div>`;
+        });
+        document.getElementById('listaDocumentos').innerHTML = html || '<p>Sem documentos</p>';
+    }
+
+    async function carregarListaAvisos() {
+        const doc = await db.collection('config').doc('avisos').get();
+        const avisos = doc.exists ? doc.data().lista : [];
+        let html = '';
+        avisos.forEach((aviso, idx) => {
+            html += `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #ddd;">
+                <span>${aviso}</span>
+                <button class="btn btn-vermelho" style="padding:5px 10px;" onclick="removerAviso(${idx})">Excluir</button>
+            </div>`;
+        });
+        document.getElementById('listaAvisos').innerHTML = html || '<p>Sem avisos</p>';
+    }
+
+    async function carregarListaMoradores() {
+        const snap = await db.collection('users').orderBy('casa').get();
+        let html = '耒<th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th>耒';
+        snap.forEach(doc => {
+            const u = doc.data();
+            html += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Admin' : 'Morador'}</td></tr>`;
+        });
+        html += '耒';
+        document.getElementById('listaMoradores').innerHTML = html || '<p>Sem moradores</p>';
+    }
+
+    async function salvarFinanceiro() {
+        const mes = document.getElementById('finMes').value;
+        const receitas = parseFloat(document.getElementById('finReceitas').value);
+        const despesas = parseFloat(document.getElementById('finDespesas').value);
+        if (!mes || isNaN(receitas) || isNaN(despesas)) { mostrarToast('Preencha todos os campos'); return; }
+        await db.collection('finances').doc(mes).set({ mes, receitas, despesas });
+        mostrarToast('Salvo!');
+        carregarDadosPublicos();
+        carregarListaFinanceiro();
+        document.getElementById('finMes').value = '';
+        document.getElementById('finReceitas').value = '';
+        document.getElementById('finDespesas').value = '';
+    }
+
+    async function salvarProjeto() {
+        const titulo = document.getElementById('projTitulo').value;
+        if (!titulo) { mostrarToast('Informe o título'); return; }
+        await db.collection('projects').add({
+            titulo, status: document.getElementById('projStatus').value,
+            progresso: parseInt(document.getElementById('projProgresso').value),
+            descricao: document.getElementById('projDescricao').value, createdAt: new Date()
+        });
+        mostrarToast('Projeto salvo!');
+        carregarDadosPublicos();
+        carregarListaProjetos();
+        document.getElementById('projTitulo').value = '';
+        document.getElementById('projProgresso').value = '';
+        document.getElementById('projDescricao').value = '';
+    }
+
+    async function deletarProjeto(id) { await db.collection('projects').doc(id).delete(); carregarDadosPublicos(); carregarListaProjetos(); mostrarToast('Removido'); }
+    async function criarEnquete() {
+        const titulo = document.getElementById('pollTitulo').value;
+        const opcoes = document.getElementById('pollOpcoes').value.split(',').map(o => o.trim());
+        const endDate = document.getElementById('pollFim').value;
+        if (!titulo || opcoes.length < 2 || !endDate) { mostrarToast('Preencha todos os campos'); return; }
+        await db.collection('polls').add({
+            titulo, descricao: document.getElementById('pollDesc').value, opcoes,
+            endDate: new Date(endDate), votos: {}, totalVotos: 0, createdAt: new Date()
+        });
+        mostrarToast('Enquete criada!');
+        carregarDadosPublicos();
+        carregarListaEnquetes();
+        document.getElementById('pollTitulo').value = '';
+        document.getElementById('pollDesc').value = '';
+        document.getElementById('pollOpcoes').value = '';
+        document.getElementById('pollFim').value = '';
+    }
+    async function deletarEnquete(id) { await db.collection('polls').doc(id).delete(); carregarDadosPublicos(); carregarListaEnquetes(); mostrarToast('Removida'); }
+    async function uploadDocumento() {
+        const file = document.getElementById('docArquivo').files[0];
+        const titulo = document.getElementById('docTitulo').value;
+        if (!file || !titulo) { mostrarToast('Selecione um arquivo'); return; }
+        const ref = storage.ref(`documentos/${Date.now()}_${file.name}`);
+        await ref.put(file);
+        const url = await ref.getDownloadURL();
+        await db.collection('documents').add({ titulo, descricao: document.getElementById('docDesc').value, url, createdAt: new Date() });
+        mostrarToast('Enviado!');
+        carregarDadosPublicos();
+        carregarListaDocumentos();
+        document.getElementById('docTitulo').value = '';
+        document.getElementById('docDesc').value = '';
+        document.getElementById('docArquivo').value = '';
+    }
+    async function deletarDocumento(id) { await db.collection('documents').doc(id).delete(); carregarDadosPublicos(); carregarListaDocumentos(); mostrarToast('Removido'); }
+    async function adicionarAviso() {
+        const aviso = document.getElementById('novoAviso').value.trim();
+        if (!aviso) { mostrarToast('Digite um aviso'); return; }
+        const doc = await db.collection('config').doc('avisos').get();
+        const lista = doc.exists ? doc.data().lista : [];
+        lista.push(aviso);
+        await db.collection('config').doc('avisos').set({ lista });
+        document.getElementById('novoAviso').value = '';
+        mostrarToast('Aviso adicionado!');
+        carregarAvisos();
+        carregarListaAvisos();
+    }
+    async function removerAviso(idx) {
+        const doc = await db.collection('config').doc('avisos').get();
+        const lista = doc.exists ? doc.data().lista : [];
+        lista.splice(idx, 1);
+        await db.collection('config').doc('avisos').set({ lista });
+        mostrarToast('Aviso removido');
+        carregarAvisos();
+        carregarListaAvisos();
+    }
+    async function limparAvisos() {
+        if (confirm('Remover todos?')) {
+            await db.collection('config').doc('avisos').set({ lista: [] });
+            mostrarToast('Todos removidos');
+            carregarAvisos();
+            carregarListaAvisos();
+        }
+    }
+
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            usuarioAtual = user;
+            document.getElementById('loginPage').classList.remove('active');
+            document.getElementById('sitePage').classList.add('active');
+            const isAdmin = (user.email === 'sindico@condominio.com');
+            document.getElementById('btnAdmin').style.display = isAdmin ? 'inline-block' : 'none';
+            document.getElementById('nomeUsuario').textContent = isAdmin ? 'Síndico' : user.email.split('@')[0];
+            carregarDadosPublicos();
+        } else {
+            document.getElementById('sitePage').classList.remove('active');
+            document.getElementById('adminPage').classList.remove('active');
+            document.getElementById('loginPage').classList.add('active');
+            usuarioAtual = null;
+        }
     });
-    mostrarToast('Documento enviado!');
-    carregarDadosPublicos();
-    carregarListaDocumentos();
-    document.getElementById('docTitulo').value = '';
-    document.getElementById('docDesc').value = '';
-    document.getElementById('docArquivo').value = '';
-  }
-
-  async function deletarDocumento(id) {
-    await db.collection('documents').doc(id).delete();
-    carregarDadosPublicos();
-    carregarListaDocumentos();
-    mostrarToast('Documento removido');
-  }
-
-  async function adicionarAviso() {
-    const novaMsg = document.getElementById('novaMensagem').value.trim();
-    if (!novaMsg) { mostrarToast('Digite uma mensagem'); return; }
-    const doc = await db.collection('config').doc('ticker').get();
-    const avisos = doc.exists ? doc.data().avisos : [];
-    avisos.push(novaMsg);
-    await db.collection('config').doc('ticker').set({ avisos });
-    document.getElementById('novaMensagem').value = '';
-    mostrarToast('Aviso adicionado!');
-    carregarTicker();
-    carregarListaAvisos();
-  }
-
-  async function removerAviso(index) {
-    const doc = await db.collection('config').doc('ticker').get();
-    const avisos = doc.exists ? doc.data().avisos : [];
-    avisos.splice(index, 1);
-    await db.collection('config').doc('ticker').set({ avisos });
-    mostrarToast('Aviso removido');
-    carregarTicker();
-    carregarListaAvisos();
-  }
-
-  async function limparAvisos() {
-    if (confirm('Remover todos os avisos?')) {
-      await db.collection('config').doc('ticker').set({ avisos: [] });
-      mostrarToast('Todos avisos removidos');
-      carregarTicker();
-      carregarListaAvisos();
-    }
-  }
-
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      document.getElementById('loginPage').classList.remove('active');
-      document.getElementById('sitePage').classList.add('active');
-      isAdmin = (user.email === 'sindico@condominio.com');
-      if (isAdmin) {
-        document.getElementById('btnSindico').style.display = 'inline-block';
-        document.getElementById('userName').textContent = 'Síndico';
-      } else {
-        document.getElementById('userName').textContent = user.email.split('@')[0];
-      }
-      usuarioAtual = user;
-      carregarDadosPublicos();
-    } else {
-      document.getElementById('sitePage').classList.remove('active');
-      document.getElementById('sindicoPage').classList.remove('active');
-      document.getElementById('loginPage').classList.add('active');
-      usuarioAtual = null;
-    }
-  });
 </script>
 </body>
 </html>
