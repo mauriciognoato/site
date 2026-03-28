@@ -5,10 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
   <title>Condomínio Maurício Gnoato</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -38,42 +34,7 @@
     .toast { position: fixed; bottom: 20px; right: 20px; background: var(--azul); color: white; padding: 12px 20px; border-radius: 8px; transform: translateY(80px); opacity: 0; transition: all 0.3s; z-index: 9999; }
     .toast.show { transform: translateY(0); opacity: 1; }
 
-    .login-page {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 1000;
-    }
-    .login-card {
-      background: var(--branco);
-      border-radius: 24px;
-      padding: 40px 32px;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-    .login-logo { width: 100px; height: 100px; border-radius: 20px; object-fit: cover; margin: 0 auto 16px; background: var(--bege-fundo); padding: 8px; }
-    .login-card h2 { font-size: 1.5rem; margin-bottom: 4px; }
-    .login-card .subtitle { font-size: 0.8rem; color: #999; margin-bottom: 24px; }
-    .login-tabs { display: flex; border-bottom: 2px solid var(--borda); margin-bottom: 24px; }
-    .login-tab { flex: 1; padding: 10px; background: none; border: none; font-size: 0.85rem; font-weight: 600; color: #aaa; cursor: pointer; }
-    .login-tab.active { color: var(--azul); border-bottom: 2px solid var(--dourado); margin-bottom: -2px; }
-    .login-form { display: none; }
-    .login-form.active { display: block; }
-    .form-group { margin-bottom: 16px; text-align: left; }
-    .form-group label { display: block; font-size: 0.7rem; font-weight: 600; color: var(--azul); margin-bottom: 5px; text-transform: uppercase; }
-    .form-group input { width: 100%; padding: 10px 14px; border: 1px solid var(--borda); border-radius: 8px; font-size: 0.85rem; background: var(--bege-fundo); }
-    .auth-error { color: var(--vermelho); font-size: 0.75rem; margin-top: 8px; }
-
-    .site-page { display: none; min-height: 100vh; }
-    .site-page.active { display: block; }
+    /* Header */
     header { background: var(--azul); position: sticky; top: 0; z-index: 900; }
     .navbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; flex-wrap: wrap; gap: 10px; }
     .navbar-logo { display: flex; align-items: center; gap: 10px; }
@@ -85,12 +46,11 @@
     nav ul li a { color: white; font-size: 0.75rem; font-weight: 500; transition: color 0.2s; }
     nav ul li a:hover { color: var(--dourado); }
     .header-right { display: flex; align-items: center; gap: 10px; }
-    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--dourado); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--azul); font-size: 0.75rem; }
-    .btn-logout { background: rgba(255,255,255,0.15); border: none; color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; }
     .btn-sindico { background: var(--dourado); color: var(--azul); padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; border: none; cursor: pointer; }
     .hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 6px; }
     .hamburger span { width: 22px; height: 2px; background: white; border-radius: 2px; }
 
+    /* Hero */
     .hero { background: linear-gradient(135deg, var(--azul-escuro), var(--azul)); padding: 60px 0 50px; text-align: center; }
     .hero-logo { width: 100px; height: 100px; border-radius: 20px; margin: 0 auto 16px; background: rgba(255,255,255,0.1); padding: 8px; object-fit: cover; }
     .hero h1 { font-size: 2rem; color: white; }
@@ -117,6 +77,7 @@
     .finance-box-header { padding: 12px 16px; font-weight: 600; color: white; }
     .finance-box-header.receita { background: var(--verde); }
     .finance-box-header.despesa { background: var(--vermelho); }
+    .finance-list li { display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--bege-claro); font-size: 0.8rem; }
     .finance-total { padding: 12px 16px; background: var(--bege-claro); font-weight: 700; display: flex; justify-content: space-between; }
     .saldo-bar { background: white; border-radius: 12px; padding: 16px 20px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .saldo-valor { font-size: 1.5rem; font-weight: 700; color: var(--verde); }
@@ -152,6 +113,7 @@
     footer h4 { color: var(--dourado); margin-bottom: 12px; }
     footer ul li a { color: #a0b0bc; font-size: 0.8rem; }
 
+    /* Área do Síndico */
     .sindico-page { display: none; min-height: 100vh; background: #f5f7fa; }
     .sindico-page.active { display: block; }
     .sindico-header { background: var(--azul); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
@@ -197,75 +159,27 @@
 
 <div class="toast" id="toast"></div>
 
-<div id="loginPage" class="login-page">
-  <div class="login-card">
-    <img src="logo.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/100?text=MG'"/>
-    <h2>Maurício Gnoato</h2>
-    <p class="subtitle">Acesso exclusivo para condôminos e síndico</p>
-    <div class="login-tabs">
-      <button class="login-tab active" onclick="switchTab('entrar')">Entrar</button>
-      <button class="login-tab" onclick="switchTab('cadastrar')">Cadastrar</button>
-    </div>
-    <div id="formEntrar" class="login-form active">
-      <div class="form-group">
-        <label>E-mail</label>
-        <input type="email" id="loginEmail" placeholder="seu@email.com"/>
-      </div>
-      <div class="form-group">
-        <label>Senha</label>
-        <input type="password" id="loginSenha" placeholder="••••••••" onkeydown="if(event.key==='Enter')fazerLogin()"/>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="fazerLogin()">Entrar</button>
-      <p class="auth-error" id="loginError"></p>
-      <hr style="margin: 20px 0 10px 0;">
-      <button class="btn btn-secondary btn-full" onclick="criarAdminAutomatico()" style="margin-top: 10px;">🔧 Criar Usuário Admin</button>
-    </div>
-    <div id="formCadastrar" class="login-form">
-      <div class="form-group">
-        <label>Nome completo</label>
-        <input type="text" id="regNome" placeholder="João da Silva"/>
-      </div>
-      <div class="form-group">
-        <label>Casa nº (1-25)</label>
-        <input type="number" id="regCasa" placeholder="Ex.: 7" min="1" max="25"/>
-      </div>
-      <div class="form-group">
-        <label>E-mail</label>
-        <input type="email" id="regEmail" placeholder="seu@email.com"/>
-      </div>
-      <div class="form-group">
-        <label>Senha (mín. 6 caracteres)</label>
-        <input type="password" id="regSenha" placeholder="••••••••"/>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="fazerCadastro()">Criar conta</button>
-      <p class="auth-error" id="regError"></p>
-    </div>
-  </div>
-</div>
-
+<!-- SITE PÚBLICO -->
 <div id="sitePage" class="site-page">
   <header>
     <div class="container">
       <div class="navbar">
         <div class="navbar-logo">
-          <img src="logo.png" alt="Logo" onerror="this.style.display='none'"/>
+          <img src="logo.png" alt="Logo" onerror="this.src='https://via.placeholder.com/50?text=MG'"/>
           <div class="logo-text"><span>Condomínio</span><span>Maurício Gnoato</span></div>
         </div>
         <nav id="mainNav">
           <ul><li><a href="#sobre">Sobre</a></li><li><a href="#financeiro">Financeiro</a></li><li><a href="#projetos">Projetos</a></li><li><a href="#enquetes">Enquetes</a></li><li><a href="#documentos">Documentos</a></li><li><a href="#contato">Contato</a></li></ul>
         </nav>
         <div class="header-right">
-          <div class="user-avatar" id="userAvatar">?</div>
-          <span id="userName" style="color:#fff;font-size:0.7rem"></span>
-          <button class="btn-sindico" id="btnSindico" style="display:none" onclick="irParaSindico()">⚙️ Síndico</button>
-          <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+          <button class="btn-sindico" id="btnSindico" onclick="irParaSindico()">⚙️ Síndico</button>
           <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
         </div>
       </div>
     </div>
   </header>
 
-  <section class="hero"><div class="container"><div class="hero-content"><img src="logo.png" class="hero-logo" onerror="this.style.display='none'"/><h1>Condomínio <span>Maurício Gnoato</span></h1><p>Transparência, gestão participativa e qualidade de vida para os 25 moradores</p><div class="hero-badges"><span class="hero-badge">🏡 25 Casas</span><span class="hero-badge">📊 Gestão Transparente</span><span class="hero-badge">🗳️ Participação Ativa</span></div><div class="hero-btns"><a href="#financeiro" class="btn btn-secondary">Ver Finanças</a><a href="#enquetes" class="btn btn-outline">Participar</a></div></div></div></section>
+  <section class="hero"><div class="container"><div class="hero-content"><img src="logo.png" class="hero-logo" onerror="this.src='https://via.placeholder.com/100?text=MG'"/><h1>Condomínio <span>Maurício Gnoato</span></h1><p>Transparência, gestão participativa e qualidade de vida para os 25 moradores</p><div class="hero-badges"><span class="hero-badge">🏡 25 Casas</span><span class="hero-badge">📊 Gestão Transparente</span><span class="hero-badge">🗳️ Participação Ativa</span></div><div class="hero-btns"><a href="#financeiro" class="btn btn-secondary">Ver Finanças</a><a href="#enquetes" class="btn btn-outline">Participar</a></div></div></div></section>
 
   <div class="ticker-bar"><div style="overflow:hidden"><div class="ticker-inner"><span>📢 Reunião: 15/04/2026 às 19h</span><span>🔧 Manutenção portão: 02/04</span><span>💧 Limpeza caixa d'água: 10/04</span><span>📋 Prestação de contas Março disponível</span></div></div></div>
 
@@ -284,19 +198,18 @@
   <footer><div class="container"><div class="footer-grid"><div><h4>Condomínio Maurício Gnoato</h4><p>📍 Endereço<br/>📞 (XX) XXXXX-XXXX<br/>✉️ sindico@condominio.com.br</p></div><div><h4>Links</h4><ul><li><a href="#sobre">Sobre</a></li><li><a href="#financeiro">Financeiro</a></li><li><a href="#documentos">Documentos</a></li></ul></div><div><h4>Acesso Rápido</h4><ul><li><a href="#">Boleto</a></li><li><a href="#">Regimento</a></li></ul></div></div><div class="footer-bottom" style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1)">© 2026 Condomínio Maurício Gnoato</div></div></footer>
 </div>
 
+<!-- ÁREA DO SÍNDICO -->
 <div id="sindicoPage" class="sindico-page">
   <div class="sindico-header">
     <h2>⚙️ Painel do Síndico</h2>
     <div style="display:flex;gap:10px;align-items:center">
-      <span id="sindicoName" style="font-size:0.8rem"></span>
       <button class="btn btn-secondary btn-sm" onclick="irParaSite()">🌐 Ver Site</button>
-      <button class="btn-logout" style="background:rgba(255,255,255,0.2);color:white" onclick="fazerLogout()">Sair</button>
       <button class="hamburger" style="display:flex" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="sindico-container">
     <div class="sindico-sidebar" id="sindicoSidebar">
-      <div class="sidebar-logo"><img src="logo.png" onerror="this.style.display='none'"/><div><span style="font-size:0.6rem;color:var(--dourado)">CONDOMÍNIO</span><br/><span>Maurício Gnoato</span></div></div>
+      <div class="sidebar-logo"><img src="logo.png" onerror="this.src='https://via.placeholder.com/45?text=MG'"/><div><span style="font-size:0.6rem;color:var(--dourado)">CONDOMÍNIO</span><br/><span>Maurício Gnoato</span></div></div>
       <ul class="sidebar-menu">
         <li><a class="active" onclick="mostrarSecao('painel',this)"><span>📊</span> Painel</a></li>
         <li><a onclick="mostrarSecao('financeiro',this)"><span>💰</span> Financeiro</a></li>
@@ -308,155 +221,146 @@
       <div class="sidebar-footer"><div>Área administrativa</div></div>
     </div>
     <div class="sindico-main">
-      <div id="secPainel" class="sindico-section active"><div class="admin-card"><div class="admin-card-header"><h3>📊 Resumo</h3></div><div class="admin-card-body"><div id="adminStats"></div></div></div></div>
-      <div id="secFinanceiro" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>💰 Financeiro</h3></div><div class="admin-card-body"><div class="grid2"><div class="form-group"><label>Mês/Ano</label><input type="month" id="finMes"/></div><div class="form-group"><label>Receitas (R$)</label><input type="number" id="finReceitas" step="0.01"/></div><div class="form-group"><label>Despesas (R$)</label><input type="number" id="finDespesas" step="0.01"/></div><div class="form-group"><label>Detalhes</label><textarea id="finDetalhes" rows="2"></textarea></div></div><button class="btn btn-primary" onclick="salvarFinanceiro()">Salvar</button><hr/><h4>Histórico</h4><div id="historicoFinanceiro"></div></div></div></div>
-      <div id="secProjetos" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>🔨 Projetos</h3></div><div class="admin-card-body"><div class="grid2"><div class="form-group"><label>Título</label><input type="text" id="projTitulo"/></div><div class="form-group"><label>Status</label><select id="projStatus"><option>andamento</option><option>planejado</option><option>concluido</option></select></div><div class="form-group"><label>Progresso (%)</label><input type="number" id="projProgresso" min="0" max="100"/></div><div class="form-group"><label>Descrição</label><textarea id="projDescricao" rows="2"></textarea></div></div><button class="btn btn-primary" onclick="salvarProjeto()">Adicionar</button><hr/><div id="listaProjetos"></div></div></div></div>
-      <div id="secEnquetes" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>🗳️ Enquetes</h3></div><div class="admin-card-body"><div class="form-group"><label>Título</label><input type="text" id="pollTitulo"/></div><div class="form-group"><label>Descrição</label><textarea id="pollDesc" rows="2"></textarea></div><div class="form-group"><label>Opções (separadas por vírgula)</label><input type="text" id="pollOpcoes"/></div><div class="form-group"><label>Data encerramento</label><input type="datetime-local" id="pollFim"/></div><button class="btn btn-primary" onclick="criarEnquete()">Criar</button><hr/><div id="listaEnquetes"></div></div></div></div>
-      <div id="secDocumentos" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>📁 Documentos</h3></div><div class="admin-card-body"><div class="form-group"><label>Título</label><input type="text" id="docTitulo"/></div><div class="form-group"><label>Descrição</label><textarea id="docDesc" rows="2"></textarea></div><div class="upload-area" onclick="document.getElementById('docArquivo').click()">📁 Clique para selecionar PDF<input type="file" id="docArquivo" accept=".pdf" style="display:none"/></div><button class="btn btn-primary" onclick="uploadDocumento()">Enviar</button><hr/><div id="listaDocumentos"></div></div></div></div>
-      <div id="secMoradores" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>👥 Condôminos</h3></div><div class="admin-card-body"><div id="listaMoradores"></div></div></div></div>
+      <!-- Painel -->
+      <div id="secPainel" class="sindico-section active">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>📊 Resumo do Condomínio</h3></div>
+          <div class="admin-card-body">
+            <div class="grid2">
+              <div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div>
+              <div class="stat-card"><div class="stat-number">3</div><div>Projetos</div></div>
+              <div class="stat-card"><div class="stat-number">R$ 4.498</div><div>Saldo Mensal</div></div>
+              <div class="stat-card"><div class="stat-number">92%</div><div>Adimplência</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financeiro -->
+      <div id="secFinanceiro" class="sindico-section">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>💰 Gerenciar Dados Financeiros</h3></div>
+          <div class="admin-card-body">
+            <div class="grid2">
+              <div class="form-group"><label>Mês/Ano</label><input type="month" id="finMes"/></div>
+              <div class="form-group"><label>Receitas (R$)</label><input type="number" id="finReceitas" step="0.01"/></div>
+              <div class="form-group"><label>Despesas (R$)</label><input type="number" id="finDespesas" step="0.01"/></div>
+              <div class="form-group"><label>Detalhes</label><textarea id="finDetalhes" rows="2" placeholder='{"Energia":1840,"Água":980}'></textarea></div>
+            </div>
+            <button class="btn btn-primary" onclick="salvarFinanceiro()">💾 Salvar Dados</button>
+            <hr style="margin:20px 0"/>
+            <h4>📋 Histórico Financeiro</h4>
+            <div id="historicoFinanceiro"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projetos -->
+      <div id="secProjetos" class="sindico-section">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>🔨 Gerenciar Projetos</h3></div>
+          <div class="admin-card-body">
+            <div class="grid2">
+              <div class="form-group"><label>Título</label><input type="text" id="projTitulo" placeholder="Ex: Reforma da Piscina"/></div>
+              <div class="form-group"><label>Status</label><select id="projStatus"><option>andamento</option><option>planejado</option><option>concluido</option></select></div>
+              <div class="form-group"><label>Progresso (%)</label><input type="number" id="projProgresso" min="0" max="100" value="0"/></div>
+              <div class="form-group"><label>Descrição</label><textarea id="projDescricao" rows="2"></textarea></div>
+            </div>
+            <button class="btn btn-primary" onclick="salvarProjeto()">➕ Adicionar Projeto</button>
+            <hr style="margin:20px 0"/>
+            <h4>📋 Projetos Cadastrados</h4>
+            <div id="listaProjetos"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enquetes -->
+      <div id="secEnquetes" class="sindico-section">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>🗳️ Gerenciar Enquetes</h3></div>
+          <div class="admin-card-body">
+            <div class="form-group"><label>Título</label><input type="text" id="pollTitulo" placeholder="Ex: Qual melhoria devemos priorizar?"/></div>
+            <div class="form-group"><label>Descrição</label><textarea id="pollDesc" rows="2"></textarea></div>
+            <div class="form-group"><label>Opções (separadas por vírgula)</label><input type="text" id="pollOpcoes" placeholder="Opção 1, Opção 2, Opção 3"/></div>
+            <div class="form-group"><label>Data encerramento</label><input type="datetime-local" id="pollFim"/></div>
+            <button class="btn btn-primary" onclick="criarEnquete()">➕ Criar Enquete</button>
+            <hr style="margin:20px 0"/>
+            <h4>📋 Enquetes Criadas</h4>
+            <div id="listaEnquetes"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documentos -->
+      <div id="secDocumentos" class="sindico-section">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>📁 Upload de Documentos</h3></div>
+          <div class="admin-card-body">
+            <div class="form-group"><label>Título</label><input type="text" id="docTitulo" placeholder="Ex: Prestação de Contas - Março 2026"/></div>
+            <div class="form-group"><label>Descrição</label><textarea id="docDesc" rows="2"></textarea></div>
+            <div class="upload-area" onclick="document.getElementById('docArquivo').click()">
+              📁 Clique para selecionar arquivo PDF
+              <input type="file" id="docArquivo" accept=".pdf" style="display:none"/>
+            </div>
+            <button class="btn btn-primary" onclick="uploadDocumento()">📤 Enviar Documento</button>
+            <hr style="margin:20px 0"/>
+            <h4>📋 Documentos Enviados</h4>
+            <div id="listaDocumentos"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Condôminos -->
+      <div id="secMoradores" class="sindico-section">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>👥 Condôminos Cadastrados</h3></div>
+          <div class="admin-card-body">
+            <div id="listaMoradores"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCwXXGdSZmtlhaOTt5QyjQUWMukTURbSRU",
-    authDomain: "condominio-mg.firebaseapp.com",
-    projectId: "condominio-mg",
-    storageBucket: "condominio-mg.firebasestorage.app",
-    messagingSenderId: "827098014353",
-    appId: "1:827098014353:web:cc36db91f7216ef7a59530"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-  const storage = firebase.storage();
-
-  let usuarioAtual = null;
-  let isAdmin = false;
+  // Dados de exemplo (simulando banco de dados local)
+  let financas = JSON.parse(localStorage.getItem('financas')) || [
+    { mes: "Março 2026", receitas: 18020, despesas: 13522, detalhes: '{"Energia":1840,"Água":980,"Manutenção":1200}' },
+    { mes: "Fevereiro 2026", receitas: 17980, despesas: 12468, detalhes: '' },
+    { mes: "Janeiro 2026", receitas: 17710, despesas: 12671, detalhes: '' }
+  ];
+  
+  let projetos = JSON.parse(localStorage.getItem('projetos')) || [
+    { titulo: "Reforma do Sistema de Câmeras", status: "andamento", progresso: 65, descricao: "Substituição por sistema IP" },
+    { titulo: "Paisagismo das Áreas Comuns", status: "andamento", progresso: 40, descricao: "Revitalização da praça central" },
+    { titulo: "Instalação de Energia Solar", status: "planejado", progresso: 10, descricao: "Redução de 30% na conta" },
+    { titulo: "Recapeamento das Vias Internas", status: "concluido", progresso: 100, descricao: "Concluído em fevereiro" }
+  ];
+  
+  let enquetes = JSON.parse(localStorage.getItem('enquetes')) || [
+    { titulo: "Como devemos usar o fundo de reserva?", descricao: "", opcoes: ["Energia solar", "Churrasqueira coberta", "Playground infantil"], endDate: new Date("2026-04-10"), votos: { "Energia solar": 9, "Churrasqueira coberta": 5, "Playground infantil": 4 }, totalVotos: 18 },
+    { titulo: "Melhor horário para reuniões?", descricao: "", opcoes: ["Sábado 10h", "Sábado 16h", "Segunda 19h"], endDate: new Date("2026-04-05"), votos: { "Sábado 10h": 10, "Sábado 16h": 7, "Segunda 19h": 5 }, totalVotos: 22 }
+  ];
+  
+  let documentos = JSON.parse(localStorage.getItem('documentos')) || [
+    { titulo: "Extrato Março 2026", descricao: "Prestação de contas completa", url: "#" },
+    { titulo: "Ata Assembleia Mar/2026", descricao: "Ata da reunião ordinária", url: "#" },
+    { titulo: "Convenção do Condomínio", descricao: "Documento atualizado", url: "#" }
+  ];
+  
+  let moradores = JSON.parse(localStorage.getItem('moradores')) || [
+    { casa: 1, nome: "João Silva", email: "joao@email.com", tipo: "Condômino" },
+    { casa: 2, nome: "Maria Santos", email: "maria@email.com", tipo: "Condômino" },
+    { casa: 7, nome: "Carlos Souza", email: "carlos@email.com", tipo: "Condômino" },
+    { casa: 0, nome: "Síndico", email: "sindico@condominio.com", tipo: "Síndico" }
+  ];
 
   function mostrarToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
-  }
-
-  // Função para criar usuário admin automaticamente
-  async function criarAdminAutomatico() {
-    const email = "sindico@condominio.com";
-    const senha = "sindico123";
-    
-    try {
-      // Tenta criar o usuário
-      const userCred = await auth.createUserWithEmailAndPassword(email, senha);
-      await db.collection('users').doc(userCred.user.uid).set({
-        nome: "Síndico",
-        email: email,
-        isAdmin: true,
-        casa: 0,
-        createdAt: new Date()
-      });
-      mostrarToast("✅ Usuário admin criado! Faça login com sindico@condominio.com / sindico123");
-      alert("Usuário admin criado!\n\nE-mail: sindico@condominio.com\nSenha: sindico123");
-    } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        // Usuário já existe, verificar se é admin
-        try {
-          const userCred = await auth.signInWithEmailAndPassword(email, senha);
-          const userDoc = await db.collection('users').doc(userCred.user.uid).get();
-          if (!userDoc.exists || !userDoc.data().isAdmin) {
-            await db.collection('users').doc(userCred.user.uid).set({
-              nome: "Síndico",
-              email: email,
-              isAdmin: true,
-              casa: 0
-            }, { merge: true });
-            mostrarToast("✅ Usuário atualizado para admin!");
-          } else {
-            mostrarToast("Usuário já é admin!");
-          }
-          await auth.signOut();
-        } catch (loginError) {
-          mostrarToast("Usuário existe mas senha incorreta. Tente fazer login normalmente.");
-        }
-      } else {
-        mostrarToast("Erro: " + error.message);
-      }
-    }
-  }
-
-  function switchTab(tab) {
-    const tabs = document.querySelectorAll('.login-tab');
-    const formEntrar = document.getElementById('formEntrar');
-    const formCadastrar = document.getElementById('formCadastrar');
-    
-    if (tab === 'entrar') {
-      tabs[0].classList.add('active');
-      tabs[1].classList.remove('active');
-      formEntrar.classList.add('active');
-      formCadastrar.classList.remove('active');
-    } else {
-      tabs[1].classList.add('active');
-      tabs[0].classList.remove('active');
-      formCadastrar.classList.add('active');
-      formEntrar.classList.remove('active');
-    }
-  }
-
-  async function fazerLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const senha = document.getElementById('loginSenha').value;
-    
-    if (!email || !senha) {
-      document.getElementById('loginError').textContent = 'Preencha e-mail e senha';
-      return;
-    }
-    
-    try {
-      const result = await auth.signInWithEmailAndPassword(email, senha);
-      mostrarToast('Login realizado com sucesso!');
-    } catch(e) {
-      document.getElementById('loginError').textContent = e.message;
-    }
-  }
-
-  async function fazerCadastro() {
-    const nome = document.getElementById('regNome').value;
-    const casa = document.getElementById('regCasa').value;
-    const email = document.getElementById('regEmail').value;
-    const senha = document.getElementById('regSenha').value;
-    
-    if (!nome || !casa || !email || senha.length < 6) {
-      document.getElementById('regError').textContent = 'Preencha todos os campos (senha: mínimo 6)';
-      return;
-    }
-    
-    try {
-      const cred = await auth.createUserWithEmailAndPassword(email, senha);
-      await db.collection('users').doc(cred.user.uid).set({
-        nome,
-        casa: parseInt(casa),
-        email,
-        isAdmin: false,
-        createdAt: new Date()
-      });
-      mostrarToast('Cadastro realizado! Faça login.');
-      switchTab('entrar');
-      document.getElementById('regError').textContent = '';
-      document.getElementById('regNome').value = '';
-      document.getElementById('regCasa').value = '';
-      document.getElementById('regEmail').value = '';
-      document.getElementById('regSenha').value = '';
-    } catch(e) {
-      document.getElementById('regError').textContent = e.message;
-    }
-  }
-
-  async function fazerLogout() {
-    await auth.signOut();
-    mostrarToast('Logout realizado');
   }
 
   function toggleMenu() {
@@ -491,215 +395,147 @@
     if (el) el.classList.add('active');
   }
 
-  auth.onAuthStateChanged(async (user) => {
-    if (user) {
-      usuarioAtual = user;
-      
-      try {
-        const doc = await db.collection('users').doc(user.uid).get();
-        const dados = doc.exists ? doc.data() : { nome: user.email.split('@')[0], isAdmin: false };
-        isAdmin = dados.isAdmin || false;
-        
-        document.getElementById('userName').textContent = dados.nome || user.email.split('@')[0];
-        document.getElementById('userAvatar').textContent = (dados.nome || 'U')[0].toUpperCase();
-        document.getElementById('sindicoName').textContent = dados.nome || 'Síndico';
-        
-        const btnSindico = document.getElementById('btnSindico');
-        if (btnSindico) {
-          btnSindico.style.display = isAdmin ? 'block' : 'none';
-        }
-        
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('sitePage').classList.add('active');
-        
-        carregarDadosPublicos();
-        
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      usuarioAtual = null;
-      isAdmin = false;
-      
-      document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('sitePage').classList.remove('active');
-      document.getElementById('sindicoPage').classList.remove('active');
-    }
-  });
+  function carregarDadosPublicos() {
+    // Financeiro
+    let html = `<div class="tab-menu">`;
+    financas.forEach((f, i) => {
+      html += `<button class="tab-btn ${i===0?'active':''}" onclick="mudarTab('tab-${i}',this)">${f.mes}</button>`;
+    });
+    html += `</div>`;
+    financas.forEach((f, idx) => {
+      const saldo = f.receitas - f.despesas;
+      html += `<div id="tab-${idx}" class="tab-content ${idx===0?'active':''}">
+        <div class="finance-grid">
+          <div class="finance-box"><div class="finance-box-header receita">Receitas</div><div class="finance-total">R$ ${f.receitas.toFixed(2)}</div></div>
+          <div class="finance-box"><div class="finance-box-header despesa">Despesas</div><div class="finance-total">R$ ${f.despesas.toFixed(2)}</div></div>
+        </div>
+        <div class="saldo-bar"><div>Saldo</div><div class="saldo-valor">R$ ${saldo.toFixed(2)}</div></div>
+      </div>`;
+    });
+    document.getElementById('publicFinanceiro').innerHTML = html || '<p>Nenhum dado</p>';
 
-  async function carregarDadosPublicos() {
-    try {
-      const finSnap = await db.collection('finances').orderBy('mes', 'desc').limit(3).get();
-      let html = `<div class="tab-menu">`;
-      let i = 0;
-      finSnap.forEach(doc => {
-        const d = doc.data();
-        html += `<button class="tab-btn ${i===0?'active':''}" onclick="mudarTab('tab-${doc.id}',this)">${d.mes}</button>`;
-        i++;
-      });
-      html += `</div>`;
-      finSnap.forEach((doc, idx) => {
-        const d = doc.data();
-        const saldo = d.receitas - d.despesas;
-        html += `<div id="tab-${doc.id}" class="tab-content ${idx===0?'active':''}">
-          <div class="finance-grid">
-            <div class="finance-box"><div class="finance-box-header receita">Receitas</div><div class="finance-total">R$ ${d.receitas.toFixed(2)}</div></div>
-            <div class="finance-box"><div class="finance-box-header despesa">Despesas</div><div class="finance-total">R$ ${d.despesas.toFixed(2)}</div></div>
-          </div>
-          <div class="saldo-bar"><div>Saldo</div><div class="saldo-valor">R$ ${saldo.toFixed(2)}</div></div>
-        </div>`;
-      });
-      document.getElementById('publicFinanceiro').innerHTML = html || '<p>Nenhum dado</p>';
+    // Projetos
+    let projHtml = '';
+    projetos.forEach(p => {
+      let statusClass = 'status-andamento', statusText = 'Em andamento';
+      if (p.status === 'concluido') { statusClass = 'status-concluido'; statusText = 'Concluído'; }
+      if (p.status === 'planejado') { statusClass = 'status-planejado'; statusText = 'Planejado'; }
+      projHtml += `<div class="project-card"><span class="project-status ${statusClass}">${statusText}</span><h3>${p.titulo}</h3><p>${p.descricao}</p><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progresso}%"></div></div><div class="progress-label">${p.progresso}%</div></div>`;
+    });
+    document.getElementById('publicProjetos').innerHTML = projHtml || '<p>Nenhum projeto</p>';
 
-      const projSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
-      let projHtml = '';
-      projSnap.forEach(doc => {
-        const p = doc.data();
-        let statusClass = 'status-andamento', statusText = 'Em andamento';
-        if (p.status === 'concluido') { statusClass = 'status-concluido'; statusText = 'Concluído'; }
-        if (p.status === 'planejado') { statusClass = 'status-planejado'; statusText = 'Planejado'; }
-        projHtml += `<div class="project-card"><span class="project-status ${statusClass}">${statusText}</span><h3>${p.titulo}</h3><p>${p.descricao}</p><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progresso}%"></div></div><div class="progress-label">${p.progresso}%</div></div>`;
+    // Enquetes
+    let pollHtml = '';
+    enquetes.forEach((e, idx) => {
+      const total = e.totalVotos;
+      pollHtml += `<div class="poll-card"><h3>📊 ${e.titulo}</h3><p>${e.descricao || ''}</p>`;
+      e.opcoes.forEach(opt => {
+        const votos = e.votos?.[opt] || 0;
+        const percent = total > 0 ? (votos/total*100).toFixed(1) : 0;
+        pollHtml += `<div class="poll-option"><span class="poll-option-text">${opt}</span><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:${percent}%">${percent}%</div></div></div>`;
       });
-      document.getElementById('publicProjetos').innerHTML = projHtml || '<p>Nenhum projeto</p>';
+      pollHtml += `<p style="font-size:0.7rem;color:#888">🗳️ ${total} votos · Encerra: ${new Date(e.endDate).toLocaleDateString()}</p>`;
+      pollHtml += `<div class="comments-section"><div id="comentarios-${idx}"></div>`;
+      pollHtml += `<div class="comment-form"><input id="comentInput-${idx}" placeholder="Deixe seu comentário..."/><button class="btn-secondary btn-sm" onclick="comentar(${idx})">Enviar</button></div>`;
+      pollHtml += `</div></div>`;
+      carregarComentarios(idx);
+    });
+    document.getElementById('publicEnquetes').innerHTML = pollHtml || '<p>Nenhuma enquete</p>';
 
-      const pollSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
-      let pollHtml = '';
-      for (const doc of pollSnap.docs) {
-        const p = doc.data();
-        const total = p.totalVotos || 0;
-        pollHtml += `<div class="poll-card"><h3>${p.titulo}</h3><p>${p.descricao || ''}</p>`;
-        p.opcoes.forEach(opt => {
-          const votos = p.votos?.[opt] || 0;
-          const percent = total > 0 ? (votos/total*100).toFixed(1) : 0;
-          pollHtml += `<div class="poll-option"><span class="poll-option-text">${opt}</span><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:${percent}%">${percent}%</div></div></div>`;
-        });
-        pollHtml += `<p style="font-size:0.7rem;color:#888">🗳️ ${total} votos · Encerra: ${new Date(p.endDate).toLocaleDateString()}</p>`;
-        if (usuarioAtual && !p.votos?.[usuarioAtual.uid] && new Date(p.endDate) > new Date()) {
-          pollHtml += `<div style="display:flex;gap:8px;margin:10px 0">${p.opcoes.map(opt => `<button class="btn-secondary btn-sm" onclick="votar('${doc.id}','${opt}')">${opt}</button>`).join('')}</div>`;
-        }
-        pollHtml += `<div class="comments-section"><div id="comentarios-${doc.id}"></div>`;
-        if (usuarioAtual) {
-          pollHtml += `<div class="comment-form"><input id="comentInput-${doc.id}" placeholder="Comentar..."/><button class="btn-secondary btn-sm" onclick="comentar('${doc.id}')">Enviar</button></div>`;
-        }
-        pollHtml += `</div></div>`;
-        carregarComentarios(doc.id);
-      }
-      document.getElementById('publicEnquetes').innerHTML = pollHtml || '<p>Nenhuma enquete</p>';
-
-      const docsSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
-      let docsHtml = '';
-      docsSnap.forEach(doc => {
-        const d = doc.data();
-        docsHtml += `<div class="doc-card"><div class="doc-icon">📄</div><div><h4>${d.titulo}</h4><p>${d.descricao}</p><a href="${d.url}" target="_blank">Baixar PDF →</a></div></div>`;
-      });
-      document.getElementById('publicDocumentos').innerHTML = docsHtml || '<p>Nenhum documento</p>';
-    } catch(e) { console.error(e); }
+    // Documentos
+    let docsHtml = '';
+    documentos.forEach(d => {
+      docsHtml += `<div class="doc-card"><div class="doc-icon">📄</div><div><h4>${d.titulo}</h4><p>${d.descricao}</p><a href="${d.url}" target="_blank">Baixar PDF →</a></div></div>`;
+    });
+    document.getElementById('publicDocumentos').innerHTML = docsHtml || '<p>Nenhum documento</p>';
   }
 
-  async function carregarComentarios(pollId) {
-    try {
-      const snap = await db.collection(`polls/${pollId}/comments`).orderBy('createdAt', 'desc').get();
-      const container = document.getElementById(`comentarios-${pollId}`);
-      if (!container) return;
-      container.innerHTML = '';
-      snap.forEach(doc => {
-        const c = doc.data();
-        container.innerHTML += `<div class="comment"><strong>${c.userNome}</strong><br>${c.texto}</div>`;
-      });
-    } catch(e) { console.error(e); }
+  function carregarComentarios(pollId) {
+    const comentarios = JSON.parse(localStorage.getItem(`comentarios_${pollId}`)) || [];
+    const container = document.getElementById(`comentarios-${pollId}`);
+    if (!container) return;
+    container.innerHTML = '';
+    comentarios.forEach(c => {
+      container.innerHTML += `<div class="comment"><strong>${c.userNome}</strong><br>${c.texto}</div>`;
+    });
   }
 
-  async function votar(pollId, option) {
-    if (!usuarioAtual) return mostrarToast('Faça login');
-    try {
-      const pollRef = db.collection('polls').doc(pollId);
-      const poll = (await pollRef.get()).data();
-      if (poll.votos && poll.votos[usuarioAtual.uid]) return mostrarToast('Você já votou');
-      const newVotos = { ...poll.votos, [usuarioAtual.uid]: option };
-      newVotos[option] = (newVotos[option] || 0) + 1;
-      await pollRef.update({ votos: newVotos, totalVotos: (poll.totalVotos || 0) + 1 });
-      mostrarToast('Voto registrado!');
-      carregarDadosPublicos();
-    } catch(e) { console.error(e); }
-  }
-
-  async function comentar(pollId) {
+  function comentar(pollId) {
     const texto = document.getElementById(`comentInput-${pollId}`).value;
     if (!texto.trim()) return;
-    try {
-      await db.collection(`polls/${pollId}/comments`).add({
-        texto, userId: usuarioAtual.uid, userNome: usuarioAtual.email.split('@')[0], createdAt: new Date()
-      });
-      document.getElementById(`comentInput-${pollId}`).value = '';
-      carregarComentarios(pollId);
-    } catch(e) { console.error(e); }
+    const comentarios = JSON.parse(localStorage.getItem(`comentarios_${pollId}`)) || [];
+    comentarios.push({ texto, userNome: "Visitante", createdAt: new Date() });
+    localStorage.setItem(`comentarios_${pollId}`, JSON.stringify(comentarios));
+    document.getElementById(`comentInput-${pollId}`).value = '';
+    carregarComentarios(pollId);
+    mostrarToast('Comentário enviado!');
   }
 
-  async function carregarDadosAdmin() {
-    try {
-      const usersSnap = await db.collection('users').get();
-      const projSnap = await db.collection('projects').get();
-      document.getElementById('adminStats').innerHTML = `<div class="grid2"><div class="stat-card"><div class="stat-number">${usersSnap.size}</div><div>Moradores</div></div><div class="stat-card"><div class="stat-number">${projSnap.size}</div><div>Projetos</div></div><div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div></div>`;
+  function carregarDadosAdmin() {
+    // Histórico Financeiro
+    let histHtml = '耒<thead> <tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th> </thead><tbody>';
+    financas.forEach(f => {
+      histHtml += `  <td>${f.mes}</td><td>R$ ${f.receitas.toFixed(2)}</td><td>R$ ${f.despesas.toFixed(2)}</td><td>R$ ${(f.receitas - f.despesas).toFixed(2)}</td>  `;
+    });
+    histHtml += '</tbody>  </table>';
+    document.getElementById('historicoFinanceiro').innerHTML = histHtml;
 
-      const histSnap = await db.collection('finances').orderBy('mes', 'desc').get();
-      let histHtml = '耒<thead> <tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr> </thead><tbody>';
-      histSnap.forEach(doc => {
-        const d = doc.data();
-        histHtml += ` <tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
-      });
-      histHtml += '</tbody> </table>';
-      document.getElementById('historicoFinanceiro').innerHTML = histHtml;
+    // Projetos
+    let projList = '';
+    projetos.forEach((p, idx) => {
+      let statusText = p.status === 'andamento' ? 'Em andamento' : (p.status === 'concluido' ? 'Concluído' : 'Planejado');
+      projList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.progresso}% (${statusText})</span><button class="btn-danger btn-sm" onclick="deletarProjeto(${idx})">Excluir</button></div>`;
+    });
+    document.getElementById('listaProjetos').innerHTML = projList || '<p>Nenhum projeto</p>';
 
-      const projListSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
-      let projList = '';
-      projListSnap.forEach(doc => {
-        const p = doc.data();
-        projList += `<div class="document-item"><span>${p.titulo} - ${p.progresso}%</span><button class="btn-danger btn-sm" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
-      });
-      document.getElementById('listaProjetos').innerHTML = projList;
+    // Enquetes
+    let pollList = '';
+    enquetes.forEach((e, idx) => {
+      pollList += `<div class="document-item"><span><strong>${e.titulo}</strong> - ${e.totalVotos || 0} votos</span><button class="btn-danger btn-sm" onclick="deletarEnquete(${idx})">Excluir</button></div>`;
+    });
+    document.getElementById('listaEnquetes').innerHTML = pollList || '<p>Nenhuma enquete</p>';
 
-      const pollListSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
-      let pollList = '';
-      pollListSnap.forEach(doc => {
-        const p = doc.data();
-        pollList += `<div class="document-item"><span>${p.titulo} - ${p.totalVotos || 0} votos</span><button class="btn-danger btn-sm" onclick="deletarEnquete('${doc.id}')">Excluir</button></div>`;
-      });
-      document.getElementById('listaEnquetes').innerHTML = pollList;
+    // Documentos
+    let docsList = '';
+    documentos.forEach((d, idx) => {
+      docsList += `<div class="document-item"><span><strong>${d.titulo}</strong> - ${d.descricao}</span><button class="btn-danger btn-sm" onclick="deletarDocumento(${idx})">Excluir</button></div>`;
+    });
+    document.getElementById('listaDocumentos').innerHTML = docsList || '<p>Nenhum documento</p>';
 
-      const docsListSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
-      let docsList = '';
-      docsListSnap.forEach(doc => {
-        const d = doc.data();
-        docsList += `<div class="document-item"><span>${d.titulo}</span><button class="btn-danger btn-sm" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
-      });
-      document.getElementById('listaDocumentos').innerHTML = docsList;
-
-      const moradoresSnap = await db.collection('users').orderBy('casa').get();
-      let moradoresList = '耒<thead> <tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr> </thead><tbody>';
-      moradoresSnap.forEach(doc => {
-        const u = doc.data();
-        moradoresList += ` <tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
-      });
-      moradoresList += '</tbody> </table>';
-      document.getElementById('listaMoradores').innerHTML = moradoresList;
-    } catch(e) { console.error(e); }
+    // Moradores
+    let moradoresList = '耒<thead>  <th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th> </thead><tbody>';
+    moradores.forEach(m => {
+      moradoresList += `  <td>${m.casa}</td><td>${m.nome}</td><td>${m.email}</td><td>${m.tipo}</td>  `;
+    });
+    moradoresList += '</tbody>  </table>';
+    document.getElementById('listaMoradores').innerHTML = moradoresList;
   }
 
-  async function salvarFinanceiro() {
+  function salvarFinanceiro() {
     const mes = document.getElementById('finMes').value;
     const receitas = parseFloat(document.getElementById('finReceitas').value);
     const despesas = parseFloat(document.getElementById('finDespesas').value);
     if (!mes || isNaN(receitas) || isNaN(despesas)) return mostrarToast('Preencha todos os campos');
-    await db.collection('finances').doc(mes).set({ mes, receitas, despesas, detalhes: document.getElementById('finDetalhes').value, updatedAt: new Date() });
-    mostrarToast('Salvo!');
+    financas.unshift({ mes, receitas, despesas, detalhes: document.getElementById('finDetalhes').value });
+    localStorage.setItem('financas', JSON.stringify(financas));
+    mostrarToast('Dados salvos!');
     carregarDadosPublicos();
     carregarDadosAdmin();
+    document.getElementById('finMes').value = '';
+    document.getElementById('finReceitas').value = '';
+    document.getElementById('finDespesas').value = '';
   }
 
-  async function salvarProjeto() {
+  function salvarProjeto() {
     const titulo = document.getElementById('projTitulo').value;
     if (!titulo) return mostrarToast('Informe o título');
-    await db.collection('projects').add({ titulo, status: document.getElementById('projStatus').value, progresso: parseInt(document.getElementById('projProgresso').value), descricao: document.getElementById('projDescricao').value, createdAt: new Date() });
+    projetos.push({
+      titulo,
+      status: document.getElementById('projStatus').value,
+      progresso: parseInt(document.getElementById('projProgresso').value),
+      descricao: document.getElementById('projDescricao').value
+    });
+    localStorage.setItem('projetos', JSON.stringify(projetos));
     mostrarToast('Projeto salvo!');
     carregarDadosPublicos();
     carregarDadosAdmin();
@@ -708,14 +544,28 @@
     document.getElementById('projDescricao').value = '';
   }
 
-  async function deletarProjeto(id) { await db.collection('projects').doc(id).delete(); carregarDadosPublicos(); carregarDadosAdmin(); mostrarToast('Removido'); }
-  
-  async function criarEnquete() {
+  function deletarProjeto(idx) {
+    projetos.splice(idx, 1);
+    localStorage.setItem('projetos', JSON.stringify(projetos));
+    carregarDadosPublicos();
+    carregarDadosAdmin();
+    mostrarToast('Projeto removido');
+  }
+
+  function criarEnquete() {
     const titulo = document.getElementById('pollTitulo').value;
     const opcoes = document.getElementById('pollOpcoes').value.split(',').map(o => o.trim());
     const endDate = document.getElementById('pollFim').value;
     if (!titulo || opcoes.length < 2 || !endDate) return mostrarToast('Preencha todos os campos');
-    await db.collection('polls').add({ titulo, descricao: document.getElementById('pollDesc').value, opcoes, endDate: new Date(endDate), votos: {}, totalVotos: 0, createdAt: new Date() });
+    enquetes.push({
+      titulo,
+      descricao: document.getElementById('pollDesc').value,
+      opcoes,
+      endDate: new Date(endDate),
+      votos: {},
+      totalVotos: 0
+    });
+    localStorage.setItem('enquetes', JSON.stringify(enquetes));
     mostrarToast('Enquete criada!');
     carregarDadosPublicos();
     carregarDadosAdmin();
@@ -723,17 +573,29 @@
     document.getElementById('pollDesc').value = '';
     document.getElementById('pollOpcoes').value = '';
   }
-  
-  async function deletarEnquete(id) { await db.collection('polls').doc(id).delete(); carregarDadosPublicos(); carregarDadosAdmin(); mostrarToast('Removida'); }
-  
-  async function uploadDocumento() {
+
+  function deletarEnquete(idx) {
+    enquetes.splice(idx, 1);
+    localStorage.setItem('enquetes', JSON.stringify(enquetes));
+    carregarDadosPublicos();
+    carregarDadosAdmin();
+    mostrarToast('Enquete removida');
+  }
+
+  function uploadDocumento() {
     const file = document.getElementById('docArquivo').files[0];
     const titulo = document.getElementById('docTitulo').value;
-    if (!file || !titulo) return mostrarToast('Selecione um arquivo');
-    const storageRef = storage.ref(`documentos/${Date.now()}_${file.name}`);
-    await storageRef.put(file);
-    const url = await storageRef.getDownloadURL();
-    await db.collection('documents').add({ titulo, descricao: document.getElementById('docDesc').value, url, createdAt: new Date() });
+    if (!titulo) return mostrarToast('Informe o título');
+    let url = '#';
+    if (file) {
+      url = URL.createObjectURL(file);
+    }
+    documentos.push({
+      titulo,
+      descricao: document.getElementById('docDesc').value,
+      url
+    });
+    localStorage.setItem('documentos', JSON.stringify(documentos));
     mostrarToast('Documento enviado!');
     carregarDadosPublicos();
     carregarDadosAdmin();
@@ -741,22 +603,31 @@
     document.getElementById('docDesc').value = '';
     document.getElementById('docArquivo').value = '';
   }
-  
-  async function deletarDocumento(id) { await db.collection('documents').doc(id).delete(); carregarDadosPublicos(); carregarDadosAdmin(); mostrarToast('Removido'); }
-  
+
+  function deletarDocumento(idx) {
+    documentos.splice(idx, 1);
+    localStorage.setItem('documentos', JSON.stringify(documentos));
+    carregarDadosPublicos();
+    carregarDadosAdmin();
+    mostrarToast('Documento removido');
+  }
+
   function mudarTab(tabId, el) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     el.classList.add('active');
   }
-  
-  function enviarContato(e) { e.preventDefault(); mostrarToast('Mensagem enviada!'); }
 
-  window.switchTab = switchTab;
-  window.fazerLogin = fazerLogin;
-  window.fazerCadastro = fazerCadastro;
-  window.fazerLogout = fazerLogout;
+  function enviarContato(e) {
+    e.preventDefault();
+    mostrarToast('Mensagem enviada! O síndico responderá em breve.');
+  }
+
+  // Inicializar
+  document.getElementById('sitePage').classList.add('active');
+  carregarDadosPublicos();
+
   window.toggleMenu = toggleMenu;
   window.toggleSidebar = toggleSidebar;
   window.irParaSindico = irParaSindico;
@@ -769,11 +640,9 @@
   window.deletarEnquete = deletarEnquete;
   window.uploadDocumento = uploadDocumento;
   window.deletarDocumento = deletarDocumento;
-  window.votar = votar;
   window.comentar = comentar;
   window.mudarTab = mudarTab;
   window.enviarContato = enviarContato;
-  window.criarAdminAutomatico = criarAdminAutomatico;
 </script>
 </body>
 </html>
