@@ -65,7 +65,7 @@
     .login-card .subtitle { font-size: 0.8rem; color: #999; margin-bottom: 24px; }
     .form-group { margin-bottom: 16px; text-align: left; }
     .form-group label { display: block; font-size: 0.7rem; font-weight: 600; color: var(--azul); margin-bottom: 5px; text-transform: uppercase; }
-    .form-group input { width: 100%; padding: 10px 14px; border: 1px solid var(--borda); border-radius: 8px; font-size: 0.85rem; background: var(--bege-fundo); }
+    .form-group input, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--borda); border-radius: 8px; font-size: 0.85rem; background: var(--bege-fundo); font-family: 'Montserrat', sans-serif; }
     .auth-error { color: var(--vermelho); font-size: 0.75rem; margin-top: 8px; }
     .admin-info {
       margin-top: 20px;
@@ -103,9 +103,14 @@
     .hero-badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
     .hero-badge { background: rgba(196,167,118,0.2); border: 1px solid rgba(196,167,118,0.4); color: var(--dourado); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; }
     .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .ticker-bar { background: var(--dourado); color: var(--azul-escuro); padding: 8px 0; overflow: hidden; }
-    .ticker-inner { display: flex; gap: 40px; white-space: nowrap; animation: ticker 25s linear infinite; }
+
+    /* TICKER - SCROLLER */
+    .ticker-bar { background: var(--dourado); color: var(--azul-escuro); padding: 10px 0; overflow: hidden; position: relative; }
+    .ticker-inner { display: flex; gap: 60px; white-space: nowrap; animation: ticker 30s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .ticker-item { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; font-size: 0.85rem; }
+    .ticker-item::before { content: "📢"; }
+
     .section { padding: 60px 0; }
     .section--branca { background: var(--branco); }
     .section--bege { background: var(--bege-fundo); }
@@ -161,7 +166,7 @@
     .sindico-page.active { display: block; }
     .sindico-header { background: var(--azul); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
     .sindico-container { display: flex; }
-    .sindico-sidebar { width: 280px; background: var(--azul-escuro); color: white; min-height: calc(100vh - 56px); }
+    .sindico-sidebar { width: 280px; background: var(--azul-escuro); color: white; min-height: calc(100vh - 56px); overflow-y: auto; }
     .sidebar-logo { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }
     .sidebar-logo img { width: 45px; height: 45px; border-radius: 15px; object-fit: cover; }
     .sidebar-menu { list-style: none; padding: 16px 0; }
@@ -179,6 +184,17 @@
     .document-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bege-fundo); border-radius: 8px; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
     .sindico-section { display: none; }
     .sindico-section.active { display: block; }
+    .ticker-message-item { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 12px; 
+      background: var(--bege-fundo); 
+      border-radius: 8px; 
+      margin-bottom: 8px;
+      border-left: 3px solid var(--dourado);
+    }
+    .ticker-text { flex: 1; font-size: 0.85rem; }
 
     @media (max-width: 768px) {
       .section { padding: 40px 0; }
@@ -251,7 +267,17 @@
 
   <section class="hero"><div class="container"><div class="hero-content"><img src="logo.png" class="hero-logo" onerror="this.style.display='none'"/><h1>Condomínio <span>Maurício Gnoato</span></h1><p>Transparência, gestão participativa e qualidade de vida para os 25 moradores</p><div class="hero-badges"><span class="hero-badge">🏡 25 Casas</span><span class="hero-badge">📊 Gestão Transparente</span><span class="hero-badge">🗳️ Participação Ativa</span></div><div class="hero-btns"><a href="#financeiro" class="btn btn-secondary">Ver Finanças</a><a href="#enquetes" class="btn btn-outline">Participar</a></div></div></div></section>
 
-  <div class="ticker-bar"><div style="overflow:hidden"><div class="ticker-inner"><span>📢 Reunião: 15/04/2026 às 19h</span><span>🔧 Manutenção portão: 02/04</span><span>💧 Limpeza caixa d'água: 10/04</span><span>📋 Prestação de contas Março disponível</span></div></div></div>
+  <!-- TICKER / SCROLLER DINÂMICO -->
+  <div class="ticker-bar" id="tickerBar">
+    <div style="overflow:hidden">
+      <div class="ticker-inner" id="tickerInner">
+        <span class="ticker-item">📢 Reunião: 15/04/2026 às 19h</span>
+        <span class="ticker-item">🔧 Manutenção portão: 02/04</span>
+        <span class="ticker-item">💧 Limpeza caixa d'água: 10/04</span>
+        <span class="ticker-item">📋 Prestação de contas Março disponível</span>
+      </div>
+    </div>
+  </div>
 
   <section class="section section--branca" id="sobre"><div class="container"><h2 class="section-title">O Condomínio</h2><hr class="section-divider"/><div class="stats-grid"><div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div><div class="stat-card"><div class="stat-number">R$18k</div><div>Arrecadação</div></div><div class="stat-card"><div class="stat-number">3</div><div>Projetos</div></div><div class="stat-card"><div class="stat-number">92%</div><div>Adimplência</div></div></div></div></section>
 
@@ -288,16 +314,42 @@
         <li><a onclick="mostrarSecao('projetos',this)"><span>🔨</span> Projetos</a></li>
         <li><a onclick="mostrarSecao('enquetes',this)"><span>🗳️</span> Enquetes</a></li>
         <li><a onclick="mostrarSecao('documentos',this)"><span>📁</span> Documentos</a></li>
+        <li><a onclick="mostrarSecao('ticker',this)"><span>📢</span> Ticker / Avisos</a></li>
         <li><a onclick="mostrarSecao('moradores',this)"><span>👥</span> Condôminos</a></li>
       </ul>
       <div class="sidebar-footer"><div>Área administrativa</div></div>
     </div>
     <div class="sindico-main">
       <div id="secPainel" class="sindico-section active"><div class="admin-card"><div class="admin-card-header"><h3>📊 Resumo</h3></div><div class="admin-card-body"><div id="adminStats"></div></div></div></div>
+      
       <div id="secFinanceiro" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>💰 Financeiro</h3></div><div class="admin-card-body"><div class="grid2"><div class="form-group"><label>Mês/Ano</label><input type="month" id="finMes"/></div><div class="form-group"><label>Receitas (R$)</label><input type="number" id="finReceitas" step="0.01"/></div><div class="form-group"><label>Despesas (R$)</label><input type="number" id="finDespesas" step="0.01"/></div><div class="form-group"><label>Detalhes</label><textarea id="finDetalhes" rows="2"></textarea></div></div><button class="btn btn-primary" onclick="salvarFinanceiro()">Salvar</button><hr/><h4>Histórico</h4><div id="historicoFinanceiro"></div></div></div></div>
+      
       <div id="secProjetos" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>🔨 Projetos</h3></div><div class="admin-card-body"><div class="grid2"><div class="form-group"><label>Título</label><input type="text" id="projTitulo"/></div><div class="form-group"><label>Status</label><select id="projStatus"><option>andamento</option><option>planejado</option><option>concluido</option></select></div><div class="form-group"><label>Progresso (%)</label><input type="number" id="projProgresso" min="0" max="100"/></div><div class="form-group"><label>Descrição</label><textarea id="projDescricao" rows="2"></textarea></div></div><button class="btn btn-primary" onclick="salvarProjeto()">Adicionar</button><hr/><div id="listaProjetos"></div></div></div></div>
+      
       <div id="secEnquetes" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>🗳️ Enquetes</h3></div><div class="admin-card-body"><div class="form-group"><label>Título</label><input type="text" id="pollTitulo"/></div><div class="form-group"><label>Descrição</label><textarea id="pollDesc" rows="2"></textarea></div><div class="form-group"><label>Opções (separadas por vírgula)</label><input type="text" id="pollOpcoes"/></div><div class="form-group"><label>Data encerramento</label><input type="datetime-local" id="pollFim"/></div><button class="btn btn-primary" onclick="criarEnquete()">Criar</button><hr/><div id="listaEnquetes"></div></div></div></div>
+      
       <div id="secDocumentos" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>📁 Documentos</h3></div><div class="admin-card-body"><div class="form-group"><label>Título</label><input type="text" id="docTitulo"/></div><div class="form-group"><label>Descrição</label><textarea id="docDesc" rows="2"></textarea></div><div class="upload-area" onclick="document.getElementById('docArquivo').click()">📁 Clique para selecionar PDF<input type="file" id="docArquivo" accept=".pdf" style="display:none"/></div><button class="btn btn-primary" onclick="uploadDocumento()">Enviar</button><hr/><div id="listaDocumentos"></div></div></div></div>
+      
+      <!-- NOVA ABA: TICKER / AVISOS -->
+      <div id="secTicker" class="sindico-section">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>📢 Gerenciar Ticker de Avisos</h3></div>
+          <div class="admin-card-body">
+            <div class="form-group">
+              <label>Novo Aviso</label>
+              <textarea id="novaMensagem" rows="2" placeholder="Digite o aviso que aparecerá no scroller... Ex: 🧹 Limpeza das áreas comuns: 05/04"></textarea>
+            </div>
+            <div class="grid2">
+              <button class="btn btn-primary" onclick="adicionarMensagemTicker()">➕ Adicionar Aviso</button>
+              <button class="btn btn-secondary" onclick="limparTicker()">🗑️ Limpar Todos</button>
+            </div>
+            <hr style="margin: 20px 0;"/>
+            <h4>📋 Avisos Ativos</h4>
+            <div id="listaTicker"></div>
+          </div>
+        </div>
+      </div>
+      
       <div id="secMoradores" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>👥 Condôminos</h3></div><div class="admin-card-body"><div id="listaMoradores"></div></div></div></div>
     </div>
   </div>
@@ -321,6 +373,7 @@
 
   let usuarioAtual = null;
   let isAdmin = false;
+  let mensagensTicker = [];
 
   function mostrarToast(msg) {
     const t = document.getElementById('toast');
@@ -329,6 +382,84 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
+  // ========== FUNÇÕES DE TICKER ==========
+  async function carregarTicker() {
+    try {
+      const doc = await db.collection('config').doc('ticker').get();
+      if (doc.exists) {
+        mensagensTicker = doc.data().mensagens || [];
+      } else {
+        // Mensagens padrão
+        mensagensTicker = [
+          "📢 Reunião: 15/04/2026 às 19h",
+          "🔧 Manutenção do portão: 02/04/2026",
+          "💧 Limpeza da caixa d'água: 10/04/2026",
+          "📋 Prestação de contas Março/2026 disponível"
+        ];
+        await db.collection('config').doc('ticker').set({ mensagens: mensagensTicker });
+      }
+      atualizarTickerNaTela();
+    } catch(e) {
+      console.error("Erro ao carregar ticker:", e);
+    }
+  }
+
+  function atualizarTickerNaTela() {
+    // Atualizar no site público
+    const tickerInner = document.getElementById('tickerInner');
+    if (tickerInner) {
+      tickerInner.innerHTML = mensagensTicker.map(msg => `<span class="ticker-item">${msg}</span>`).join('');
+      // Duplicar para o loop infinito
+      tickerInner.innerHTML += mensagensTicker.map(msg => `<span class="ticker-item">${msg}</span>`).join('');
+    }
+    
+    // Atualizar na lista do síndico
+    const listaTicker = document.getElementById('listaTicker');
+    if (listaTicker) {
+      if (mensagensTicker.length === 0) {
+        listaTicker.innerHTML = '<p>Nenhum aviso ativo. Adicione avisos acima.</p>';
+      } else {
+        listaTicker.innerHTML = mensagensTicker.map((msg, idx) => `
+          <div class="ticker-message-item">
+            <span class="ticker-text">${msg}</span>
+            <button class="btn-danger btn-sm" onclick="removerMensagemTicker(${idx})">Excluir</button>
+          </div>
+        `).join('');
+      }
+    }
+  }
+
+  async function adicionarMensagemTicker() {
+    const novaMsg = document.getElementById('novaMensagem').value.trim();
+    if (!novaMsg) {
+      mostrarToast('Digite uma mensagem');
+      return;
+    }
+    
+    mensagensTicker.push(novaMsg);
+    await db.collection('config').doc('ticker').set({ mensagens: mensagensTicker });
+    document.getElementById('novaMensagem').value = '';
+    atualizarTickerNaTela();
+    mostrarToast('Aviso adicionado com sucesso!');
+  }
+
+  async function removerMensagemTicker(index) {
+    mensagensTicker.splice(index, 1);
+    await db.collection('config').doc('ticker').set({ mensagens: mensagensTicker });
+    atualizarTickerNaTela();
+    mostrarToast('Aviso removido!');
+  }
+
+  async function limparTicker() {
+    if (confirm('Tem certeza que deseja remover todos os avisos?')) {
+      mensagensTicker = [];
+      await db.collection('config').doc('ticker').set({ mensagens: mensagensTicker });
+      atualizarTickerNaTela();
+      mostrarToast('Todos os avisos foram removidos!');
+    }
+  }
+
+  // ========== FUNÇÕES DE AUTENTICAÇÃO ==========
   async function fazerLogin() {
     const email = document.getElementById('loginEmail').value;
     const senha = document.getElementById('loginSenha').value;
@@ -340,14 +471,11 @@
     
     try {
       const result = await auth.signInWithEmailAndPassword(email, senha);
-      console.log("Login OK:", result.user.email);
       mostrarToast('Login realizado!');
       
-      // Forçar redirecionamento manual
       document.getElementById('loginPage').style.display = 'none';
       document.getElementById('sitePage').classList.add('active');
       
-      // Atualizar interface do usuário
       const EMAIL_ADMIN = "sindico@condominio.com";
       isAdmin = (result.user.email === EMAIL_ADMIN);
       
@@ -357,7 +485,6 @@
         document.getElementById('sindicoName').textContent = "Síndico";
         document.getElementById('btnSindico').style.display = 'block';
         
-        // Salvar no Firestore
         await db.collection('users').doc(result.user.uid).set({
           nome: "Síndico",
           email: result.user.email,
@@ -372,9 +499,9 @@
       
       usuarioAtual = result.user;
       carregarDadosPublicos();
+      carregarTicker();
       
     } catch(e) {
-      console.error("Erro:", e);
       document.getElementById('loginError').textContent = e.message;
     }
   }
@@ -389,27 +516,21 @@
     isAdmin = false;
   }
 
-  function toggleMenu() {
-    document.getElementById('mainNav').classList.toggle('open');
-  }
-  
-  function toggleSidebar() {
-    document.getElementById('sindicoSidebar').classList.toggle('open');
-  }
-  
+  function toggleMenu() { document.getElementById('mainNav').classList.toggle('open'); }
+  function toggleSidebar() { document.getElementById('sindicoSidebar').classList.toggle('open'); }
   function irParaSindico() {
     document.getElementById('sitePage').classList.remove('active');
     document.getElementById('sindicoPage').classList.add('active');
     carregarDadosAdmin();
+    carregarTicker(); // Carregar ticker também na área admin
   }
-  
   function irParaSite() {
     document.getElementById('sindicoPage').classList.remove('active');
     document.getElementById('sitePage').classList.add('active');
   }
 
   function mostrarSecao(secao, el) {
-    const secoes = ['painel', 'financeiro', 'projetos', 'enquetes', 'documentos', 'moradores'];
+    const secoes = ['painel', 'financeiro', 'projetos', 'enquetes', 'documentos', 'ticker', 'moradores'];
     secoes.forEach(s => {
       const sec = document.getElementById('sec' + s.charAt(0).toUpperCase() + s.slice(1));
       if (sec) sec.classList.remove('active');
@@ -421,9 +542,9 @@
     if (el) el.classList.add('active');
   }
 
+  // ========== FUNÇÕES DE DADOS PÚBLICOS ==========
   async function carregarDadosPublicos() {
     try {
-      // Financeiro
       const finSnap = await db.collection('finances').orderBy('mes', 'desc').limit(3).get();
       let html = `<div class="tab-menu">`;
       let i = 0;
@@ -447,7 +568,6 @@
       if (finSnap.empty) html = '<p>Nenhum dado financeiro. Adicione no painel do síndico.</p>';
       document.getElementById('publicFinanceiro').innerHTML = html;
 
-      // Projetos
       const projSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
       let projHtml = '';
       projSnap.forEach(doc => {
@@ -459,7 +579,6 @@
       });
       document.getElementById('publicProjetos').innerHTML = projHtml || '<p>Nenhum projeto cadastrado.</p>';
 
-      // Enquetes
       const pollSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
       let pollHtml = '';
       for (const doc of pollSnap.docs) {
@@ -484,7 +603,6 @@
       }
       document.getElementById('publicEnquetes').innerHTML = pollHtml || '<p>Nenhuma enquete ativa.</p>';
 
-      // Documentos
       const docsSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
       let docsHtml = '';
       docsSnap.forEach(doc => {
@@ -544,43 +662,43 @@
       let histHtml = '耒<thead> <th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th> </thead><tbody>';
       histSnap.forEach(doc => {
         const d = doc.data();
-        histHtml += `   <tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
+        histHtml += `     <td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td> `;
       });
-      histHtml += '</tbody></table>';
-      document.getElementById('historicoFinanceiro').innerHTML = histHtml;
+      histHtml += '</tbody> 耒';
+      document.getElementById('historicoFinanceiro').innerHTML = histHtml || '<p>Nenhum dado financeiro</p>';
 
       const projListSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
       let projList = '';
       projListSnap.forEach(doc => {
         const p = doc.data();
-        projList += `<div class="document-item"><span>${p.titulo} - ${p.progresso}%</span><button class="btn-danger btn-sm" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
+        projList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.progresso}% (${p.status})</span><button class="btn-danger btn-sm" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
       });
-      document.getElementById('listaProjetos').innerHTML = projList;
+      document.getElementById('listaProjetos').innerHTML = projList || '<p>Nenhum projeto cadastrado</p>';
 
       const pollListSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
       let pollList = '';
       pollListSnap.forEach(doc => {
         const p = doc.data();
-        pollList += `<div class="document-item"><span>${p.titulo} - ${p.totalVotos || 0} votos</span><button class="btn-danger btn-sm" onclick="deletarEnquete('${doc.id}')">Excluir</button></div>`;
+        pollList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.totalVotos || 0} votos</span><button class="btn-danger btn-sm" onclick="deletarEnquete('${doc.id}')">Excluir</button></div>`;
       });
-      document.getElementById('listaEnquetes').innerHTML = pollList;
+      document.getElementById('listaEnquetes').innerHTML = pollList || '<p>Nenhuma enquete criada</p>';
 
       const docsListSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
       let docsList = '';
       docsListSnap.forEach(doc => {
         const d = doc.data();
-        docsList += `<div class="document-item"><span>${d.titulo}</span><button class="btn-danger btn-sm" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
+        docsList += `<div class="document-item"><span><strong>${d.titulo}</strong> - ${d.descricao}</span><button class="btn-danger btn-sm" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
       });
-      document.getElementById('listaDocumentos').innerHTML = docsList;
+      document.getElementById('listaDocumentos').innerHTML = docsList || '<p>Nenhum documento enviado</p>';
 
       const moradoresSnap = await db.collection('users').orderBy('casa').get();
-      let moradoresList = '<table><thead><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr></thead><tbody>';
+      let moradoresList = '耒<thead> <th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th> </thead><tbody>';
       moradoresSnap.forEach(doc => {
         const u = doc.data();
-        moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
+        moradoresList += `   <td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td> `;
       });
-      moradoresList += '</tbody></table>';
-      document.getElementById('listaMoradores').innerHTML = moradoresList;
+      moradoresList += '</tbody> 耒';
+      document.getElementById('listaMoradores').innerHTML = moradoresList || '<p>Nenhum morador cadastrado</p>';
     } catch(e) { console.error(e); }
   }
 
@@ -670,6 +788,9 @@
   window.comentar = comentar;
   window.mudarTab = mudarTab;
   window.enviarContato = enviarContato;
+  window.adicionarMensagemTicker = adicionarMensagemTicker;
+  window.removerMensagemTicker = removerMensagemTicker;
+  window.limparTicker = limparTicker;
 </script>
 </body>
 </html>
