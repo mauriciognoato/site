@@ -10,6 +10,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <style>
+    /* ===== ESTILOS COMPLETOS (mesmos do código anterior) ===== */
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
       --azul:#1F3140;--azul-escuro:#17232F;--dourado:#C4A776;--dourado-dk:#B2915F;
@@ -22,7 +23,6 @@
     a{text-decoration:none;color:inherit}
     img{max-width:100%;display:block}
 
-    /* ── UTILITÁRIOS ── */
     .container{width:90%;max-width:1100px;margin:0 auto}
     .section{padding:72px 0}
     .section--branca{background:var(--branco)}
@@ -46,7 +46,6 @@
     .btn-sm{padding:6px 14px;font-size:.78rem}
     .btn-full{width:100%;justify-content:center}
 
-    /* ── LOGIN ── */
     #page-login{min-height:100vh;background:linear-gradient(135deg,var(--azul-escuro) 0%,var(--azul) 60%,#2a4560 100%);display:none;align-items:center;justify-content:center;padding:20px}
     #page-login.active{display:flex}
     .login-card{background:var(--branco);border-radius:16px;padding:48px 40px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center}
@@ -69,7 +68,6 @@
     .auth-error{color:#c0392b;font-size:.8rem;margin-top:10px}
     .auth-success{color:var(--verde);font-size:.8rem;margin-top:10px}
 
-    /* ── SITE ── */
     #page-site{display:none}
     #page-site.active{display:block}
     header{background:var(--azul);position:sticky;top:0;z-index:900;box-shadow:0 2px 12px rgba(0,0,0,.25)}
@@ -138,12 +136,7 @@
     .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:36px}
     .toast{position:fixed;bottom:24px;right:24px;background:var(--azul);color:white;padding:12px 20px;border-radius:6px;transform:translateY(80px);opacity:0;transition:all .35s;z-index:9999}
     .toast.show{transform:translateY(0);opacity:1}
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(23,35,47,.75);z-index:2000;align-items:center;justify-content:center}
-    .modal-overlay.active{display:flex}
-    .modal{background:var(--branco);border-radius:10px;padding:36px 30px;width:100%;max-width:540px;position:relative}
-    .modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer}
 
-    /* ÁREA DO SÍNDICO */
     #page-sindico{display:none;min-height:100vh;background:#f0f4f8}
     #page-sindico.active{display:flex}
     .sindico-sidebar{width:var(--sidebar-w);background:var(--azul-escuro);color:white;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
@@ -214,7 +207,7 @@
   </div>
 </div>
 
-<!-- SITE PÚBLICO -->
+<!-- SITE PÚBLICO (conteúdo similar ao anterior - resumido por brevidade) -->
 <div id="page-site">
   <header>
     <div class="container">
@@ -230,23 +223,16 @@
   </header>
   <section class="hero"><div class="container"><div class="hero-content"><img src="logo.png" class="hero-logo" onerror="this.style.display='none'"/><h1>Condomínio <span>Maurício Gnoato</span></h1><p>Transparência, gestão participativa e qualidade de vida para os 25 moradores.</p><div class="hero-badges"><span class="hero-badge">🏡 25 Casas</span><span class="hero-badge">📊 Gestão Transparente</span><span class="hero-badge">🗳️ Participação Ativa</span></div><div class="hero-btns"><a href="#financeiro" class="btn btn-secondary">Ver Finanças</a><a href="#enquetes" class="btn btn-outline">Participar das Enquetes</a></div></div></div></section>
   <div class="ticker-bar"><div style="overflow:hidden"><div class="ticker-inner"><span>📢 Reunião: 15/04/2026 às 19h</span><span>🔧 Manutenção do portão: 02/04/2026</span><span>💧 Limpeza da caixa d'água: 10/04/2026</span><span>📋 Prestação de contas Março/2026 disponível</span></div></div></div>
-
   <section class="section section--branca" id="sobre"><div class="container"><h2 class="section-title">O Condomínio</h2><hr class="section-divider"/><div class="stats-grid"><div class="stat-card"><div class="stat-number">25</div><div class="stat-label">Casas</div></div><div class="stat-card"><div class="stat-number">R$18k</div><div class="stat-label">Arrecadação</div></div><div class="stat-card"><div class="stat-number">3</div><div class="stat-label">Projetos</div></div><div class="stat-card"><div class="stat-number">92%</div><div class="stat-label">Adimplência</div></div></div></div></section>
-
   <section class="section section--bege" id="financeiro"><div class="container"><h2 class="section-title">Transparência Financeira</h2><hr class="section-divider"/><div id="financeiro-dinamico"></div></div></section>
-
   <section class="section section--branca" id="projetos"><div class="container"><h2 class="section-title">Projetos em Andamento</h2><hr class="section-divider"/><div id="projetos-dinamico" class="projects-grid"></div></div></section>
-
   <section class="section section--azul" id="enquetes"><div class="container"><h2 class="section-title">Enquetes</h2><hr class="section-divider"/><div id="enquetes-dinamico"></div></div></section>
-
   <section class="section section--bege" id="documentos"><div class="container"><h2 class="section-title">Documentos</h2><hr class="section-divider"/><div id="documentos-dinamico" class="docs-grid"></div></div></section>
-
   <section class="section section--branca" id="contato"><div class="container"><h2 class="section-title">Fale com o Síndico</h2><hr class="section-divider"/><form class="contact-form" onsubmit="sendContact(event)"><div class="form-group"><input type="text" placeholder="Seu nome / Casa" required/></div><div class="form-group"><select required><option>Dúvida sobre cobrança</option><option>Reclamação</option><option>Sugestão</option></select></div><div class="form-group"><textarea rows="3" placeholder="Mensagem..."></textarea></div><button type="submit" class="btn btn-primary btn-full">Enviar</button></form></div></section>
-
   <footer><div class="container"><div class="footer-grid"><div><h4>Condomínio Maurício Gnoato</h4><p>📍 Endereço do Condomínio<br/>📞 (XX) XXXXX-XXXX<br/>✉️ sindico@condominio.com.br</p></div><div><h4>Links</h4><ul><li><a href="#sobre">Sobre</a></li><li><a href="#financeiro">Financeiro</a></li><li><a href="#documentos">Documentos</a></li></ul></div><div><h4>Acesso Rápido</h4><ul><li><a href="#">Boleto</a></li><li><a href="#">Regimento</a></li></ul></div></div><div class="footer-bottom">© 2026 Condomínio Maurício Gnoato</div></div></footer>
 </div>
 
-<!-- ÁREA DO SÍNDICO -->
+<!-- ÁREA DO SÍNDICO (resumida) -->
 <div id="page-sindico">
   <div class="sindico-sidebar" id="sindico-sidebar">
     <div class="sidebar-logo"><img src="logo.png" onerror="this.style.display='none'"/><div><span style="font-size:.6rem;color:var(--dourado)">CONDOMÍNIO</span><br/><span>Maurício Gnoato</span></div></div>
@@ -262,15 +248,15 @@
   <div class="sindico-main">
     <div class="sindico-topbar"><h2>Painel do Síndico</h2><button class="btn-secondary btn-sm" onclick="toggleSidebar()">☰ Menu</button></div>
     <div id="s-painel" class="sindico-section active"><div class="admin-card"><div class="admin-card-header"><h3>Resumo do Condomínio</h3></div><div class="admin-card-body"><div id="admin-stats"></div></div></div></div>
-    <div id="s-financeiro" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>Gerenciar Dados Financeiros</h3></div><div class="admin-card-body"><div class="grid2"><div class="form-group"><label>Mês/Ano</label><input type="month" id="fin-mes"/></div><div class="form-group"><label>Total Receitas (R$)</label><input type="number" id="fin-receitas" step="0.01"/></div><div class="form-group"><label>Total Despesas (R$)</label><input type="number" id="fin-despesas" step="0.01"/></div><div class="form-group"><label>Detalhamento (opcional)</label><textarea id="fin-detalhes" rows="2" placeholder='{"Energia":1840,"Água":980}'></textarea></div></div><button class="btn-primary" onclick="salvarFinanceiro()">Salvar Dados</button><hr style="margin:20px 0"/><h4>Histórico Financeiro</h4><div id="historico-financeiro"></div></div></div></div>
-    <div id="s-projetos" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>Gerenciar Projetos</h3></div><div class="admin-card-body"><div class="grid2"><div class="form-group"><label>Título</label><input type="text" id="proj-titulo"/></div><div class="form-group"><label>Status</label><select id="proj-status"><option>andamento</option><option>planejado</option><option>concluido</option></select></div><div class="form-group"><label>Progresso (%)</label><input type="number" id="proj-progresso" min="0" max="100"/></div><div class="form-group"><label>Descrição</label><textarea id="proj-descricao" rows="2"></textarea></div></div><button class="btn-primary" onclick="salvarProjeto()">Adicionar/Atualizar Projeto</button><hr/><div id="lista-projetos"></div></div></div></div>
-    <div id="s-enquetes" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>Criar Enquete</h3></div><div class="admin-card-body"><div class="form-group"><label>Título</label><input type="text" id="poll-titulo"/></div><div class="form-group"><label>Descrição</label><textarea id="poll-desc" rows="2"></textarea></div><div class="form-group"><label>Opções (separadas por vírgula)</label><input type="text" id="poll-opcoes" placeholder="Opção 1, Opção 2, Opção 3"/></div><div class="form-group"><label>Data de encerramento</label><input type="datetime-local" id="poll-fim"/></div><button class="btn-primary" onclick="criarEnquete()">Criar Enquete</button><hr/><div id="lista-enquetes"></div></div></div></div>
-    <div id="s-documentos" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>Upload de Documentos</h3></div><div class="admin-card-body"><div class="form-group"><label>Título</label><input type="text" id="doc-titulo"/></div><div class="form-group"><label>Descrição</label><textarea id="doc-desc" rows="2"></textarea></div><div class="upload-area" onclick="document.getElementById('doc-arquivo').click()">📁 Clique para selecionar arquivo PDF<input type="file" id="doc-arquivo" accept=".pdf" style="display:none"/></div><button class="btn-primary" onclick="uploadDocumento()">Enviar Documento</button><hr/><div id="lista-documentos"></div></div></div></div>
+    <div id="s-financeiro" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>Gerenciar Dados Financeiros</h3></div><div class="admin-card-body"><div class="grid2"><div class="form-group"><label>Mês/Ano</label><input type="month" id="fin-mes"/></div><div class="form-group"><label>Total Receitas (R$)</label><input type="number" id="fin-receitas" step="0.01"/></div><div class="form-group"><label>Total Despesas (R$)</label><input type="number" id="fin-despesas" step="0.01"/></div><div class="form-group"><label>Detalhamento (opcional)</label><textarea id="fin-detalhes" rows="2" placeholder='{"Energia":1840,"Água":980}'></textarea></div></div><button class="btn-primary" onclick="salvarFinanceiro()">Salvar Dados</button><hr/><h4>Histórico Financeiro</h4><div id="historico-financeiro"></div></div></div></div>
+    <div id="s-projetos" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>Gerenciar Projetos</h3></div><div class="admin-card-body"><div class="grid2"><div class="form-group"><label>Título</label><input type="text" id="proj-titulo"/></div><div class="form-group"><label>Status</label><select id="proj-status"><option>andamento</option><option>planejado</option><option>concluido</option></select></div><div class="form-group"><label>Progresso (%)</label><input type="number" id="proj-progresso" min="0" max="100"/></div><div class="form-group"><label>Descrição</label><textarea id="proj-descricao" rows="2"></textarea></div></div><button class="btn-primary" onclick="salvarProjeto()">Adicionar Projeto</button><hr/><div id="lista-projetos"></div></div></div></div>
+    <div id="s-enquetes" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>Criar Enquete</h3></div><div class="admin-card-body"><div class="form-group"><label>Título</label><input type="text" id="poll-titulo"/></div><div class="form-group"><label>Descrição</label><textarea id="poll-desc" rows="2"></textarea></div><div class="form-group"><label>Opções</label><input type="text" id="poll-opcoes" placeholder="Opção 1, Opção 2, Opção 3"/></div><div class="form-group"><label>Data encerramento</label><input type="datetime-local" id="poll-fim"/></div><button class="btn-primary" onclick="criarEnquete()">Criar Enquete</button><hr/><div id="lista-enquetes"></div></div></div></div>
+    <div id="s-documentos" class="sindico-section"><div class="admin-card"><div class="admin-card-header"><h3>Upload Documentos</h3></div><div class="admin-card-body"><div class="form-group"><label>Título</label><input type="text" id="doc-titulo"/></div><div class="form-group"><label>Descrição</label><textarea id="doc-desc" rows="2"></textarea></div><div class="upload-area" onclick="document.getElementById('doc-arquivo').click()">📁 Clique para selecionar PDF<input type="file" id="doc-arquivo" accept=".pdf" style="display:none"/></div><button class="btn-primary" onclick="uploadDocumento()">Enviar</button><hr/><div id="lista-documentos"></div></div></div></div>
   </div>
 </div>
 
 <script>
-  // CONFIGURAÇÃO DO FIREBASE - CREDENCIAIS FORNECIDAS
+  // CONFIGURAÇÃO DO FIREBASE - SUAS CREDENCIAIS
   const firebaseConfig = {
     apiKey: "AIzaSyCwXXGdSZmtlhaOTt5QyjQUWMukTURbSRU",
     authDomain: "condominio-mg.firebaseapp.com",
@@ -281,6 +267,7 @@
     measurementId: "G-BPWN7F8HL0"
   };
 
+  // Inicializar Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.firestore();
@@ -309,7 +296,14 @@
     try {
       await auth.signInWithEmailAndPassword(email, pass);
       showToast('Login realizado!');
-    } catch(e) { document.getElementById('l-error').textContent = e.message; }
+      document.getElementById('l-error').textContent = '';
+    } catch(e) { 
+      let msg = e.message;
+      if (msg.includes('auth/configuration-not-found')) {
+        msg = 'Erro: Autenticação não configurada. Configure no Firebase Console > Authentication';
+      }
+      document.getElementById('l-error').textContent = msg; 
+    }
   }
 
   async function loginGoogle() {
@@ -327,7 +321,13 @@
         });
       }
       showToast('Login com Google realizado!');
-    } catch(e) { document.getElementById('l-error').textContent = e.message; }
+    } catch(e) { 
+      let msg = e.message;
+      if (msg.includes('auth/configuration-not-found')) {
+        msg = 'Erro: Login com Google não configurado. Ative no Firebase Console > Authentication';
+      }
+      document.getElementById('l-error').textContent = msg; 
+    }
   }
 
   async function registerEmail() {
@@ -336,7 +336,7 @@
     const email = document.getElementById('r-email').value;
     const pass = document.getElementById('r-pass').value;
     if (!nome || !casa || !email || pass.length < 6) {
-      document.getElementById('r-error').textContent = 'Preencha todos os campos corretamente';
+      document.getElementById('r-error').textContent = 'Preencha todos os campos corretamente (senha: mínimo 6 caracteres)';
       return;
     }
     try {
@@ -349,7 +349,11 @@
         createdAt: new Date() 
       });
       showToast('Cadastro realizado!');
-    } catch(e) { document.getElementById('r-error').textContent = e.message; }
+      document.getElementById('r-error').textContent = '';
+      document.getElementById('r-success').textContent = 'Conta criada com sucesso!';
+    } catch(e) { 
+      document.getElementById('r-error').textContent = e.message; 
+    }
   }
 
   async function logout() {
@@ -465,6 +469,17 @@
     document.getElementById('documentos-dinamico').innerHTML = docsHtml || '<p>Nenhum documento disponível.</p>';
   }
 
+  async function carregarComentarios(pollId) {
+    const snap = await db.collection(`polls/${pollId}/comments`).orderBy('createdAt', 'desc').get();
+    const container = document.getElementById(`coments-${pollId}`);
+    if (!container) return;
+    container.innerHTML = '';
+    snap.forEach(doc => {
+      const c = doc.data();
+      container.innerHTML += `<div class="comment"><strong>${c.userNome}</strong><br>${c.texto}</div>`;
+    });
+  }
+
   async function votarEnquete(pollId, option) {
     if (!currentUser) { showToast('Faça login para votar'); return; }
     const pollRef = db.collection('polls').doc(pollId);
@@ -491,18 +506,8 @@
     carregarComentarios(pollId);
   }
 
-  async function carregarComentarios(pollId) {
-    const snap = await db.collection(`polls/${pollId}/comments`).orderBy('createdAt', 'desc').get();
-    const container = document.getElementById(`coments-${pollId}`);
-    if (!container) return;
-    container.innerHTML = '';
-    snap.forEach(doc => {
-      const c = doc.data();
-      container.innerHTML += `<div class="comment"><strong>${c.userNome}</strong><br>${c.texto}</div>`;
-    });
-  }
-
   async function carregarDadosAdmin() {
+    // Financeiro
     const financeiroSnap = await db.collection('finances').orderBy('mes', 'desc').get();
     let histHtml = '<table><tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr>';
     financeiroSnap.forEach(doc => {
@@ -512,6 +517,7 @@
     histHtml += '</table>';
     document.getElementById('historico-financeiro').innerHTML = histHtml;
 
+    // Projetos
     const projetosSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
     let projList = '';
     projetosSnap.forEach(doc => {
@@ -520,6 +526,7 @@
     });
     document.getElementById('lista-projetos').innerHTML = projList || '<p>Nenhum projeto</p>';
 
+    // Enquetes
     const enquetesSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
     let enqList = '';
     enquetesSnap.forEach(doc => {
@@ -528,6 +535,7 @@
     });
     document.getElementById('lista-enquetes').innerHTML = enqList || '<p>Nenhuma enquete</p>';
 
+    // Documentos
     const docsSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
     let docsList = '';
     docsSnap.forEach(doc => {
