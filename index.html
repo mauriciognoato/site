@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
-  <title>Condomínio Maurício Gnoato</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <title>Condomínio Maurício Gnoato - Gestão Transparente</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -131,9 +131,9 @@
       text-align: center;
     }
     .login-logo {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
       object-fit: cover;
       margin: 0 auto 16px;
       background: var(--bege-fundo);
@@ -187,15 +187,16 @@
       margin-bottom: 5px;
       text-transform: uppercase;
     }
-    .form-group input {
+    .form-group input, .form-group select, .form-group textarea {
       width: 100%;
       padding: 10px 14px;
       border: 1px solid var(--borda);
       border-radius: 8px;
       font-size: 0.85rem;
       background: var(--bege-fundo);
+      font-family: 'Montserrat', sans-serif;
     }
-    .form-group input:focus {
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
       outline: none;
       border-color: var(--dourado);
     }
@@ -235,9 +236,9 @@
       gap: 10px;
     }
     .navbar-logo img {
-      height: 45px;
-      width: 45px;
-      border-radius: 50%;
+      height: 50px;
+      width: 50px;
+      border-radius: 15px;
       object-fit: cover;
       background: var(--bege-fundo);
       padding: 4px;
@@ -329,12 +330,13 @@
       text-align: center;
     }
     .hero-logo {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
       margin: 0 auto 16px;
       background: rgba(255,255,255,0.1);
       padding: 8px;
+      object-fit: cover;
     }
     .hero h1 {
       font-size: 2rem;
@@ -693,7 +695,7 @@
       display: flex;
     }
     .sindico-sidebar {
-      width: 260px;
+      width: 280px;
       background: var(--azul-escuro);
       color: white;
       min-height: calc(100vh - 56px);
@@ -706,9 +708,10 @@
       gap: 12px;
     }
     .sidebar-logo img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      border-radius: 15px;
+      object-fit: cover;
     }
     .sidebar-menu {
       list-style: none;
@@ -797,6 +800,15 @@
     .sindico-section.active {
       display: block;
     }
+    .morador-card {
+      padding: 12px;
+      border-bottom: 1px solid var(--borda);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
     /* Responsivo */
     @media (max-width: 768px) {
@@ -863,7 +875,7 @@
 <!-- ========== PÁGINA DE LOGIN ========== -->
 <div id="page-login">
   <div class="login-card">
-    <img src="logo.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/80?text=MG'"/>
+    <img src="logo.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/100?text=MG'"/>
     <h2>Maurício Gnoato</h2>
     <p class="subtitle">Acesso exclusivo para condôminos e síndico</p>
     <div class="login-tabs">
@@ -1073,6 +1085,7 @@
     <h2>⚙️ Painel do Síndico</h2>
     <div style="display:flex;gap:10px;align-items:center">
       <span id="sindico-name" style="font-size:0.8rem"></span>
+      <button class="btn btn-secondary btn-sm" onclick="goToPublicSite()">🌐 Ver Site</button>
       <button class="btn-logout" style="background:rgba(255,255,255,0.2);color:white" onclick="logout()">Sair</button>
       <button class="hamburger" style="display:flex" onclick="toggleSindicoSidebar()"><span></span><span></span><span></span></button>
     </div>
@@ -1102,7 +1115,7 @@
       <!-- Painel -->
       <div id="s-painel" class="sindico-section active">
         <div class="admin-card">
-          <div class="admin-card-header"><h3>Resumo do Condomínio</h3></div>
+          <div class="admin-card-header"><h3>📊 Resumo do Condomínio</h3></div>
           <div class="admin-card-body"><div id="admin-stats"></div></div>
         </div>
       </div>
@@ -1110,17 +1123,17 @@
       <!-- Financeiro -->
       <div id="s-financeiro" class="sindico-section">
         <div class="admin-card">
-          <div class="admin-card-header"><h3>Gerenciar Dados Financeiros</h3></div>
+          <div class="admin-card-header"><h3>💰 Gerenciar Dados Financeiros</h3></div>
           <div class="admin-card-body">
             <div class="grid2">
               <div class="form-group"><label>Mês/Ano</label><input type="month" id="fin-mes"/></div>
-              <div class="form-group"><label>Total Receitas (R$)</label><input type="number" id="fin-receitas" step="0.01"/></div>
-              <div class="form-group"><label>Total Despesas (R$)</label><input type="number" id="fin-despesas" step="0.01"/></div>
-              <div class="form-group"><label>Detalhamento</label><textarea id="fin-detalhes" rows="2" placeholder='{"Energia":1840,"Água":980}'></textarea></div>
+              <div class="form-group"><label>Total Receitas (R$)</label><input type="number" id="fin-receitas" step="0.01" placeholder="0,00"/></div>
+              <div class="form-group"><label>Total Despesas (R$)</label><input type="number" id="fin-despesas" step="0.01" placeholder="0,00"/></div>
+              <div class="form-group"><label>Detalhamento (opcional)</label><textarea id="fin-detalhes" rows="2" placeholder='{"Energia":1840,"Água":980,"Manutenção":1200}'></textarea></div>
             </div>
-            <button class="btn btn-primary" onclick="salvarFinanceiro()">Salvar Dados</button>
+            <button class="btn btn-primary" onclick="salvarFinanceiro()">💾 Salvar Dados Financeiros</button>
             <hr style="margin:20px 0"/>
-            <h4>Histórico Financeiro</h4>
+            <h4>📋 Histórico Financeiro</h4>
             <div id="historico-financeiro"></div>
           </div>
         </div>
@@ -1129,16 +1142,17 @@
       <!-- Projetos -->
       <div id="s-projetos" class="sindico-section">
         <div class="admin-card">
-          <div class="admin-card-header"><h3>Gerenciar Projetos</h3></div>
+          <div class="admin-card-header"><h3>🔨 Gerenciar Projetos</h3></div>
           <div class="admin-card-body">
             <div class="grid2">
-              <div class="form-group"><label>Título</label><input type="text" id="proj-titulo"/></div>
+              <div class="form-group"><label>Título do Projeto</label><input type="text" id="proj-titulo" placeholder="Ex: Reforma da Piscina"/></div>
               <div class="form-group"><label>Status</label><select id="proj-status"><option>andamento</option><option>planejado</option><option>concluido</option></select></div>
-              <div class="form-group"><label>Progresso (%)</label><input type="number" id="proj-progresso" min="0" max="100"/></div>
-              <div class="form-group"><label>Descrição</label><textarea id="proj-descricao" rows="2"></textarea></div>
+              <div class="form-group"><label>Progresso (%)</label><input type="number" id="proj-progresso" min="0" max="100" value="0"/></div>
+              <div class="form-group"><label>Descrição</label><textarea id="proj-descricao" rows="2" placeholder="Descrição do projeto..."></textarea></div>
             </div>
-            <button class="btn btn-primary" onclick="salvarProjeto()">Adicionar Projeto</button>
+            <button class="btn btn-primary" onclick="salvarProjeto()">➕ Adicionar Projeto</button>
             <hr style="margin:20px 0"/>
+            <h4>📋 Projetos Cadastrados</h4>
             <div id="lista-projetos"></div>
           </div>
         </div>
@@ -1147,14 +1161,15 @@
       <!-- Enquetes -->
       <div id="s-enquetes" class="sindico-section">
         <div class="admin-card">
-          <div class="admin-card-header"><h3>Criar Enquete</h3></div>
+          <div class="admin-card-header"><h3>🗳️ Gerenciar Enquetes</h3></div>
           <div class="admin-card-body">
-            <div class="form-group"><label>Título</label><input type="text" id="poll-titulo"/></div>
-            <div class="form-group"><label>Descrição</label><textarea id="poll-desc" rows="2"></textarea></div>
+            <div class="form-group"><label>Título da Enquete</label><input type="text" id="poll-titulo" placeholder="Ex: Qual melhoria devemos priorizar?"/></div>
+            <div class="form-group"><label>Descrição</label><textarea id="poll-desc" rows="2" placeholder="Descreva o que será votado..."></textarea></div>
             <div class="form-group"><label>Opções (separadas por vírgula)</label><input type="text" id="poll-opcoes" placeholder="Opção 1, Opção 2, Opção 3"/></div>
             <div class="form-group"><label>Data de encerramento</label><input type="datetime-local" id="poll-fim"/></div>
-            <button class="btn btn-primary" onclick="criarEnquete()">Criar Enquete</button>
+            <button class="btn btn-primary" onclick="criarEnquete()">➕ Criar Enquete</button>
             <hr style="margin:20px 0"/>
+            <h4>📋 Enquetes Criadas</h4>
             <div id="lista-enquetes"></div>
           </div>
         </div>
@@ -1163,13 +1178,17 @@
       <!-- Documentos -->
       <div id="s-documentos" class="sindico-section">
         <div class="admin-card">
-          <div class="admin-card-header"><h3>Upload de Documentos</h3></div>
+          <div class="admin-card-header"><h3>📁 Upload de Documentos</h3></div>
           <div class="admin-card-body">
-            <div class="form-group"><label>Título</label><input type="text" id="doc-titulo"/></div>
-            <div class="form-group"><label>Descrição</label><textarea id="doc-desc" rows="2"></textarea></div>
-            <div class="upload-area" onclick="document.getElementById('doc-arquivo').click()">📁 Clique para selecionar arquivo PDF<input type="file" id="doc-arquivo" accept=".pdf" style="display:none"/></div>
-            <button class="btn btn-primary" onclick="uploadDocumento()">Enviar Documento</button>
+            <div class="form-group"><label>Título do Documento</label><input type="text" id="doc-titulo" placeholder="Ex: Prestação de Contas - Março 2026"/></div>
+            <div class="form-group"><label>Descrição</label><textarea id="doc-desc" rows="2" placeholder="Breve descrição do documento..."></textarea></div>
+            <div class="upload-area" onclick="document.getElementById('doc-arquivo').click()">
+              📁 Clique para selecionar arquivo PDF
+              <input type="file" id="doc-arquivo" accept=".pdf" style="display:none"/>
+            </div>
+            <button class="btn btn-primary" onclick="uploadDocumento()">📤 Enviar Documento</button>
             <hr style="margin:20px 0"/>
+            <h4>📋 Documentos Enviados</h4>
             <div id="lista-documentos"></div>
           </div>
         </div>
@@ -1178,7 +1197,7 @@
       <!-- Condôminos -->
       <div id="s-moradores" class="sindico-section">
         <div class="admin-card">
-          <div class="admin-card-header"><h3>Condôminos Cadastrados</h3></div>
+          <div class="admin-card-header"><h3>👥 Condôminos Cadastrados</h3></div>
           <div class="admin-card-body">
             <div id="lista-moradores"></div>
           </div>
@@ -1260,6 +1279,7 @@
   async function logout() {
     await auth.signOut();
     showToast('Logout realizado');
+    window.location.reload();
   }
 
   function toggleMenu() {
@@ -1274,6 +1294,11 @@
     document.getElementById('page-site').classList.remove('active');
     document.getElementById('page-sindico').classList.add('active');
     carregarDadosAdmin();
+  }
+
+  function goToPublicSite() {
+    document.getElementById('page-sindico').classList.remove('active');
+    document.getElementById('page-site').classList.add('active');
   }
 
   function showSindicoSection(sectionId, el) {
@@ -1447,7 +1472,7 @@
     }
     document.getElementById('admin-stats').innerHTML = `
       <div class="grid2">
-        <div class="stat-card"><div class="stat-number">${totalMoradores}</div><div>Moradores</div></div>
+        <div class="stat-card"><div class="stat-number">${totalMoradores}</div><div>Moradores Cadastrados</div></div>
         <div class="stat-card"><div class="stat-number">${projetosSnap.size}</div><div>Projetos</div></div>
         <div class="stat-card"><div class="stat-number">R$ ${ultimoSaldo.toFixed(0)}</div><div>Último Saldo</div></div>
         <div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div>
@@ -1469,7 +1494,7 @@
     let projList = '';
     projSnap.forEach(doc => {
       const p = doc.data();
-      projList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.progresso}%</span><button class="btn-danger btn-sm" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
+      projList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.progresso}% - ${p.status}</span><button class="btn-danger btn-sm" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
     });
     document.getElementById('lista-projetos').innerHTML = projList || '<p>Nenhum projeto</p>';
 
@@ -1478,7 +1503,7 @@
     let pollList = '';
     pollSnap.forEach(doc => {
       const p = doc.data();
-      pollList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.totalVotos || 0} votos</span><button class="btn-danger btn-sm" onclick="deletarEnquete('${doc.id}')">Excluir</button></div>`;
+      pollList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.totalVotos || 0} votos - Encerra: ${new Date(p.endDate).toLocaleDateString()}</span><button class="btn-danger btn-sm" onclick="deletarEnquete('${doc.id}')">Excluir</button></div>`;
     });
     document.getElementById('lista-enquetes').innerHTML = pollList || '<p>Nenhuma enquete</p>';
 
@@ -1487,7 +1512,7 @@
     let docsList = '';
     docsSnap.forEach(doc => {
       const d = doc.data();
-      docsList += `<div class="document-item"><span><strong>${d.titulo}</strong></span><button class="btn-danger btn-sm" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
+      docsList += `<div class="document-item"><span><strong>${d.titulo}</strong> - ${d.descricao}</span><button class="btn-danger btn-sm" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
     });
     document.getElementById('lista-documentos').innerHTML = docsList || '<p>Nenhum documento</p>';
 
@@ -1511,6 +1536,9 @@
     showToast('Dados financeiros salvos!');
     carregarDadosPublicos();
     carregarDadosAdmin();
+    document.getElementById('fin-mes').value = '';
+    document.getElementById('fin-receitas').value = '';
+    document.getElementById('fin-despesas').value = '';
   }
 
   async function salvarProjeto() {
@@ -1523,6 +1551,9 @@
     showToast('Projeto salvo!');
     carregarDadosPublicos();
     carregarDadosAdmin();
+    document.getElementById('proj-titulo').value = '';
+    document.getElementById('proj-progresso').value = '';
+    document.getElementById('proj-descricao').value = '';
   }
 
   async function deletarProjeto(id) {
@@ -1542,6 +1573,9 @@
     showToast('Enquete criada!');
     carregarDadosPublicos();
     carregarDadosAdmin();
+    document.getElementById('poll-titulo').value = '';
+    document.getElementById('poll-desc').value = '';
+    document.getElementById('poll-opcoes').value = '';
   }
 
   async function deletarEnquete(id) {
@@ -1563,6 +1597,9 @@
     showToast('Documento enviado!');
     carregarDadosPublicos();
     carregarDadosAdmin();
+    document.getElementById('doc-titulo').value = '';
+    document.getElementById('doc-desc').value = '';
+    document.getElementById('doc-arquivo').value = '';
   }
 
   async function deletarDocumento(id) {
@@ -1584,6 +1621,7 @@
     showToast('Mensagem enviada! O síndico responderá em breve.');
   }
 
+  // Expor funções globalmente
   window.switchLoginTab = switchLoginTab;
   window.login = login;
   window.register = register;
@@ -1591,6 +1629,7 @@
   window.toggleMenu = toggleMenu;
   window.toggleSindicoSidebar = toggleSindicoSidebar;
   window.goToSindico = goToSindico;
+  window.goToPublicSite = goToPublicSite;
   window.showSindicoSection = showSindicoSection;
   window.salvarFinanceiro = salvarFinanceiro;
   window.salvarProjeto = salvarProjeto;
