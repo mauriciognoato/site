@@ -63,7 +63,6 @@
     .login-logo { width: 100px; height: 100px; border-radius: 20px; object-fit: cover; margin: 0 auto 16px; background: var(--bege-fundo); padding: 8px; }
     .login-card h2 { font-size: 1.5rem; margin-bottom: 4px; }
     .login-card .subtitle { font-size: 0.8rem; color: #999; margin-bottom: 24px; }
-    .login-form { display: block; }
     .form-group { margin-bottom: 16px; text-align: left; }
     .form-group label { display: block; font-size: 0.7rem; font-weight: 600; color: var(--azul); margin-bottom: 5px; text-transform: uppercase; }
     .form-group input { width: 100%; padding: 10px 14px; border: 1px solid var(--borda); border-radius: 8px; font-size: 0.85rem; background: var(--bege-fundo); }
@@ -209,53 +208,20 @@
     <img src="logo.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/100?text=MG'"/>
     <h2>Maurício Gnoato</h2>
     <p class="subtitle">Acesso exclusivo para condôminos e síndico</p>
-    <div id="formLogin" class="login-form">
-      <div class="form-group">
-        <label>E-mail</label>
-        <input type="email" id="loginEmail" placeholder="seu@email.com"/>
-      </div>
-      <div class="form-group">
-        <label>Senha</label>
-        <input type="password" id="loginSenha" placeholder="••••••••" onkeydown="if(event.key==='Enter')fazerLogin()"/>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="fazerLogin()">Entrar</button>
-      <button class="btn btn-secondary btn-full" onclick="irParaCadastro()" style="margin-top: 10px;">Criar Conta</button>
-      <p class="auth-error" id="loginError"></p>
-      <div class="admin-info">
-        <strong>🔑 Acesso Administrativo:</strong><br/>
-        E-mail: sindico@condominio.com<br/>
-        Senha: sindico123
-      </div>
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" id="loginEmail" placeholder="seu@email.com"/>
     </div>
-  </div>
-</div>
-
-<!-- PÁGINA DE CADASTRO -->
-<div id="cadastroPage" class="login-page" style="display: none;">
-  <div class="login-card">
-    <img src="logo.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/100?text=MG'"/>
-    <h2>Criar Conta</h2>
-    <p class="subtitle">Cadastre-se para acessar o condomínio</p>
-    <div class="login-form">
-      <div class="form-group">
-        <label>Nome completo</label>
-        <input type="text" id="regNome" placeholder="João da Silva"/>
-      </div>
-      <div class="form-group">
-        <label>Casa nº (1-25)</label>
-        <input type="number" id="regCasa" placeholder="Ex.: 7" min="1" max="25"/>
-      </div>
-      <div class="form-group">
-        <label>E-mail</label>
-        <input type="email" id="regEmail" placeholder="seu@email.com"/>
-      </div>
-      <div class="form-group">
-        <label>Senha (mín. 6 caracteres)</label>
-        <input type="password" id="regSenha" placeholder="••••••••"/>
-      </div>
-      <button class="btn btn-primary btn-full" onclick="fazerCadastro()">Criar conta</button>
-      <button class="btn btn-secondary btn-full" onclick="voltarParaLogin()" style="margin-top: 10px;">Voltar para Login</button>
-      <p class="auth-error" id="regError"></p>
+    <div class="form-group">
+      <label>Senha</label>
+      <input type="password" id="loginSenha" placeholder="••••••••" onkeydown="if(event.key==='Enter')fazerLogin()"/>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="fazerLogin()">Entrar</button>
+    <p class="auth-error" id="loginError"></p>
+    <div class="admin-info">
+      <strong>🔑 Acesso Administrativo:</strong><br/>
+      E-mail: sindico@condominio.com<br/>
+      Senha: sindico123
     </div>
   </div>
 </div>
@@ -363,16 +329,6 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  function irParaCadastro() {
-    document.getElementById('loginPage').style.display = 'none';
-    document.getElementById('cadastroPage').style.display = 'flex';
-  }
-
-  function voltarParaLogin() {
-    document.getElementById('cadastroPage').style.display = 'none';
-    document.getElementById('loginPage').style.display = 'flex';
-  }
-
   async function fazerLogin() {
     const email = document.getElementById('loginEmail').value;
     const senha = document.getElementById('loginSenha').value;
@@ -384,45 +340,53 @@
     
     try {
       const result = await auth.signInWithEmailAndPassword(email, senha);
-      console.log("Login bem-sucedido:", result.user.email);
+      console.log("Login OK:", result.user.email);
       mostrarToast('Login realizado!');
-      // O redirecionamento será feito pelo onAuthStateChanged
+      
+      // Forçar redirecionamento manual
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('sitePage').classList.add('active');
+      
+      // Atualizar interface do usuário
+      const EMAIL_ADMIN = "sindico@condominio.com";
+      isAdmin = (result.user.email === EMAIL_ADMIN);
+      
+      if (isAdmin) {
+        document.getElementById('userName').textContent = "Síndico";
+        document.getElementById('userAvatar').textContent = "S";
+        document.getElementById('sindicoName').textContent = "Síndico";
+        document.getElementById('btnSindico').style.display = 'block';
+        
+        // Salvar no Firestore
+        await db.collection('users').doc(result.user.uid).set({
+          nome: "Síndico",
+          email: result.user.email,
+          isAdmin: true,
+          casa: 0
+        }, { merge: true });
+      } else {
+        document.getElementById('userName').textContent = result.user.email.split('@')[0];
+        document.getElementById('userAvatar').textContent = result.user.email[0].toUpperCase();
+        document.getElementById('btnSindico').style.display = 'none';
+      }
+      
+      usuarioAtual = result.user;
+      carregarDadosPublicos();
+      
     } catch(e) {
-      console.error("Erro no login:", e);
+      console.error("Erro:", e);
       document.getElementById('loginError').textContent = e.message;
-    }
-  }
-
-  async function fazerCadastro() {
-    const nome = document.getElementById('regNome').value;
-    const casa = document.getElementById('regCasa').value;
-    const email = document.getElementById('regEmail').value;
-    const senha = document.getElementById('regSenha').value;
-    
-    if (!nome || !casa || !email || senha.length < 6) {
-      document.getElementById('regError').textContent = 'Preencha todos os campos (senha: mínimo 6)';
-      return;
-    }
-    
-    try {
-      const cred = await auth.createUserWithEmailAndPassword(email, senha);
-      await db.collection('users').doc(cred.user.uid).set({
-        nome,
-        casa: parseInt(casa),
-        email,
-        isAdmin: false,
-        createdAt: new Date()
-      });
-      mostrarToast('Cadastro realizado! Faça login.');
-      voltarParaLogin();
-    } catch(e) {
-      document.getElementById('regError').textContent = e.message;
     }
   }
 
   async function fazerLogout() {
     await auth.signOut();
     mostrarToast('Logout realizado');
+    document.getElementById('sitePage').classList.remove('active');
+    document.getElementById('sindicoPage').classList.remove('active');
+    document.getElementById('loginPage').style.display = 'flex';
+    usuarioAtual = null;
+    isAdmin = false;
   }
 
   function toggleMenu() {
@@ -456,77 +420,6 @@
     document.querySelectorAll('.sidebar-menu li a').forEach(a => a.classList.remove('active'));
     if (el) el.classList.add('active');
   }
-
-  // FUNÇÃO PRINCIPAL - Monitora autenticação e REDIRECIONA
-  auth.onAuthStateChanged(async (user) => {
-    console.log("onAuthStateChanged executado. User:", user ? user.email : "null");
-    
-    if (user) {
-      // USUÁRIO LOGADO
-      usuarioAtual = user;
-      
-      // Verifica se é o admin específico
-      const EMAIL_ADMIN = "sindico@condominio.com";
-      isAdmin = (user.email === EMAIL_ADMIN);
-      
-      console.log("isAdmin:", isAdmin);
-      
-      // Atualiza interface
-      if (isAdmin) {
-        document.getElementById('userName').textContent = "Síndico";
-        document.getElementById('userAvatar').textContent = "S";
-        document.getElementById('sindicoName').textContent = "Síndico";
-        document.getElementById('btnSindico').style.display = 'block';
-        
-        // Salva no Firestore se necessário
-        try {
-          await db.collection('users').doc(user.uid).set({
-            nome: "Síndico",
-            email: user.email,
-            isAdmin: true,
-            casa: 0
-          }, { merge: true });
-        } catch(e) { console.error(e); }
-      } else {
-        document.getElementById('btnSindico').style.display = 'none';
-        try {
-          const doc = await db.collection('users').doc(user.uid).get();
-          if (doc.exists) {
-            const dados = doc.data();
-            document.getElementById('userName').textContent = dados.nome || user.email.split('@')[0];
-            document.getElementById('userAvatar').textContent = (dados.nome || 'U')[0].toUpperCase();
-          } else {
-            document.getElementById('userName').textContent = user.email.split('@')[0];
-            document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
-          }
-        } catch(e) {
-          document.getElementById('userName').textContent = user.email.split('@')[0];
-          document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
-        }
-      }
-      
-      // REDIRECIONAR: Esconder login e mostrar site
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('cadastroPage').style.display = 'none';
-      document.getElementById('sitePage').classList.add('active');
-      
-      console.log("Site exibido. loginPage ocultado.");
-      
-      // Carregar dados
-      carregarDadosPublicos();
-      
-    } else {
-      // USUÁRIO DESLOGADO
-      console.log("Usuário deslogado. Exibindo página de login.");
-      usuarioAtual = null;
-      isAdmin = false;
-      
-      document.getElementById('sitePage').classList.remove('active');
-      document.getElementById('sindicoPage').classList.remove('active');
-      document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('cadastroPage').style.display = 'none';
-    }
-  });
 
   async function carregarDadosPublicos() {
     try {
@@ -651,9 +544,9 @@
       let histHtml = '耒<thead> <th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th> </thead><tbody>';
       histSnap.forEach(doc => {
         const d = doc.data();
-        histHtml += `  <td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td> `;
+        histHtml += `   <tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
       });
-      histHtml += '</tbody> </table>';
+      histHtml += '</tbody></table>';
       document.getElementById('historicoFinanceiro').innerHTML = histHtml;
 
       const projListSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
@@ -681,12 +574,12 @@
       document.getElementById('listaDocumentos').innerHTML = docsList;
 
       const moradoresSnap = await db.collection('users').orderBy('casa').get();
-      let moradoresList = '耒<thead> <th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th> </thead><tbody>';
+      let moradoresList = '<table><thead><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr></thead><tbody>';
       moradoresSnap.forEach(doc => {
         const u = doc.data();
-        moradoresList += ` <td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td> `;
+        moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
       });
-      moradoresList += '</tbody> </table>';
+      moradoresList += '</tbody></table>';
       document.getElementById('listaMoradores').innerHTML = moradoresList;
     } catch(e) { console.error(e); }
   }
@@ -759,10 +652,7 @@
   
   function enviarContato(e) { e.preventDefault(); mostrarToast('Mensagem enviada!'); }
 
-  window.irParaCadastro = irParaCadastro;
-  window.voltarParaLogin = voltarParaLogin;
   window.fazerLogin = fazerLogin;
-  window.fazerCadastro = fazerCadastro;
   window.fazerLogout = fazerLogout;
   window.toggleMenu = toggleMenu;
   window.toggleSidebar = toggleSidebar;
