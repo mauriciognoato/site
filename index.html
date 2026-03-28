@@ -222,7 +222,7 @@
       <button class="btn btn-secondary btn-full" onclick="irParaCadastro()" style="margin-top: 10px;">Criar Conta</button>
       <p class="auth-error" id="loginError"></p>
       <div class="admin-info">
-        <strong>🔑 Acesso Admin:</strong><br/>
+        <strong>🔑 Acesso Administrativo:</strong><br/>
         E-mail: sindico@condominio.com<br/>
         Senha: sindico123
       </div>
@@ -385,7 +385,6 @@
     try {
       await auth.signInWithEmailAndPassword(email, senha);
       mostrarToast('Login realizado!');
-      // O redirecionamento será feito pelo onAuthStateChanged
     } catch(e) {
       document.getElementById('loginError').textContent = e.message;
     }
@@ -455,49 +454,74 @@
     if (el) el.classList.add('active');
   }
 
-  // Monitorar autenticação e redirecionar automaticamente
+  // Monitorar autenticação e verificar se é o admin específico
   auth.onAuthStateChanged(async (user) => {
     console.log("Auth state changed:", user ? user.email : "Nenhum usuário");
     
     if (user) {
-      // Usuário logado
       usuarioAtual = user;
       
-      try {
-        const doc = await db.collection('users').doc(user.uid).get();
-        const dados = doc.exists ? doc.data() : { nome: user.email.split('@')[0], isAdmin: false };
-        isAdmin = dados.isAdmin || false;
-        
-        // Atualizar interface do site público
-        document.getElementById('userName').textContent = dados.nome || user.email.split('@')[0];
-        document.getElementById('userAvatar').textContent = (dados.nome || 'U')[0].toUpperCase();
-        document.getElementById('sindicoName').textContent = dados.nome || 'Síndico';
-        
-        const btnSindico = document.getElementById('btnSindico');
-        if (btnSindico) {
-          btnSindico.style.display = isAdmin ? 'block' : 'none';
+      // VERIFICA SE O E-MAIL É O ADMIN ESPECÍFICO
+      const EMAIL_ADMIN = "sindico@condominio.com";
+      isAdmin = (user.email === EMAIL_ADMIN);
+      
+      // Se for admin, salvar no Firestore para referência futura
+      if (isAdmin) {
+        try {
+          await db.collection('users').doc(user.uid).set({
+            nome: "Síndico",
+            email: user.email,
+            isAdmin: true,
+            casa: 0,
+            createdAt: new Date()
+          }, { merge: true });
+          console.log("Admin verificado e salvo no Firestore");
+        } catch(e) {
+          console.error("Erro ao salvar admin:", e);
         }
-        
-        // REDIRECIONAR: Esconder login e mostrar site
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('cadastroPage').style.display = 'none';
-        document.getElementById('sitePage').classList.add('active');
-        
-        // Carregar dados
-        carregarDadosPublicos();
-        
-      } catch (err) {
-        console.error("Erro ao carregar dados do usuário:", err);
-        // Mesmo com erro, mostra o site
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('sitePage').classList.add('active');
+      } else {
+        // Para usuários comuns, tentar buscar dados do Firestore
+        try {
+          const doc = await db.collection('users').doc(user.uid).get();
+          if (doc.exists) {
+            const dados = doc.data();
+            document.getElementById('userName').textContent = dados.nome || user.email.split('@')[0];
+            document.getElementById('userAvatar').textContent = (dados.nome || 'U')[0].toUpperCase();
+          } else {
+            document.getElementById('userName').textContent = user.email.split('@')[0];
+            document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
+          }
+        } catch(e) {
+          document.getElementById('userName').textContent = user.email.split('@')[0];
+          document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
+        }
       }
+      
+      // Atualizar interface do admin
+      if (isAdmin) {
+        document.getElementById('userName').textContent = "Síndico";
+        document.getElementById('userAvatar').textContent = "S";
+        document.getElementById('sindicoName').textContent = "Síndico";
+        document.getElementById('btnSindico').style.display = 'block';
+        console.log("✅ Admin detectado! Botão do síndico visível.");
+      } else {
+        document.getElementById('btnSindico').style.display = 'none';
+        console.log("Usuário comum, sem acesso ao painel do síndico.");
+      }
+      
+      // Redirecionar para o site
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('cadastroPage').style.display = 'none';
+      document.getElementById('sitePage').classList.add('active');
+      
+      // Carregar dados
+      carregarDadosPublicos();
+      
     } else {
       // Usuário deslogado
       usuarioAtual = null;
       isAdmin = false;
       
-      // Redirecionar para login
       document.getElementById('sitePage').classList.remove('active');
       document.getElementById('sindicoPage').classList.remove('active');
       document.getElementById('loginPage').style.display = 'flex';
@@ -625,12 +649,12 @@
       document.getElementById('adminStats').innerHTML = `<div class="grid2"><div class="stat-card"><div class="stat-number">${usersSnap.size}</div><div>Moradores</div></div><div class="stat-card"><div class="stat-number">${projSnap.size}</div><div>Projetos</div></div><div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div></div>`;
 
       const histSnap = await db.collection('finances').orderBy('mes', 'desc').get();
-      let histHtml = '耒<thead> <th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th> </thead><tbody>';
+      let histHtml = '<table><thead><tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr></thead><tbody>';
       histSnap.forEach(doc => {
         const d = doc.data();
-        histHtml += `  <td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td> `;
+        histHtml += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
       });
-      histHtml += '</tbody> </table>';
+      histHtml += '</tbody></table>';
       document.getElementById('historicoFinanceiro').innerHTML = histHtml;
 
       const projListSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
@@ -658,12 +682,12 @@
       document.getElementById('listaDocumentos').innerHTML = docsList;
 
       const moradoresSnap = await db.collection('users').orderBy('casa').get();
-      let moradoresList = '耒<thead> <th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th> </thead><tbody>';
+      let moradoresList = '<table><thead><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr></thead><tbody>';
       moradoresSnap.forEach(doc => {
         const u = doc.data();
-        moradoresList += `  <td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td> `;
+        moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
       });
-      moradoresList += '</tbody> </table>';
+      moradoresList += '</tbody></table>';
       document.getElementById('listaMoradores').innerHTML = moradoresList;
     } catch(e) { console.error(e); }
   }
