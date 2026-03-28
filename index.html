@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
-  <title>Condomínio Maurício Gnoato - Gestão Transparente</title>
+  <title>Condomínio Maurício Gnoato</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -38,7 +38,6 @@
     .toast { position: fixed; bottom: 20px; right: 20px; background: var(--azul); color: white; padding: 12px 20px; border-radius: 8px; transform: translateY(80px); opacity: 0; transition: all 0.3s; z-index: 9999; }
     .toast.show { transform: translateY(0); opacity: 1; }
 
-    /* PÁGINA DE LOGIN */
     .login-page {
       position: fixed;
       top: 0;
@@ -72,15 +71,7 @@
     .form-group label { display: block; font-size: 0.7rem; font-weight: 600; color: var(--azul); margin-bottom: 5px; text-transform: uppercase; }
     .form-group input { width: 100%; padding: 10px 14px; border: 1px solid var(--borda); border-radius: 8px; font-size: 0.85rem; background: var(--bege-fundo); }
     .auth-error { color: var(--vermelho); font-size: 0.75rem; margin-top: 8px; }
-    .admin-helper {
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid var(--borda);
-      font-size: 0.7rem;
-      color: #888;
-    }
 
-    /* SITE PRINCIPAL */
     .site-page { display: none; min-height: 100vh; }
     .site-page.active { display: block; }
     header { background: var(--azul); position: sticky; top: 0; z-index: 900; }
@@ -161,7 +152,6 @@
     footer h4 { color: var(--dourado); margin-bottom: 12px; }
     footer ul li a { color: #a0b0bc; font-size: 0.8rem; }
 
-    /* ÁREA DO SÍNDICO */
     .sindico-page { display: none; min-height: 100vh; background: #f5f7fa; }
     .sindico-page.active { display: block; }
     .sindico-header { background: var(--azul); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
@@ -207,7 +197,6 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- PÁGINA DE LOGIN -->
 <div id="loginPage" class="login-page">
   <div class="login-card">
     <img src="logo.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/100?text=MG'"/>
@@ -228,11 +217,8 @@
       </div>
       <button class="btn btn-primary btn-full" onclick="fazerLogin()">Entrar</button>
       <p class="auth-error" id="loginError"></p>
-      <div class="admin-helper">
-        <strong>🔑 Acesso Admin:</strong><br/>
-        E-mail: sindico@condominio.com<br/>
-        Senha: sindico123
-      </div>
+      <hr style="margin: 20px 0 10px 0;">
+      <button class="btn btn-secondary btn-full" onclick="criarAdminAutomatico()" style="margin-top: 10px;">🔧 Criar Usuário Admin</button>
     </div>
     <div id="formCadastrar" class="login-form">
       <div class="form-group">
@@ -257,7 +243,6 @@
   </div>
 </div>
 
-<!-- SITE PÚBLICO -->
 <div id="sitePage" class="site-page">
   <header>
     <div class="container">
@@ -299,7 +284,6 @@
   <footer><div class="container"><div class="footer-grid"><div><h4>Condomínio Maurício Gnoato</h4><p>📍 Endereço<br/>📞 (XX) XXXXX-XXXX<br/>✉️ sindico@condominio.com.br</p></div><div><h4>Links</h4><ul><li><a href="#sobre">Sobre</a></li><li><a href="#financeiro">Financeiro</a></li><li><a href="#documentos">Documentos</a></li></ul></div><div><h4>Acesso Rápido</h4><ul><li><a href="#">Boleto</a></li><li><a href="#">Regimento</a></li></ul></div></div><div class="footer-bottom" style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1)">© 2026 Condomínio Maurício Gnoato</div></div></footer>
 </div>
 
-<!-- ÁREA DO SÍNDICO -->
 <div id="sindicoPage" class="sindico-page">
   <div class="sindico-header">
     <h2>⚙️ Painel do Síndico</h2>
@@ -335,7 +319,6 @@
 </div>
 
 <script>
-  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyCwXXGdSZmtlhaOTt5QyjQUWMukTURbSRU",
     authDomain: "condominio-mg.firebaseapp.com",
@@ -360,36 +343,46 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  // Criar usuário admin automaticamente se não existir
-  async function criarUsuarioAdmin() {
+  // Função para criar usuário admin automaticamente
+  async function criarAdminAutomatico() {
+    const email = "sindico@condominio.com";
+    const senha = "sindico123";
+    
     try {
-      // Tentar criar usuário admin
-      const userCred = await auth.createUserWithEmailAndPassword("sindico@condominio.com", "sindico123");
+      // Tenta criar o usuário
+      const userCred = await auth.createUserWithEmailAndPassword(email, senha);
       await db.collection('users').doc(userCred.user.uid).set({
         nome: "Síndico",
-        email: "sindico@condominio.com",
+        email: email,
         isAdmin: true,
         casa: 0,
         createdAt: new Date()
       });
-      console.log("Usuário admin criado automaticamente!");
+      mostrarToast("✅ Usuário admin criado! Faça login com sindico@condominio.com / sindico123");
+      alert("Usuário admin criado!\n\nE-mail: sindico@condominio.com\nSenha: sindico123");
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         // Usuário já existe, verificar se é admin
-        const userQuery = await auth.signInWithEmailAndPassword("sindico@condominio.com", "sindico123");
-        const userDoc = await db.collection('users').doc(userQuery.user.uid).get();
-        if (!userDoc.exists || !userDoc.data().isAdmin) {
-          await db.collection('users').doc(userQuery.user.uid).set({
-            nome: "Síndico",
-            email: "sindico@condominio.com",
-            isAdmin: true,
-            casa: 0,
-            createdAt: new Date()
-          }, { merge: true });
-          console.log("Usuário existente atualizado para admin!");
+        try {
+          const userCred = await auth.signInWithEmailAndPassword(email, senha);
+          const userDoc = await db.collection('users').doc(userCred.user.uid).get();
+          if (!userDoc.exists || !userDoc.data().isAdmin) {
+            await db.collection('users').doc(userCred.user.uid).set({
+              nome: "Síndico",
+              email: email,
+              isAdmin: true,
+              casa: 0
+            }, { merge: true });
+            mostrarToast("✅ Usuário atualizado para admin!");
+          } else {
+            mostrarToast("Usuário já é admin!");
+          }
+          await auth.signOut();
+        } catch (loginError) {
+          mostrarToast("Usuário existe mas senha incorreta. Tente fazer login normalmente.");
         }
       } else {
-        console.log("Erro ao criar admin:", error);
+        mostrarToast("Erro: " + error.message);
       }
     }
   }
@@ -423,10 +416,8 @@
     
     try {
       const result = await auth.signInWithEmailAndPassword(email, senha);
-      console.log("Login realizado:", result.user.email);
       mostrarToast('Login realizado com sucesso!');
     } catch(e) {
-      console.error("Erro no login:", e);
       document.getElementById('loginError').textContent = e.message;
     }
   }
@@ -469,13 +460,11 @@
   }
 
   function toggleMenu() {
-    const nav = document.getElementById('mainNav');
-    nav.classList.toggle('open');
+    document.getElementById('mainNav').classList.toggle('open');
   }
   
   function toggleSidebar() {
-    const sidebar = document.getElementById('sindicoSidebar');
-    sidebar.classList.toggle('open');
+    document.getElementById('sindicoSidebar').classList.toggle('open');
   }
   
   function irParaSindico() {
@@ -502,12 +491,8 @@
     if (el) el.classList.add('active');
   }
 
-  // Monitorar autenticação e criar admin automaticamente
   auth.onAuthStateChanged(async (user) => {
-    console.log("Auth state changed - Usuário:", user ? user.email : "Nenhum");
-    
     if (user) {
-      // Usuário logado
       usuarioAtual = user;
       
       try {
@@ -530,26 +515,20 @@
         carregarDadosPublicos();
         
       } catch (err) {
-        console.error("Erro ao carregar dados do usuário:", err);
+        console.error(err);
       }
     } else {
-      // Usuário deslogado - tentar criar admin automaticamente
-      await criarUsuarioAdmin();
-      
       usuarioAtual = null;
       isAdmin = false;
       
       document.getElementById('loginPage').style.display = 'flex';
       document.getElementById('sitePage').classList.remove('active');
       document.getElementById('sindicoPage').classList.remove('active');
-      
-      console.log("Tela de login exibida");
     }
   });
 
   async function carregarDadosPublicos() {
     try {
-      // Financeiro
       const finSnap = await db.collection('finances').orderBy('mes', 'desc').limit(3).get();
       let html = `<div class="tab-menu">`;
       let i = 0;
@@ -572,7 +551,6 @@
       });
       document.getElementById('publicFinanceiro').innerHTML = html || '<p>Nenhum dado</p>';
 
-      // Projetos
       const projSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
       let projHtml = '';
       projSnap.forEach(doc => {
@@ -584,7 +562,6 @@
       });
       document.getElementById('publicProjetos').innerHTML = projHtml || '<p>Nenhum projeto</p>';
 
-      // Enquetes
       const pollSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
       let pollHtml = '';
       for (const doc of pollSnap.docs) {
@@ -609,7 +586,6 @@
       }
       document.getElementById('publicEnquetes').innerHTML = pollHtml || '<p>Nenhuma enquete</p>';
 
-      // Documentos
       const docsSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
       let docsHtml = '';
       docsSnap.forEach(doc => {
@@ -666,10 +642,10 @@
       document.getElementById('adminStats').innerHTML = `<div class="grid2"><div class="stat-card"><div class="stat-number">${usersSnap.size}</div><div>Moradores</div></div><div class="stat-card"><div class="stat-number">${projSnap.size}</div><div>Projetos</div></div><div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div></div>`;
 
       const histSnap = await db.collection('finances').orderBy('mes', 'desc').get();
-      let histHtml = '耒<thead><tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr></thead><tbody>';
+      let histHtml = '耒<thead> <tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr> </thead><tbody>';
       histSnap.forEach(doc => {
         const d = doc.data();
-        histHtml += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
+        histHtml += ` <tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
       });
       histHtml += '</tbody> </table>';
       document.getElementById('historicoFinanceiro').innerHTML = histHtml;
@@ -699,10 +675,10 @@
       document.getElementById('listaDocumentos').innerHTML = docsList;
 
       const moradoresSnap = await db.collection('users').orderBy('casa').get();
-      let moradoresList = '耒<thead><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr></thead><tbody>';
+      let moradoresList = '耒<thead> <tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr> </thead><tbody>';
       moradoresSnap.forEach(doc => {
         const u = doc.data();
-        moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
+        moradoresList += ` <tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
       });
       moradoresList += '</tbody> </table>';
       document.getElementById('listaMoradores').innerHTML = moradoresList;
@@ -777,7 +753,6 @@
   
   function enviarContato(e) { e.preventDefault(); mostrarToast('Mensagem enviada!'); }
 
-  // Expor funções globalmente
   window.switchTab = switchTab;
   window.fazerLogin = fazerLogin;
   window.fazerCadastro = fazerCadastro;
@@ -798,6 +773,7 @@
   window.comentar = comentar;
   window.mudarTab = mudarTab;
   window.enviarContato = enviarContato;
+  window.criarAdminAutomatico = criarAdminAutomatico;
 </script>
 </body>
 </html>
