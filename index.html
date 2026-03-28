@@ -1,777 +1,1793 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Condomínio Maurício Gnoato</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    :root{
-      --azul:#1F3140;--azul-escuro:#17232F;--dourado:#C4A776;--dourado-dk:#B2915F;
-      --bege-claro:#F1E6D4;--bege-fundo:#F5F0E6;--borda:#E0D4C0;--branco:#FFFFFF;
-      --texto:#17232F;--verde:#1a5c3a;--vermelho:#7a2020
+    :root {
+      --azul: #1F3140;
+      --azul-escuro: #17232F;
+      --dourado: #C4A776;
+      --dourado-hover: #B2915F;
+      --creme: #F1E6D4;
+      --fundo: #F5F0E6;
+      --branco: #FFFFFF;
+      --borda: #E0D4C0;
+      --texto: #17232F;
     }
-    body{font-family:'Montserrat',sans-serif;background:var(--bege-fundo);color:var(--texto)}
-    h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--azul)}
-    .container{width:90%;max-width:1200px;margin:0 auto}
-    .btn{display:inline-block;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;transition:all .3s;border:none;font-size:.85rem;font-family:'Montserrat',sans-serif}
-    .btn-primary{background:var(--azul);color:#fff}
-    .btn-primary:hover{background:#254057}
-    .btn-secondary{background:var(--dourado);color:var(--azul)}
-    .btn-secondary:hover{background:var(--dourado-dk);color:#fff}
-    .btn-danger{background:var(--vermelho);color:#fff;border:none;cursor:pointer;border-radius:6px;font-weight:600;font-family:'Montserrat',sans-serif}
-    .btn-sm{padding:5px 12px;font-size:.7rem}
-    .btn-full{width:100%}
-    .toast{position:fixed;bottom:20px;right:20px;background:var(--azul);color:#fff;padding:12px 20px;border-radius:8px;transform:translateY(80px);opacity:0;transition:all .3s;z-index:9999;max-width:320px;font-size:.85rem}
-    .toast.show{transform:translateY(0);opacity:1}
-    .login-page{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,var(--azul-escuro),var(--azul));display:flex;align-items:center;justify-content:center;padding:20px;z-index:1000;overflow-y:auto}
-    .login-card{background:#fff;border-radius:24px;padding:40px 32px;width:100%;max-width:450px;text-align:center}
-    .login-logo{width:100px;height:100px;border-radius:20px;object-fit:cover;margin:0 auto 16px;display:block;background:var(--bege-fundo);padding:8px}
-    .login-card h2{font-size:1.5rem;margin-bottom:4px}
-    .login-card .subtitle{font-size:.8rem;color:#999;margin-bottom:24px}
-    .login-tabs{display:flex;border-bottom:2px solid var(--borda);margin-bottom:24px}
-    .login-tab{flex:1;padding:10px;background:none;border:none;font-size:.9rem;font-weight:600;color:#aaa;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .3s}
-    .login-tab.active{color:var(--azul);border-bottom:2px solid var(--dourado);margin-bottom:-2px}
-    .login-form{display:none}
-    .login-form.active{display:block}
-    .form-group{margin-bottom:16px;text-align:left}
-    .form-group label{display:block;font-size:.7rem;font-weight:600;color:var(--azul);margin-bottom:5px;text-transform:uppercase}
-    .form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;border:1px solid var(--borda);border-radius:8px;font-size:.85rem;background:var(--bege-fundo);font-family:'Montserrat',sans-serif;outline:none;transition:border-color .2s}
-    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--azul)}
-    .auth-error{color:var(--vermelho);font-size:.75rem;margin-top:8px;min-height:18px}
-    .auth-success{color:var(--verde);font-size:.75rem;margin-top:8px;min-height:18px}
-    .site-page{display:none;min-height:100vh}
-    .site-page.active{display:block}
-    header{background:var(--azul);position:sticky;top:0;z-index:900}
-    .navbar{display:flex;align-items:center;justify-content:space-between;padding:12px 0;flex-wrap:wrap;gap:10px}
-    .navbar-logo{display:flex;align-items:center;gap:10px}
-    .navbar-logo img{height:50px;width:50px;border-radius:15px;object-fit:cover;padding:4px}
-    .logo-text{display:flex;flex-direction:column;color:#fff}
-    .logo-text span:first-child{font-size:.55rem;letter-spacing:2px;color:var(--dourado)}
-    .logo-text span:last-child{font-size:.9rem}
-    nav ul{list-style:none;display:flex;gap:16px;flex-wrap:wrap}
-    nav ul li a{color:#fff;font-size:.75rem;font-weight:500;transition:color .2s;text-decoration:none}
-    nav ul li a:hover{color:var(--dourado)}
-    .header-right{display:flex;align-items:center;gap:10px}
-    .user-avatar{width:32px;height:32px;border-radius:50%;background:var(--dourado);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--azul);font-size:.75rem;flex-shrink:0}
-    .btn-logout{background:rgba(255,255,255,.15);border:none;color:#fff;padding:6px 12px;border-radius:6px;font-size:.7rem;cursor:pointer;font-family:'Montserrat',sans-serif}
-    .btn-sindico{background:var(--dourado);color:var(--azul);padding:6px 12px;border-radius:6px;font-size:.7rem;font-weight:600;border:none;cursor:pointer;font-family:'Montserrat',sans-serif}
-    .hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:6px}
-    .hamburger span{width:22px;height:2px;background:#fff;border-radius:2px;display:block}
-    .hero{background:linear-gradient(135deg,var(--azul-escuro),var(--azul));padding:60px 0 50px;text-align:center}
-    .hero-logo{width:100px;height:100px;border-radius:20px;margin:0 auto 16px;background:rgba(255,255,255,.1);padding:8px;object-fit:cover;display:block}
-    .hero h1{font-size:2rem;color:#fff}
-    .hero h1 span{color:var(--dourado)}
-    .hero p{font-size:.9rem;color:#cdd8e0;max-width:500px;margin:12px auto}
-    .hero-badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px 0}
-    .hero-badge{background:rgba(196,167,118,.2);border:1px solid rgba(196,167,118,.4);color:var(--dourado);padding:4px 12px;border-radius:20px;font-size:.7rem}
-    .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    .ticker-bar{background:var(--dourado);color:var(--azul-escuro);padding:10px 0;overflow:hidden}
-    .ticker-inner{display:flex;gap:60px;white-space:nowrap;animation:ticker 35s linear infinite}
-    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-    .ticker-item{display:inline-flex;align-items:center;gap:8px;font-weight:500;font-size:.85rem}
-    .section{padding:60px 0}
-    .section--branca{background:#fff}
-    .section--bege{background:var(--bege-fundo)}
-    .section--azul{background:var(--azul);color:#fff}
-    .section-title{font-size:2rem;text-align:center;margin-bottom:12px}
-    .section--azul .section-title{color:#fff}
-    .section-divider{width:60px;height:3px;background:var(--dourado);margin:0 auto 40px;border:none}
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px}
-    .stat-card{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:20px;text-align:center}
-    .stat-number{font-size:1.8rem;font-weight:700;color:var(--azul);font-family:'Playfair Display',serif}
-    .finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-    .finance-box{background:#fff;border-radius:12px;overflow:hidden}
-    .finance-box-header{padding:12px 16px;font-weight:600;color:#fff;font-size:.9rem}
-    .finance-box-header.receita{background:var(--verde)}
-    .finance-box-header.despesa{background:var(--vermelho)}
-    .finance-total{padding:12px 16px;background:var(--bege-claro);font-weight:700;display:flex;justify-content:space-between;font-size:.9rem}
-    .saldo-bar{background:#fff;border-radius:12px;padding:16px 20px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-    .saldo-valor{font-size:1.5rem;font-weight:700;color:var(--verde)}
-    .saldo-negativo{color:var(--vermelho)!important}
-    .tab-menu{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-    .tab-btn{padding:6px 16px;border:2px solid var(--borda);background:#fff;border-radius:8px;cursor:pointer;font-size:.8rem;font-family:'Montserrat',sans-serif;transition:all .2s}
-    .tab-btn.active{background:var(--azul);color:#fff;border-color:var(--azul)}
-    .tab-content{display:none}
-    .tab-content.active{display:block}
-    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-    .project-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,.07)}
-    .project-card h3{font-size:1rem;margin-bottom:6px}
-    .project-card p{font-size:.82rem;color:#666;margin-bottom:8px}
-    .project-status{display:inline-block;font-size:.65rem;padding:3px 10px;border-radius:20px;margin-bottom:10px;font-weight:600}
-    .status-andamento{background:#fff3cd;color:#856404}
-    .status-concluido{background:#d1e7dd;color:#0a3622}
-    .status-planejado{background:#cfe2ff;color:#084298}
-    .progress-bar-wrap{background:var(--bege-claro);border-radius:20px;height:8px;overflow:hidden;margin:10px 0}
-    .progress-bar-fill{height:100%;background:var(--dourado);border-radius:20px}
-    .progress-label{font-size:.75rem;color:#666}
-    .poll-card{background:#fff;border-radius:12px;padding:20px;margin-bottom:20px}
-    .section--azul .poll-card{background:rgba(255,255,255,.1)}
-    .section--azul .poll-card h3{color:#fff}
-    .section--azul .poll-card p{color:#cdd8e0}
-    .poll-option{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
-    .poll-option-text{min-width:120px;font-size:.82rem}
-    .section--azul .poll-option-text{color:#fff}
-    .poll-bar-wrap{flex:1;background:rgba(255,255,255,.2);border-radius:20px;height:26px;overflow:hidden;min-width:80px}
-    .section--branca .poll-bar-wrap,.section--bege .poll-bar-wrap{background:var(--bege-claro)}
-    .poll-bar-fill{height:100%;background:linear-gradient(90deg,var(--dourado),var(--dourado-dk));border-radius:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:var(--azul);font-size:.7rem;font-weight:600;min-width:36px}
-    .poll-vote-btns{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
-    .poll-vote-btns button{padding:6px 14px;background:var(--dourado);color:var(--azul);border:none;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif}
-    .poll-vote-btns button:hover{background:var(--dourado-dk);color:#fff}
-    .poll-meta{font-size:.72rem;color:#aaa;margin-top:8px}
-    .section--azul .poll-meta{color:#cdd8e0}
-    .comments-section{margin-top:16px;border-top:1px solid rgba(255,255,255,.2);padding-top:16px}
-    .section--branca .comments-section,.section--bege .comments-section{border-top:1px solid var(--borda)}
-    .comment{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.8rem}
-    .section--branca .comment,.section--bege .comment{border-bottom:1px solid var(--bege-claro);color:var(--texto)}
-    .section--azul .comment{color:#cdd8e0}
-    .comment strong{color:var(--dourado)}
-    .comment-form{display:flex;gap:8px;margin-top:12px}
-    .comment-form input{flex:1;padding:8px 12px;border:1px solid rgba(255,255,255,.3);border-radius:8px;font-family:'Montserrat',sans-serif;font-size:.8rem;background:rgba(255,255,255,.1);color:#fff}
-    .section--branca .comment-form input,.section--bege .comment-form input{border:1px solid var(--borda);background:var(--bege-fundo);color:var(--texto)}
-    .docs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .doc-card{background:#fff;border-radius:12px;padding:16px;display:flex;gap:12px;box-shadow:0 2px 6px rgba(0,0,0,.07)}
-    .doc-icon{font-size:1.8rem}
-    .doc-card h4{font-size:.9rem;margin-bottom:4px}
-    .doc-card p{font-size:.78rem;color:#666}
-    .doc-card a{color:var(--dourado);font-weight:600;font-size:.8rem;display:inline-block;margin-top:6px;text-decoration:none}
-    .contact-form{max-width:500px;margin:0 auto;background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-    footer{background:var(--azul-escuro);color:var(--bege-fundo);padding:40px 0 20px}
-    .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px}
-    footer h4{color:var(--dourado);margin-bottom:12px;font-size:.9rem}
-    footer p,footer ul li a{color:#a0b0bc;font-size:.8rem;line-height:1.8;text-decoration:none}
-    footer ul{list-style:none}
-    .sindico-page{display:none;min-height:100vh;background:#f5f7fa}
-    .sindico-page.active{display:block}
-    .sindico-header{background:var(--azul);color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-    .sindico-header h2{color:#fff;font-size:1.1rem}
-    .sindico-container{display:flex;min-height:calc(100vh - 56px)}
-    .sindico-sidebar{width:260px;background:var(--azul-escuro);color:#fff;overflow-y:auto;flex-shrink:0}
-    .sidebar-logo{padding:20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:12px}
-    .sidebar-logo img{width:45px;height:45px;border-radius:15px;object-fit:cover}
-    .sidebar-logo .sl-sub{font-size:.6rem;color:var(--dourado);display:block}
-    .sidebar-logo .sl-name{font-size:.85rem;font-weight:600}
-    .sidebar-menu{list-style:none;padding:16px 0}
-    .sidebar-menu li a{display:flex;align-items:center;gap:10px;padding:12px 20px;color:#a0b8c8;cursor:pointer;transition:all .2s;text-decoration:none;border-left:3px solid transparent;font-size:.85rem}
-    .sidebar-menu li a:hover,.sidebar-menu li a.active{background:rgba(196,167,118,.15);color:#fff;border-left-color:var(--dourado)}
-    .sindico-main{flex:1;padding:24px;overflow-x:hidden}
-    .admin-card{background:#fff;border-radius:12px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-    .admin-card-header{padding:16px 20px;border-bottom:1px solid var(--borda)}
-    .admin-card-header h3{color:var(--azul);font-size:1rem;margin:0}
-    .admin-card-body{padding:20px}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    table{width:100%;border-collapse:collapse;font-size:.82rem}
-    table th{background:var(--bege-fundo);padding:10px 12px;text-align:left;font-size:.7rem;color:var(--azul);font-weight:600;text-transform:uppercase}
-    table td{padding:10px 12px;border-bottom:1px solid var(--bege-claro);vertical-align:middle}
-    table tr:last-child td{border-bottom:none}
-    .upload-area{border:2px dashed var(--borda);border-radius:12px;padding:30px;text-align:center;background:var(--bege-fundo);cursor:pointer;margin-bottom:16px;transition:border-color .2s}
-    .upload-area:hover{border-color:var(--dourado)}
-    .document-item{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bege-fundo);border-radius:8px;margin-bottom:8px;flex-wrap:wrap;gap:8px;border-left:3px solid var(--dourado)}
-    .document-item span{font-size:.82rem;flex:1}
-    .sindico-section{display:none}
-    .sindico-section.active{display:block}
-    .ticker-message-item{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bege-fundo);border-radius:8px;margin-bottom:8px;border-left:3px solid var(--dourado);gap:10px}
-    .ticker-text{flex:1;font-size:.85rem}
-    .loading-text{text-align:center;padding:24px;color:#888;font-size:.85rem}
-    .empty-state{text-align:center;padding:30px;color:#888;font-size:.85rem;background:var(--bege-fundo);border-radius:8px}
-    .badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.65rem;font-weight:600}
-    .badge-admin{background:#fff3cd;color:#856404}
-    .badge-morador{background:#d1e7dd;color:#0a3622}
-    @media(max-width:768px){
-      .section{padding:40px 0}.section-title{font-size:1.5rem}.finance-grid{grid-template-columns:1fr}
-      .navbar{flex-direction:column;align-items:flex-start}
-      nav{display:none;width:100%}nav.open{display:block}
-      nav ul{flex-direction:column;gap:10px;padding:10px 0}
-      .hamburger{display:flex}.header-right{width:100%;justify-content:flex-end}
-      .sindico-sidebar{position:fixed;left:-280px;top:0;bottom:0;z-index:1000;transition:left .3s;width:260px}
-      .sindico-sidebar.open{left:0}.grid2{grid-template-columns:1fr}
-      .hero h1{font-size:1.5rem}.login-card{padding:30px 20px}
-      .poll-option{flex-wrap:wrap}.comment-form{flex-direction:column}
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--fundo);
+      color: var(--texto);
+      min-height: 100vh;
+    }
+
+    /* ===================== OVERLAY AUTH ===================== */
+    #auth-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 60%, #254057 100%);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-box {
+      background: var(--fundo);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 440px;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+      animation: slideUp 0.6s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .auth-header {
+      background: var(--azul);
+      padding: 36px 40px 28px;
+      text-align: center;
+      border-bottom: 3px solid var(--dourado);
+    }
+
+    .auth-logo {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      margin-bottom: 16px;
+      border-radius: 50%;
+      background: var(--fundo);
+      padding: 8px;
+    }
+
+    .auth-logo-fallback {
+      width: 90px;
+      height: 90px;
+      background: var(--fundo);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--azul);
+      border: 3px solid var(--dourado);
+    }
+
+    .auth-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--branco);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+    }
+
+    .auth-header p {
+      color: var(--dourado);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: var(--creme);
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 14px;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: #888;
+      transition: all 0.25s;
+      border-bottom: 3px solid transparent;
+    }
+
+    .auth-tab.active {
+      color: var(--azul);
+      border-bottom-color: var(--dourado);
+      background: var(--fundo);
+    }
+
+    .auth-body { padding: 32px 40px; }
+
+    .auth-panel { display: none; }
+    .auth-panel.active { display: block; }
+
+    .form-group { margin-bottom: 18px; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--azul);
+      margin-bottom: 7px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--borda);
+      border-radius: 8px;
+      background: var(--branco);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      color: var(--texto);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    .form-group input:focus { border-color: var(--dourado); }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--azul);
+      color: var(--branco);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 4px;
+    }
+
+    .btn-primary:hover { background: #254057; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .auth-divider {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #999;
+      margin: 16px 0;
+      position: relative;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: var(--borda);
+    }
+    .auth-divider::before { left: 0; }
+    .auth-divider::after { right: 0; }
+
+    .auth-msg {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      text-align: center;
+      display: none;
+    }
+    .auth-msg.error { background: #fde8e8; color: #c0392b; display: block; }
+    .auth-msg.success { background: #e8f5e9; color: #27ae60; display: block; }
+
+    /* ===================== SITE PRINCIPAL ===================== */
+    #main-site { display: none; }
+
+    /* HEADER */
+    header {
+      background: var(--azul);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      background: var(--fundo);
+      border-radius: 50%;
+      padding: 4px;
+      border: 2px solid var(--dourado);
+    }
+
+    .brand-logo-fb {
+      width: 44px;
+      height: 44px;
+      background: var(--fundo);
+      border-radius: 50%;
+      border: 2px solid var(--dourado);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--azul);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--branco);
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      color: var(--dourado);
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    nav { display: flex; align-items: center; gap: 4px; }
+
+    nav a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    nav a:hover { color: var(--dourado); background: rgba(255,255,255,0.05); }
+
+    .btn-logout {
+      margin-left: 8px;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1.5px solid var(--dourado);
+      color: var(--dourado);
+      border-radius: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-logout:hover { background: var(--dourado); color: var(--azul); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--branco);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(160deg, var(--azul) 0%, var(--azul-escuro) 100%);
+      padding: 80px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4A776' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-content { position: relative; max-width: 700px; margin: 0 auto; }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(196,167,118,0.2);
+      border: 1px solid var(--dourado);
+      color: var(--dourado);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--branco);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 em { color: var(--dourado); font-style: italic; }
+
+    .hero p {
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .btn-gold {
+      padding: 14px 28px;
+      background: var(--dourado);
+      color: var(--azul-escuro);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-gold:hover { background: var(--dourado-hover); transform: translateY(-2px); }
+
+    .btn-outline-white {
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--branco);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-outline-white:hover { border-color: var(--branco); background: rgba(255,255,255,0.08); }
+
+    /* STATS BAR */
+    .stats-bar {
+      background: var(--branco);
+      border-bottom: 3px solid var(--dourado);
+    }
+
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stat-item {
+      padding: 24px 20px;
+      text-align: center;
+      border-right: 1px solid var(--borda);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--azul);
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* SECTIONS */
+    section { padding: 72px 24px; }
+
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+
+    .section-header { text-align: center; margin-bottom: 52px; }
+
+    .section-tag {
+      display: inline-block;
+      color: var(--dourado);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: var(--azul);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .section-divider {
+      width: 60px;
+      height: 3px;
+      background: var(--dourado);
+      margin: 16px auto 0;
+      border-radius: 2px;
+    }
+
+    .section-subtitle {
+      color: #666;
+      font-size: 0.92rem;
+      line-height: 1.8;
+      max-width: 580px;
+      margin: 16px auto 0;
+    }
+
+    /* BG alternado */
+    section:nth-child(even) { background: var(--branco); }
+
+    /* FINANCEIRO */
+    .finance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .finance-card {
+      background: var(--fundo);
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      padding: 28px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .finance-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(31,49,64,0.12); }
+
+    .finance-card-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--azul);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      font-size: 1.4rem;
+    }
+
+    .finance-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--azul);
+      margin-bottom: 6px;
+    }
+
+    .finance-card .amount {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--azul);
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .finance-card .amount.positive { color: #27ae60; }
+    .finance-card .amount.negative { color: #c0392b; }
+
+    .finance-card p {
+      font-size: 0.82rem;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .progress-bar {
+      margin-top: 12px;
+      background: var(--borda);
+      border-radius: 100px;
+      height: 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: var(--dourado);
+      transition: width 1s ease;
+    }
+
+    /* DESPESAS TABLE */
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--borda); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--branco);
+    }
+
+    thead {
+      background: var(--azul);
+      color: var(--branco);
+    }
+
+    th {
+      padding: 14px 18px;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--borda);
+      color: var(--texto);
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: var(--fundo); }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+
+    .badge-green { background: #e8f5e9; color: #27ae60; }
+    .badge-yellow { background: #fff8e1; color: #f39c12; }
+    .badge-red { background: #fde8e8; color: #c0392b; }
+    .badge-blue { background: #e3f2fd; color: #1976d2; }
+
+    /* ENQUETES */
+    .polls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .poll-card {
+      background: var(--fundo);
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .poll-header {
+      background: var(--azul);
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .poll-header h3 {
+      color: var(--branco);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+    }
+
+    .poll-header .poll-status {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dourado);
+      font-weight: 600;
+    }
+
+    .poll-body { padding: 22px; }
+
+    .poll-question {
+      font-size: 0.88rem;
+      color: var(--texto);
+      margin-bottom: 18px;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .poll-option {
+      margin-bottom: 10px;
+    }
+
+    .poll-option label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .poll-option input[type="radio"] { accent-color: var(--azul); }
+
+    .poll-bar-wrap {
+      margin-top: 6px;
+      background: var(--borda);
+      border-radius: 100px;
+      height: 5px;
+      overflow: hidden;
+    }
+
+    .poll-bar-fill {
+      height: 100%;
+      background: var(--dourado);
+      border-radius: 100px;
+    }
+
+    .poll-pct {
+      font-size: 0.72rem;
+      color: #888;
+      text-align: right;
+      margin-top: 2px;
+    }
+
+    .poll-footer {
+      padding: 14px 22px;
+      border-top: 1px solid var(--borda);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .poll-votes { font-size: 0.78rem; color: #888; }
+
+    .btn-sm {
+      padding: 8px 18px;
+      background: var(--azul);
+      color: var(--branco);
+      border: none;
+      border-radius: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-sm:hover { background: #254057; }
+
+    /* PROJETOS */
+    .projects-timeline { position: relative; padding-left: 40px; }
+    .projects-timeline::before {
+      content: '';
+      position: absolute;
+      left: 14px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--borda);
+    }
+
+    .project-item {
+      position: relative;
+      padding: 0 0 36px 28px;
+    }
+
+    .project-dot {
+      position: absolute;
+      left: -32px;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 3px solid var(--branco);
+      box-shadow: 0 0 0 2px var(--dourado);
+    }
+
+    .project-dot.done { background: #27ae60; }
+    .project-dot.progress { background: var(--dourado); }
+    .project-dot.planned { background: var(--borda); }
+
+    .project-date {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dourado);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .project-item h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      color: var(--azul);
+      margin-bottom: 6px;
+    }
+
+    .project-item p {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .project-item .badge { margin-top: 8px; }
+
+    /* COMUNICADOS */
+    .notices-list { display: flex; flex-direction: column; gap: 16px; }
+
+    .notice-card {
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-left: 4px solid var(--dourado);
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      transition: transform 0.2s;
+    }
+
+    .notice-card:hover { transform: translateX(4px); }
+
+    .notice-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--fundo);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      border: 1px solid var(--borda);
+    }
+
+    .notice-content h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--azul);
+      margin-bottom: 4px;
+    }
+
+    .notice-content p {
+      font-size: 0.83rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .notice-content .notice-date {
+      font-size: 0.72rem;
+      color: #aaa;
+      margin-top: 6px;
+      letter-spacing: 0.06em;
+    }
+
+    /* CONTATO */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      color: var(--azul);
+      margin-bottom: 20px;
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .contact-detail-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--azul);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-detail-text strong {
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--azul);
+      margin-bottom: 3px;
+    }
+
+    .contact-detail-text span {
+      font-size: 0.88rem;
+      color: #555;
+    }
+
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+
+    .contact-form input,
+    .contact-form textarea {
+      padding: 13px 16px;
+      border: 1.5px solid var(--borda);
+      border-radius: 8px;
+      background: var(--branco);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      color: var(--texto);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus { border-color: var(--dourado); }
+
+    /* FOOTER */
+    footer {
+      background: var(--azul-escuro);
+      color: rgba(255,255,255,0.6);
+      padding: 48px 24px 24px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 28px;
+    }
+
+    .footer-brand h2 {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--branco);
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+
+    .footer-brand p {
+      font-size: 0.83rem;
+      line-height: 1.7;
+    }
+
+    .footer-col h4 {
+      color: var(--dourado);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .footer-col a {
+      display: block;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.83rem;
+      margin-bottom: 9px;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--dourado); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom p { font-size: 0.78rem; }
+
+    .footer-bottom span { color: var(--dourado); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--azul-escuro);
+        flex-direction: column;
+        padding: 16px 24px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        gap: 4px;
+      }
+      nav.open { display: flex; }
+      nav a { padding: 10px 12px; }
+
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--borda); }
+      .stat-item:nth-child(odd) { border-right: 1px solid var(--borda); }
+      .stat-item:last-child { border-bottom: none; }
+
+      .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+
+      .footer-top { grid-template-columns: 1fr; gap: 28px; }
+
+      .auth-body { padding: 24px; }
+      .auth-header { padding: 28px 24px 22px; }
+    }
+
+    @media (max-width: 480px) {
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* SCROLL suave */
+    html { scroll-behavior: smooth; }
+
+    /* Usuário logado info */
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.78rem;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      background: var(--dourado);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--azul);
+      font-weight: 700;
+      font-size: 0.8rem;
     }
   </style>
 </head>
 <body>
-<div class="toast" id="toast"></div>
 
-<!-- LOGIN -->
-<div id="loginPage" class="login-page">
-  <div class="login-card">
-    <img src="logo.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/100?text=MG'"/>
-    <h2>Maurício Gnoato</h2>
-    <p class="subtitle">Acesso exclusivo para condôminos e síndico</p>
-    <div class="login-tabs">
-      <button class="login-tab active" onclick="switchTab('entrar')">Entrar</button>
-      <button class="login-tab" onclick="switchTab('cadastrar')">Cadastrar</button>
+<!-- ===================== AUTH OVERLAY ===================== -->
+<div id="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-header">
+      <div class="auth-logo-fallback" id="auth-logo-wrap">MG</div>
+      <h1>Condomínio<br>Maurício Gnoato</h1>
+      <p>Portal do Condômino</p>
     </div>
-    <div id="formLogin" class="login-form active">
-      <div class="form-group"><label>E-mail</label><input type="email" id="loginEmail" placeholder="seu@email.com"/></div>
-      <div class="form-group"><label>Senha</label><input type="password" id="loginSenha" placeholder="••••••••" onkeydown="if(event.key==='Enter')fazerLogin()"/></div>
-      <button class="btn btn-primary btn-full" onclick="fazerLogin()">Entrar</button>
-      <p class="auth-error" id="loginError"></p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('login')">Entrar</button>
+      <button class="auth-tab" onclick="switchTab('register')">Cadastrar</button>
     </div>
-    <div id="formCadastro" class="login-form">
-      <div class="form-group"><label>Nome completo</label><input type="text" id="cadNome" placeholder="João da Silva"/></div>
-      <div class="form-group"><label>Casa nº (1-25)</label><input type="number" id="cadCasa" placeholder="Ex.: 7" min="1" max="25"/></div>
-      <div class="form-group"><label>E-mail</label><input type="email" id="cadEmail" placeholder="seu@email.com"/></div>
-      <div class="form-group"><label>Senha (mín. 6 caracteres)</label><input type="password" id="cadSenha" placeholder="••••••••"/></div>
-      <button class="btn btn-primary btn-full" onclick="fazerCadastro()">Criar Conta</button>
-      <p class="auth-error" id="cadastroError"></p>
-      <p class="auth-success" id="cadastroSuccess"></p>
+    <div class="auth-body">
+      <!-- LOGIN -->
+      <div class="auth-panel active" id="panel-login">
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="login-email" placeholder="seu@email.com"/>
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" id="login-pwd" placeholder="••••••••"/>
+        </div>
+        <button class="btn-primary" onclick="doLogin()">Acessar Portal</button>
+        <div class="auth-divider">ou</div>
+        <button class="btn-primary" style="background:var(--dourado);color:var(--azul);" onclick="switchTab('register')">Criar Conta</button>
+        <div class="auth-msg" id="login-msg"></div>
+      </div>
+      <!-- REGISTER -->
+      <div class="auth-panel" id="panel-register">
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" id="reg-name" placeholder="Seu nome completo"/>
+        </div>
+        <div class="form-group">
+          <label>Unidade / Apartamento</label>
+          <input type="text" id="reg-unit" placeholder="Ex: Bloco A - Apto 101"/>
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="reg-email" placeholder="seu@email.com"/>
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" id="reg-pwd" placeholder="Mínimo 6 caracteres"/>
+        </div>
+        <button class="btn-primary" onclick="doRegister()">Criar Conta</button>
+        <div class="auth-msg" id="register-msg"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- SITE PÚBLICO -->
-<div id="sitePage" class="site-page">
+<!-- ===================== SITE PRINCIPAL ===================== -->
+<div id="main-site">
+
+  <!-- HEADER -->
   <header>
-    <div class="container">
-      <div class="navbar">
-        <div class="navbar-logo">
-          <img src="logo.png" alt="Logo" onerror="this.style.display='none'"/>
-          <div class="logo-text"><span>Condomínio</span><span>Maurício Gnoato</span></div>
+    <div class="header-inner">
+      <a href="#" class="brand">
+        <div class="brand-logo-fb" id="header-logo">MG</div>
+        <div class="brand-text">
+          <span class="brand-name">Maurício Gnoato</span>
+          <span class="brand-sub">Condomínio Residencial</span>
         </div>
-        <nav id="mainNav">
-          <ul>
-            <li><a href="#sobre">Sobre</a></li><li><a href="#financeiro">Financeiro</a></li>
-            <li><a href="#projetos">Projetos</a></li><li><a href="#enquetes">Enquetes</a></li>
-            <li><a href="#documentos">Documentos</a></li><li><a href="#contato">Contato</a></li>
-          </ul>
-        </nav>
-        <div class="header-right">
-          <div class="user-avatar" id="userAvatar">?</div>
-          <span id="userName" style="color:#fff;font-size:.7rem"></span>
-          <button class="btn-sindico" id="btnSindico" style="display:none" onclick="irParaSindico()">⚙️ Síndico</button>
-          <button class="btn-logout" onclick="fazerLogout()">Sair</button>
-          <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+      </a>
+
+      <nav id="main-nav">
+        <a href="#financeiro">Financeiro</a>
+        <a href="#projetos">Projetos</a>
+        <a href="#enquetes">Enquetes</a>
+        <a href="#comunicados">Comunicados</a>
+        <a href="#contato">Contato</a>
+        <div class="user-info" id="user-info-header">
+          <div class="user-avatar" id="user-avatar">?</div>
+          <span id="user-name-header">Condômino</span>
         </div>
-      </div>
+        <button class="btn-logout" onclick="doLogout()">Sair</button>
+      </nav>
+
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
+  <!-- HERO -->
   <section class="hero">
-    <div class="container">
-      <img src="logo.png" class="hero-logo" onerror="this.style.display='none'"/>
-      <h1>Condomínio <span>Maurício Gnoato</span></h1>
-      <p>Transparência, gestão participativa e qualidade de vida para os 25 moradores</p>
-      <div class="hero-badges">
-        <span class="hero-badge">🏡 25 Casas</span>
-        <span class="hero-badge">📊 Gestão Transparente</span>
-        <span class="hero-badge">🗳️ Participação Ativa</span>
-      </div>
-      <div class="hero-btns">
-        <a href="#financeiro" class="btn btn-secondary">Ver Finanças</a>
-        <a href="#enquetes" class="btn btn-primary">Participar</a>
+    <div class="hero-content">
+      <div class="hero-badge">✦ Transparência & Gestão</div>
+      <h1>Bem-vindo ao Portal do <em>Condomínio</em></h1>
+      <p>Acesse todas as informações financeiras, projetos, enquetes e comunicados do seu condomínio em um só lugar — com total transparência e participação.</p>
+      <div class="hero-cta">
+        <a href="#financeiro" class="btn-gold">Ver Prestação de Contas</a>
+        <a href="#enquetes" class="btn-outline-white">Participar das Enquetes</a>
       </div>
     </div>
   </section>
 
-  <div class="ticker-bar">
-    <div style="overflow:hidden">
-      <div class="ticker-inner" id="tickerInner"><span class="ticker-item">Carregando avisos...</span></div>
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-number">142</div>
+        <div class="stat-label">Unidades</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">R$ 284k</div>
+        <div class="stat-label">Fundo de Reserva</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">98%</div>
+        <div class="stat-label">Adimplência</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">12</div>
+        <div class="stat-label">Projetos em 2025</div>
+      </div>
     </div>
   </div>
 
-  <section class="section section--branca" id="sobre">
-    <div class="container">
-      <h2 class="section-title">O Condomínio</h2><hr class="section-divider"/>
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div>
-        <div class="stat-card"><div class="stat-number" id="statReceita">—</div><div>Última Arrecadação</div></div>
-        <div class="stat-card"><div class="stat-number" id="statProjetos">—</div><div>Projetos</div></div>
-        <div class="stat-card"><div class="stat-number" id="statEnquetes">—</div><div>Enquetes Ativas</div></div>
+  <!-- ====== FINANCEIRO ====== -->
+  <section id="financeiro">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">✦ Transparência Financeira</span>
+        <h2 class="section-title">Prestação de Contas</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">Todas as receitas e despesas do condomínio com total clareza. Atualizado mensalmente pela administração.</p>
       </div>
-    </div>
-  </section>
 
-  <section class="section section--bege" id="financeiro">
-    <div class="container">
-      <h2 class="section-title">Transparência Financeira</h2><hr class="section-divider"/>
-      <div id="publicFinanceiro"><p class="loading-text">Carregando...</p></div>
-    </div>
-  </section>
-
-  <section class="section section--branca" id="projetos">
-    <div class="container">
-      <h2 class="section-title">Projetos</h2><hr class="section-divider"/>
-      <div id="publicProjetos" class="projects-grid"><p class="loading-text">Carregando...</p></div>
-    </div>
-  </section>
-
-  <section class="section section--azul" id="enquetes">
-    <div class="container">
-      <h2 class="section-title">Enquetes</h2><hr class="section-divider"/>
-      <div id="publicEnquetes"><p class="loading-text" style="color:#cdd8e0">Carregando...</p></div>
-    </div>
-  </section>
-
-  <section class="section section--bege" id="documentos">
-    <div class="container">
-      <h2 class="section-title">Documentos</h2><hr class="section-divider"/>
-      <div id="publicDocumentos" class="docs-grid"><p class="loading-text">Carregando...</p></div>
-    </div>
-  </section>
-
-  <section class="section section--branca" id="contato">
-    <div class="container">
-      <h2 class="section-title">Fale com o Síndico</h2><hr class="section-divider"/>
-      <form class="contact-form" onsubmit="enviarContato(event)">
-        <div class="form-group"><label>Nome / Casa</label><input type="text" placeholder="João Silva / Casa 7" required/></div>
-        <div class="form-group"><label>Assunto</label>
-          <select required>
-            <option>Dúvida sobre cobrança</option><option>Reclamação</option>
-            <option>Sugestão</option><option>Manutenção</option><option>Outro</option>
-          </select>
+      <div class="finance-grid">
+        <div class="finance-card">
+          <div class="finance-card-icon">💰</div>
+          <h3>Receitas do Mês</h3>
+          <div class="amount positive">R$ 48.320,00</div>
+          <p>Março / 2025</p>
+          <div class="progress-bar"><div class="progress-fill" style="width:94%"></div></div>
         </div>
-        <div class="form-group"><label>Mensagem</label><textarea rows="4" placeholder="Descreva sua mensagem..."></textarea></div>
-        <button type="submit" class="btn btn-primary btn-full">Enviar Mensagem</button>
-      </form>
+        <div class="finance-card">
+          <div class="finance-card-icon">📊</div>
+          <h3>Despesas do Mês</h3>
+          <div class="amount negative">R$ 41.750,00</div>
+          <p>Março / 2025</p>
+          <div class="progress-bar"><div class="progress-fill" style="width:86%"></div></div>
+        </div>
+        <div class="finance-card">
+          <div class="finance-card-icon">📈</div>
+          <h3>Saldo Positivo</h3>
+          <div class="amount">R$ 6.570,00</div>
+          <p>Superávit do período</p>
+          <div class="progress-bar"><div class="progress-fill" style="width:60%; background:#27ae60"></div></div>
+        </div>
+        <div class="finance-card">
+          <div class="finance-card-icon">🏦</div>
+          <h3>Fundo de Reserva</h3>
+          <div class="amount">R$ 284.900,00</div>
+          <p>Saldo acumulado</p>
+          <div class="progress-bar"><div class="progress-fill" style="width:75%; background:#1976d2"></div></div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Data</th>
+              <th>Valor</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Taxa de Condomínio — Março</td>
+              <td>Receita</td>
+              <td>05/03/2025</td>
+              <td style="color:#27ae60;font-weight:600">+ R$ 45.000,00</td>
+              <td><span class="badge badge-green">Recebido</span></td>
+            </tr>
+            <tr>
+              <td>Energia Elétrica — Áreas Comuns</td>
+              <td>Despesa</td>
+              <td>12/03/2025</td>
+              <td style="color:#c0392b;font-weight:600">- R$ 8.430,00</td>
+              <td><span class="badge badge-green">Pago</span></td>
+            </tr>
+            <tr>
+              <td>Empresa de Limpeza — Março</td>
+              <td>Despesa</td>
+              <td>15/03/2025</td>
+              <td style="color:#c0392b;font-weight:600">- R$ 12.500,00</td>
+              <td><span class="badge badge-green">Pago</span></td>
+            </tr>
+            <tr>
+              <td>Manutenção Elevadores</td>
+              <td>Despesa</td>
+              <td>18/03/2025</td>
+              <td style="color:#c0392b;font-weight:600">- R$ 4.200,00</td>
+              <td><span class="badge badge-green">Pago</span></td>
+            </tr>
+            <tr>
+              <td>Segurança / Portaria</td>
+              <td>Despesa</td>
+              <td>20/03/2025</td>
+              <td style="color:#c0392b;font-weight:600">- R$ 14.600,00</td>
+              <td><span class="badge badge-green">Pago</span></td>
+            </tr>
+            <tr>
+              <td>Internet e TV — Condomínio</td>
+              <td>Despesa</td>
+              <td>22/03/2025</td>
+              <td style="color:#c0392b;font-weight:600">- R$ 890,00</td>
+              <td><span class="badge badge-green">Pago</span></td>
+            </tr>
+            <tr>
+              <td>Reforma Piscina — Parcela 2/6</td>
+              <td>Obra</td>
+              <td>25/03/2025</td>
+              <td style="color:#c0392b;font-weight:600">- R$ 5.200,00</td>
+              <td><span class="badge badge-yellow">Pendente</span></td>
+            </tr>
+            <tr>
+              <td>Receita — Aluguel Salão de Festas</td>
+              <td>Receita</td>
+              <td>28/03/2025</td>
+              <td style="color:#27ae60;font-weight:600">+ R$ 3.320,00</td>
+              <td><span class="badge badge-green">Recebido</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div><h4>Condomínio Maurício Gnoato</h4><p>📍 Rua do Condomínio, S/N<br/>📞 (XX) XXXXX-XXXX<br/>✉️ sindico@condominio.com.br</p></div>
-        <div><h4>Links</h4><ul><li><a href="#sobre">Sobre</a></li><li><a href="#financeiro">Financeiro</a></li><li><a href="#projetos">Projetos</a></li><li><a href="#documentos">Documentos</a></li></ul></div>
-        <div><h4>Acesso Rápido</h4><ul><li><a href="#enquetes">Enquetes</a></li><li><a href="#contato">Fale com Síndico</a></li></ul></div>
+  <!-- ====== PROJETOS ====== -->
+  <section id="projetos">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">✦ Obras e Melhorias</span>
+        <h2 class="section-title">Projetos em Andamento</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">Acompanhe o progresso de todas as obras e iniciativas do condomínio.</p>
       </div>
-      <div style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);color:#a0b0bc;font-size:.78rem">© 2026 Condomínio Maurício Gnoato.</div>
+
+      <div class="projects-timeline">
+        <div class="project-item">
+          <div class="project-dot done"></div>
+          <div class="project-date">Janeiro 2025 — Concluído</div>
+          <h3>Pintura das Fachadas — Bloco A e B</h3>
+          <p>Renovação completa da pintura externa dos blocos A e B, com impermeabilização de fissuras e aplicação de tinta texturizada de alta durabilidade.</p>
+          <span class="badge badge-green">✓ Concluído</span>
+        </div>
+
+        <div class="project-item">
+          <div class="project-dot done"></div>
+          <div class="project-date">Fevereiro 2025 — Concluído</div>
+          <h3>Modernização da Iluminação — Jardins</h3>
+          <p>Substituição de todas as luminárias dos jardins por LED de alta eficiência, gerando economia de 40% no consumo energético das áreas externas.</p>
+          <span class="badge badge-green">✓ Concluído</span>
+        </div>
+
+        <div class="project-item">
+          <div class="project-dot progress"></div>
+          <div class="project-date">Março – Junho 2025 — Em andamento</div>
+          <h3>Reforma da Piscina e Área de Lazer</h3>
+          <p>Revitalização completa da piscina adulto e infantil, incluindo novo revestimento, sistema de filtragem, deck de madeira e mobiliário. Investimento total: R$ 31.200,00.</p>
+          <span class="badge badge-yellow">⏳ Em andamento — 35%</span>
+        </div>
+
+        <div class="project-item">
+          <div class="project-dot progress"></div>
+          <div class="project-date">Abril 2025 — Em andamento</div>
+          <h3>Câmeras de Segurança — Sistema CFTV</h3>
+          <p>Atualização para câmeras de alta resolução 4K com armazenamento em nuvem criptografado. Cobertura de 100% das áreas comuns e garagens.</p>
+          <span class="badge badge-blue">📡 Instalação em progresso</span>
+        </div>
+
+        <div class="project-item">
+          <div class="project-dot planned"></div>
+          <div class="project-date">Julho 2025 — Planejado</div>
+          <h3>Espaço Coworking e Academia</h3>
+          <p>Conversão do salão multiuso em um espaço moderno com área de coworking, academia equipada e sala de jogos para todos os condôminos.</p>
+          <span class="badge badge-blue">📋 Em planejamento</span>
+        </div>
+
+        <div class="project-item">
+          <div class="project-dot planned"></div>
+          <div class="project-date">Setembro 2025 — Planejado</div>
+          <h3>Impermeabilização das Coberturas</h3>
+          <p>Manutenção preventiva das lajes de cobertura de todos os blocos, evitando infiltrações e prolongando a vida útil da estrutura.</p>
+          <span class="badge badge-blue">📋 Em orçamento</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== ENQUETES ====== -->
+  <section id="enquetes">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">✦ Participação dos Condôminos</span>
+        <h2 class="section-title">Enquetes Ativas</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">Vote e opine sobre os temas mais relevantes para a comunidade. Sua participação faz a diferença.</p>
+      </div>
+
+      <div class="polls-grid">
+
+        <div class="poll-card">
+          <div class="poll-header">
+            <h3>🏋️ Área de Lazer</h3>
+            <span class="poll-status">● Ativa</span>
+          </div>
+          <div class="poll-body">
+            <p class="poll-question">Qual área de lazer você considera prioridade para a reforma de julho?</p>
+            <div class="poll-option">
+              <label><input type="radio" name="p1"> Academia equipada</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:48%"></div></div>
+              <div class="poll-pct">48% — 68 votos</div>
+            </div>
+            <div class="poll-option">
+              <label><input type="radio" name="p1"> Coworking / Sala de estudos</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:31%"></div></div>
+              <div class="poll-pct">31% — 44 votos</div>
+            </div>
+            <div class="poll-option">
+              <label><input type="radio" name="p1"> Salão de jogos</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:21%"></div></div>
+              <div class="poll-pct">21% — 30 votos</div>
+            </div>
+          </div>
+          <div class="poll-footer">
+            <span class="poll-votes">142 participantes</span>
+            <button class="btn-sm" onclick="votePoll(this)">Votar</button>
+          </div>
+        </div>
+
+        <div class="poll-card">
+          <div class="poll-header">
+            <h3>🐾 Animais de Estimação</h3>
+            <span class="poll-status">● Ativa</span>
+          </div>
+          <div class="poll-body">
+            <p class="poll-question">Você é favorável à criação de um espaço pet exclusivo no condomínio?</p>
+            <div class="poll-option">
+              <label><input type="radio" name="p2"> Sim, com toda a estrutura</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:67%"></div></div>
+              <div class="poll-pct">67% — 95 votos</div>
+            </div>
+            <div class="poll-option">
+              <label><input type="radio" name="p2"> Sim, mas somente banho seco</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:22%"></div></div>
+              <div class="poll-pct">22% — 31 votos</div>
+            </div>
+            <div class="poll-option">
+              <label><input type="radio" name="p2"> Não concordo</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:11%"></div></div>
+              <div class="poll-pct">11% — 16 votos</div>
+            </div>
+          </div>
+          <div class="poll-footer">
+            <span class="poll-votes">142 participantes</span>
+            <button class="btn-sm" onclick="votePoll(this)">Votar</button>
+          </div>
+        </div>
+
+        <div class="poll-card">
+          <div class="poll-header">
+            <h3>🔒 Segurança</h3>
+            <span class="poll-status">● Ativa</span>
+          </div>
+          <div class="poll-body">
+            <p class="poll-question">Como avalia o atual sistema de segurança do condomínio?</p>
+            <div class="poll-option">
+              <label><input type="radio" name="p3"> Ótimo — não precisa melhorar</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:18%"></div></div>
+              <div class="poll-pct">18% — 26 votos</div>
+            </div>
+            <div class="poll-option">
+              <label><input type="radio" name="p3"> Bom, mas pode melhorar</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:55%"></div></div>
+              <div class="poll-pct">55% — 78 votos</div>
+            </div>
+            <div class="poll-option">
+              <label><input type="radio" name="p3"> Precisa de mudanças urgentes</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:27%"></div></div>
+              <div class="poll-pct">27% — 38 votos</div>
+            </div>
+          </div>
+          <div class="poll-footer">
+            <span class="poll-votes">142 participantes</span>
+            <button class="btn-sm" onclick="votePoll(this)">Votar</button>
+          </div>
+        </div>
+
+        <div class="poll-card">
+          <div class="poll-header">
+            <h3>♻️ Sustentabilidade</h3>
+            <span class="poll-status">● Ativa</span>
+          </div>
+          <div class="poll-body">
+            <p class="poll-question">Qual iniciativa sustentável você gostaria de ver no condomínio?</p>
+            <div class="poll-option">
+              <label><input type="radio" name="p4"> Energia solar nas áreas comuns</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:52%"></div></div>
+              <div class="poll-pct">52% — 74 votos</div>
+            </div>
+            <div class="poll-option">
+              <label><input type="radio" name="p4"> Coleta seletiva estruturada</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:30%"></div></div>
+              <div class="poll-pct">30% — 43 votos</div>
+            </div>
+            <div class="poll-option">
+              <label><input type="radio" name="p4"> Carregadores para carros elétricos</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:18%"></div></div>
+              <div class="poll-pct">18% — 25 votos</div>
+            </div>
+          </div>
+          <div class="poll-footer">
+            <span class="poll-votes">142 participantes</span>
+            <button class="btn-sm" onclick="votePoll(this)">Votar</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== COMUNICADOS ====== -->
+  <section id="comunicados">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">✦ Avisos e Notícias</span>
+        <h2 class="section-title">Comunicados Recentes</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="notices-list">
+        <div class="notice-card">
+          <div class="notice-icon">📢</div>
+          <div class="notice-content">
+            <h4>Manutenção dos Elevadores — Bloco C</h4>
+            <p>O elevador do Bloco C passará por manutenção preventiva programada nos dias 15 e 16 de abril, das 08h às 17h. Pedimos a compreensão de todos e orientamos o uso das escadas durante este período.</p>
+            <div class="notice-date">📅 08 de Abril de 2025</div>
+          </div>
+        </div>
+
+        <div class="notice-card">
+          <div class="notice-icon">🏊</div>
+          <div class="notice-content">
+            <h4>Piscina Fechada Para Reforma — Previsão de Reabertura</h4>
+            <p>A piscina adulto e infantil permanecerá fechada durante as obras de revitalização. A previsão de reabertura é para o dia 20 de junho de 2025, com novo espaço ampliado e modernizado.</p>
+            <div class="notice-date">📅 25 de Março de 2025</div>
+          </div>
+        </div>
+
+        <div class="notice-card">
+          <div class="notice-icon">📋</div>
+          <div class="notice-content">
+            <h4>Ata da Assembleia Geral Ordinária — Março 2025</h4>
+            <p>A ata da AGO realizada em 20/03/2025 já está disponível para consulta na administração e no mural do condomínio. Entre os assuntos deliberados estão a aprovação do orçamento 2025 e eleição do conselho fiscal.</p>
+            <div class="notice-date">📅 22 de Março de 2025</div>
+          </div>
+        </div>
+
+        <div class="notice-card">
+          <div class="notice-icon">🔧</div>
+          <div class="notice-content">
+            <h4>Novo Sistema de Câmeras em Instalação</h4>
+            <p>Iniciamos nesta semana a instalação do novo sistema CFTV com câmeras 4K em todas as áreas comuns. O processo será concluído até o dia 30 de abril. Agradecemos a colaboração dos moradores durante os trabalhos.</p>
+            <div class="notice-date">📅 14 de Março de 2025</div>
+          </div>
+        </div>
+
+        <div class="notice-card">
+          <div class="notice-icon">🌿</div>
+          <div class="notice-content">
+            <h4>Mutirão de Limpeza e Jardinagem</h4>
+            <p>Convidamos todos os moradores para o mutirão voluntário de limpeza e jardinagem das áreas externas, marcado para o próximo sábado, 19 de abril, a partir das 09h. Traga luvas e boa vontade!</p>
+            <div class="notice-date">📅 10 de Março de 2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CONTATO ====== -->
+  <section id="contato">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">✦ Fale Conosco</span>
+        <h2 class="section-title">Contato & Sugestões</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>Fale com a Administração</h3>
+          <p style="font-size:0.88rem;color:#666;line-height:1.8;margin-bottom:24px;">Tem dúvidas, sugestões ou precisa reportar algo? Entre em contato com a nossa administração. Respondemos em até 2 dias úteis.</p>
+
+          <div class="contact-detail">
+            <div class="contact-detail-icon">📍</div>
+            <div class="contact-detail-text">
+              <strong>Endereço</strong>
+              <span>Rua do Condomínio, 500 — Curitiba, PR</span>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="contact-detail-icon">📞</div>
+            <div class="contact-detail-text">
+              <strong>Telefone</strong>
+              <span>(41) 3000-0000 / (41) 99000-0000</span>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="contact-detail-icon">✉️</div>
+            <div class="contact-detail-text">
+              <strong>E-mail</strong>
+              <span>sindico@condmauriciogoato.com.br</span>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="contact-detail-icon">🕐</div>
+            <div class="contact-detail-text">
+              <strong>Horário da Portaria</strong>
+              <span>24 horas por dia, 7 dias por semana</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="contact-form">
+            <input type="text" placeholder="Seu nome completo" id="contact-name"/>
+            <input type="email" placeholder="Seu e-mail" id="contact-email"/>
+            <input type="text" placeholder="Assunto" id="contact-subject"/>
+            <textarea rows="5" placeholder="Sua mensagem..." id="contact-message"></textarea>
+            <button class="btn-gold" onclick="sendContact()" style="border:none;cursor:pointer">Enviar Mensagem</button>
+            <div class="auth-msg" id="contact-msg"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h2>Condomínio Maurício Gnoato</h2>
+          <p>Portal oficial para condôminos. Transparência, participação e gestão eficiente para uma comunidade mais harmoniosa e bem administrada.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Portal</h4>
+          <a href="#financeiro">Financeiro</a>
+          <a href="#projetos">Projetos</a>
+          <a href="#enquetes">Enquetes</a>
+          <a href="#comunicados">Comunicados</a>
+        </div>
+        <div class="footer-col">
+          <h4>Suporte</h4>
+          <a href="#contato">Fale Conosco</a>
+          <a href="#">Regulamento Interno</a>
+          <a href="#">Convenção</a>
+          <a href="#">Atas de Assembleia</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Condomínio Maurício Gnoato. Todos os direitos reservados.</p>
+        <p>Desenvolvido com <span>♥</span> para a comunidade</p>
+      </div>
     </div>
   </footer>
-</div>
 
-<!-- PAINEL SÍNDICO -->
-<div id="sindicoPage" class="sindico-page">
-  <div class="sindico-header">
-    <h2>⚙️ Painel do Síndico</h2>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <span id="sindicoName" style="font-size:.8rem;color:#cdd8e0"></span>
-      <button class="btn btn-secondary btn-sm" onclick="irParaSite()">🌐 Ver Site</button>
-      <button class="btn-logout" onclick="fazerLogout()">Sair</button>
-      <button class="hamburger" style="display:flex" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
-    </div>
-  </div>
-  <div class="sindico-container">
-    <div class="sindico-sidebar" id="sindicoSidebar">
-      <div class="sidebar-logo">
-        <img src="logo.png" onerror="this.src='https://via.placeholder.com/45?text=MG'"/>
-        <div><span class="sl-sub">CONDOMÍNIO</span><span class="sl-name">Maurício Gnoato</span></div>
-      </div>
-      <ul class="sidebar-menu">
-        <li><a class="active" onclick="mostrarSecao('painel',this)">📊 Painel</a></li>
-        <li><a onclick="mostrarSecao('financeiro',this)">💰 Financeiro</a></li>
-        <li><a onclick="mostrarSecao('projetos',this)">🔨 Projetos</a></li>
-        <li><a onclick="mostrarSecao('enquetes',this)">🗳️ Enquetes</a></li>
-        <li><a onclick="mostrarSecao('documentos',this)">📁 Documentos</a></li>
-        <li><a onclick="mostrarSecao('ticker',this)">📢 Ticker / Avisos</a></li>
-        <li><a onclick="mostrarSecao('moradores',this)">👥 Condôminos</a></li>
-      </ul>
-    </div>
-    <div class="sindico-main">
-      <!-- PAINEL -->
-      <div id="secPainel" class="sindico-section active">
-        <div class="admin-card"><div class="admin-card-header"><h3>📊 Resumo Geral</h3></div><div class="admin-card-body"><div id="adminStats"><p class="loading-text">Carregando...</p></div></div></div>
-        <div class="admin-card"><div class="admin-card-header"><h3>💰 Último Registro Financeiro</h3></div><div class="admin-card-body"><div id="painelFinanceiro"><p class="loading-text">Carregando...</p></div></div></div>
-      </div>
-      <!-- FINANCEIRO -->
-      <div id="secFinanceiro" class="sindico-section">
-        <div class="admin-card">
-          <div class="admin-card-header"><h3>💰 Lançar Dados Financeiros</h3></div>
-          <div class="admin-card-body">
-            <div class="grid2">
-              <div class="form-group"><label>Mês/Ano</label><input type="month" id="finMes"/></div>
-              <div class="form-group"><label>Receitas (R$)</label><input type="number" id="finReceitas" step="0.01" min="0" placeholder="0.00"/></div>
-              <div class="form-group"><label>Despesas (R$)</label><input type="number" id="finDespesas" step="0.01" min="0" placeholder="0.00"/></div>
-              <div class="form-group"><label>Observações</label><textarea id="finDetalhes" rows="2" placeholder="Ex: Energia R$1840, Água R$980..."></textarea></div>
-            </div>
-            <button class="btn btn-primary" onclick="salvarFinanceiro()">💾 Salvar Dados Financeiros</button>
-            <hr style="margin:24px 0"/>
-            <h4 style="margin-bottom:12px;color:var(--azul)">📋 Histórico</h4>
-            <div id="historicoFinanceiro"><p class="loading-text">Carregando...</p></div>
-          </div>
-        </div>
-      </div>
-      <!-- PROJETOS -->
-      <div id="secProjetos" class="sindico-section">
-        <div class="admin-card">
-          <div class="admin-card-header"><h3>🔨 Novo Projeto</h3></div>
-          <div class="admin-card-body">
-            <div class="grid2">
-              <div class="form-group"><label>Título</label><input type="text" id="projTitulo" placeholder="Ex: Reforma da Piscina"/></div>
-              <div class="form-group"><label>Status</label>
-                <select id="projStatus">
-                  <option value="planejado">Planejado</option>
-                  <option value="andamento">Em andamento</option>
-                  <option value="concluido">Concluído</option>
-                </select>
-              </div>
-              <div class="form-group"><label>Progresso (%)</label><input type="number" id="projProgresso" min="0" max="100" value="0"/></div>
-              <div class="form-group"><label>Descrição</label><textarea id="projDescricao" rows="2" placeholder="Descrição do projeto..."></textarea></div>
-            </div>
-            <button class="btn btn-primary" onclick="salvarProjeto()">➕ Adicionar Projeto</button>
-          </div>
-        </div>
-        <div class="admin-card"><div class="admin-card-header"><h3>📋 Projetos Cadastrados</h3></div><div class="admin-card-body"><div id="listaProjetos"><p class="loading-text">Carregando...</p></div></div></div>
-      </div>
-      <!-- ENQUETES -->
-      <div id="secEnquetes" class="sindico-section">
-        <div class="admin-card">
-          <div class="admin-card-header"><h3>🗳️ Nova Enquete</h3></div>
-          <div class="admin-card-body">
-            <div class="form-group"><label>Título</label><input type="text" id="pollTitulo" placeholder="Ex: Qual melhoria devemos priorizar?"/></div>
-            <div class="form-group"><label>Descrição</label><textarea id="pollDesc" rows="2" placeholder="Descreva a enquete..."></textarea></div>
-            <div class="form-group"><label>Opções (separadas por vírgula)</label><input type="text" id="pollOpcoes" placeholder="Opção 1, Opção 2, Opção 3"/></div>
-            <div class="form-group"><label>Data de encerramento</label><input type="datetime-local" id="pollFim"/></div>
-            <button class="btn btn-primary" onclick="criarEnquete()">➕ Criar Enquete</button>
-          </div>
-        </div>
-        <div class="admin-card"><div class="admin-card-header"><h3>📋 Enquetes Criadas</h3></div><div class="admin-card-body"><div id="listaEnquetes"><p class="loading-text">Carregando...</p></div></div></div>
-      </div>
-      <!-- DOCUMENTOS -->
-      <div id="secDocumentos" class="sindico-section">
-        <div class="admin-card">
-          <div class="admin-card-header"><h3>📁 Enviar Documento</h3></div>
-          <div class="admin-card-body">
-            <div class="form-group"><label>Título</label><input type="text" id="docTitulo" placeholder="Ex: Prestação de Contas - Março 2026"/></div>
-            <div class="form-group"><label>Descrição</label><textarea id="docDesc" rows="2" placeholder="Breve descrição..."></textarea></div>
-            <div class="upload-area" onclick="document.getElementById('docArquivo').click()">
-              <p>📁 Clique para selecionar arquivo PDF</p>
-              <p id="nomeArquivoSelecionado" style="font-size:.75rem;color:var(--azul);margin-top:8px;font-weight:600"></p>
-              <input type="file" id="docArquivo" accept=".pdf" style="display:none" onchange="mostrarNomeArquivo(this)"/>
-            </div>
-            <button class="btn btn-primary" onclick="uploadDocumento()">📤 Enviar Documento</button>
-          </div>
-        </div>
-        <div class="admin-card"><div class="admin-card-header"><h3>📋 Documentos Enviados</h3></div><div class="admin-card-body"><div id="listaDocumentos"><p class="loading-text">Carregando...</p></div></div></div>
-      </div>
-      <!-- TICKER -->
-      <div id="secTicker" class="sindico-section">
-        <div class="admin-card">
-          <div class="admin-card-header"><h3>📢 Gerenciar Avisos do Ticker</h3></div>
-          <div class="admin-card-body">
-            <div class="form-group"><label>Novo Aviso</label><textarea id="novaMensagem" rows="2" placeholder="Ex: 🧹 Limpeza das áreas comuns: 05/04/2026"></textarea></div>
-            <div style="display:flex;gap:12px;flex-wrap:wrap">
-              <button class="btn btn-primary" onclick="adicionarMensagemTicker()">➕ Adicionar Aviso</button>
-              <button class="btn btn-danger" onclick="limparTicker()">🗑️ Limpar Todos</button>
-            </div>
-            <hr style="margin:20px 0"/>
-            <h4 style="margin-bottom:12px;color:var(--azul)">📋 Avisos Ativos</h4>
-            <div id="listaTicker"><p class="loading-text">Carregando...</p></div>
-          </div>
-        </div>
-      </div>
-      <!-- CONDÔMINOS -->
-      <div id="secMoradores" class="sindico-section">
-        <div class="admin-card"><div class="admin-card-header"><h3>👥 Condôminos Cadastrados</h3></div><div class="admin-card-body"><div id="listaMoradores"><p class="loading-text">Carregando...</p></div></div></div>
-      </div>
-    </div>
-  </div>
-</div>
-<script>
+</div><!-- /#main-site -->
+
+<!-- ===================== FIREBASE ===================== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
   const firebaseConfig = {
     apiKey: "AIzaSyCwXXGdSZmtlhaOTt5QyjQUWMukTURbSRU",
     authDomain: "condominio-mg.firebaseapp.com",
+    databaseURL: "https://condominio-mg-default-rtdb.firebaseio.com",
     projectId: "condominio-mg",
     storageBucket: "condominio-mg.firebasestorage.app",
     messagingSenderId: "827098014353",
-    appId: "1:827098014353:web:cc36db91f7216ef7a59530"
+    appId: "1:827098014353:web:cc36db91f7216ef7a59530",
+    measurementId: "G-BPWN7F8HL0"
   };
-  firebase.initializeApp(firebaseConfig);
-  const auth    = firebase.auth();
-  const db      = firebase.firestore();
-  const storage = firebase.storage();
 
-  const EMAIL_ADMIN   = "sindico@condominio.com";
-  let usuarioAtual    = null;
-  let isAdmin         = false;
-  let mensagensTicker = [];
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
 
-  // ── UTILITÁRIOS ──────────────────────────────────────────────
-  function mostrarToast(msg, tipo) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.style.background = tipo === 'erro' ? '#7a2020' : '#1F3140';
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3500);
-  }
+  // Expose globals
+  window._auth = auth;
+  window._db = db;
+  window._ref = ref;
+  window._set = set;
+  window._push = push;
+  window._createUser = createUserWithEmailAndPassword;
+  window._signIn = signInWithEmailAndPassword;
+  window._signOut = signOut;
+  window._updateProfile = updateProfile;
 
-  function esc(str) {
-    const d = document.createElement('div');
-    d.textContent = String(str || '');
-    return d.innerHTML;
-  }
+  // Auth state
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById('auth-overlay').style.display = 'none';
+      document.getElementById('main-site').style.display = 'block';
 
-  function fmtMoeda(val) {
-    return 'R$ ' + parseFloat(val || 0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
-  }
+      const name = user.displayName || user.email.split('@')[0];
+      const initials = name.charAt(0).toUpperCase();
 
-  function fmtMes(s) {
-    if (!s) return '—';
-    const [ano, mes] = s.split('-');
-    const n = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-    return (n[parseInt(mes)-1] || mes) + '/' + ano;
-  }
-
-  function traduzirErro(code) {
-    const m = {
-      'auth/user-not-found':       'Usuário não encontrado.',
-      'auth/wrong-password':        'Senha incorreta.',
-      'auth/invalid-credential':    'E-mail ou senha incorretos.',
-      'auth/invalid-email':         'E-mail inválido.',
-      'auth/email-already-in-use':  'Este e-mail já está cadastrado.',
-      'auth/weak-password':         'Senha fraca. Use ao menos 6 caracteres.',
-      'auth/too-many-requests':     'Muitas tentativas. Aguarde.',
-      'auth/network-request-failed':'Falha de conexão.'
-    };
-    return m[code] || 'Erro: ' + code;
-  }
-
-  // ── UI ───────────────────────────────────────────────────────
-  function switchTab(tab) {
-    document.querySelectorAll('.login-tab').forEach((b,i) =>
-      b.classList.toggle('active', tab==='entrar' ? i===0 : i===1)
-    );
-    document.getElementById('formLogin').classList.toggle('active', tab==='entrar');
-    document.getElementById('formCadastro').classList.toggle('active', tab!=='entrar');
-    ['loginError','cadastroError','cadastroSuccess'].forEach(id =>
-      document.getElementById(id).textContent = ''
-    );
-  }
-
-  function toggleMenu()    { document.getElementById('mainNav').classList.toggle('open'); }
-  function toggleSidebar() { document.getElementById('sindicoSidebar').classList.toggle('open'); }
-
-  function mostrarNomeArquivo(input) {
-    document.getElementById('nomeArquivoSelecionado').textContent =
-      input.files[0] ? '📄 ' + input.files[0].name : '';
-  }
-
-  function mostrarSecao(id, linkEl) {
-    ['painel','financeiro','projetos','enquetes','documentos','ticker','moradores'].forEach(s => {
-      const el = document.getElementById('sec' + s.charAt(0).toUpperCase() + s.slice(1));
-      if (el) el.classList.remove('active');
-    });
-    const alvo = document.getElementById('sec' + id.charAt(0).toUpperCase() + id.slice(1));
-    if (alvo) alvo.classList.add('active');
-    document.querySelectorAll('.sidebar-menu li a').forEach(a => a.classList.remove('active'));
-    if (linkEl) linkEl.classList.add('active');
-    if (window.innerWidth <= 768) document.getElementById('sindicoSidebar').classList.remove('open');
-    const mapa = {
-      painel:     carregarPainel,
-      financeiro: carregarFinanceiroAdmin,
-      projetos:   carregarProjetosAdmin,
-      enquetes:   carregarEnquetesAdmin,
-      documentos: carregarDocumentosAdmin,
-      ticker:     renderizarListaTicker,
-      moradores:  carregarMoradoresAdmin
-    };
-    if (mapa[id]) mapa[id]();
-  }
-
-  function mudarTab(tabId, el) {
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    const t = document.getElementById(tabId);
-    if (t) t.classList.add('active');
-    if (el) el.classList.add('active');
-  }
-
-  // ── AUTENTICAÇÃO ─────────────────────────────────────────────
-  async function fazerLogin() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const senha = document.getElementById('loginSenha').value;
-    const errEl = document.getElementById('loginError');
-    errEl.textContent = '';
-    if (!email || !senha) { errEl.textContent = 'Preencha e-mail e senha.'; return; }
-    try {
-      const r = await auth.signInWithEmailAndPassword(email, senha);
-      await configurarSessao(r.user);
-    } catch(e) { errEl.textContent = traduzirErro(e.code); }
-  }
-
-  async function fazerCadastro() {
-    const nome  = document.getElementById('cadNome').value.trim();
-    const casa  = document.getElementById('cadCasa').value.trim();
-    const email = document.getElementById('cadEmail').value.trim();
-    const senha = document.getElementById('cadSenha').value;
-    const errEl = document.getElementById('cadastroError');
-    const okEl  = document.getElementById('cadastroSuccess');
-    errEl.textContent = ''; okEl.textContent = '';
-
-    if (!nome || !casa || !email || !senha) { errEl.textContent = 'Preencha todos os campos.'; return; }
-    if (senha.length < 6) { errEl.textContent = 'Senha deve ter ao menos 6 caracteres.'; return; }
-    const numCasa = parseInt(casa);
-    if (isNaN(numCasa) || numCasa < 1 || numCasa > 25) { errEl.textContent = 'Casa deve ser entre 1 e 25.'; return; }
-
-    try {
-      const cred = await auth.createUserWithEmailAndPassword(email, senha);
-      await db.collection('users').doc(cred.user.uid).set({
-        nome, casa: numCasa, email, isAdmin: false,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      await auth.signOut();
-      okEl.textContent = '✅ Conta criada com sucesso! Faça login.';
-      ['cadNome','cadCasa','cadEmail','cadSenha'].forEach(id => document.getElementById(id).value = '');
-      setTimeout(() => { switchTab('entrar'); okEl.textContent = ''; }, 2500);
-    } catch(e) { errEl.textContent = traduzirErro(e.code); }
-  }
-
-  async function configurarSessao(user) {
-    usuarioAtual = user;
-    isAdmin = (user.email === EMAIL_ADMIN);
-    document.getElementById('loginPage').style.display = 'none';
-    document.getElementById('sitePage').classList.add('active');
-    document.getElementById('sindicoPage').classList.remove('active');
-
-    if (isAdmin) {
-      document.getElementById('userName').textContent    = 'Síndico';
-      document.getElementById('userAvatar').textContent  = 'S';
-      document.getElementById('sindicoName').textContent = 'Síndico';
-      document.getElementById('btnSindico').style.display = 'inline-block';
-      await db.collection('users').doc(user.uid).set(
-        { nome:'Síndico', email:user.email, isAdmin:true, casa:0 },
-        { merge:true }
-      );
+      document.getElementById('user-avatar').textContent = initials;
+      document.getElementById('user-name-header').textContent = name;
     } else {
-      document.getElementById('btnSindico').style.display = 'none';
-      try {
-        const doc = await db.collection('users').doc(user.uid).get();
-        if (doc.exists) {
-          const ud = doc.data();
-          const nome = ud.nome || user.email.split('@')[0];
-          document.getElementById('userName').textContent   = nome + (ud.casa ? ' (Casa '+ud.casa+')' : '');
-          document.getElementById('userAvatar').textContent = nome.charAt(0).toUpperCase();
-        } else {
-          const n = user.email.split('@')[0];
-          document.getElementById('userName').textContent   = n;
-          document.getElementById('userAvatar').textContent = n.charAt(0).toUpperCase();
-        }
-      } catch(e) {
-        const n = user.email.split('@')[0];
-        document.getElementById('userName').textContent   = n;
-        document.getElementById('userAvatar').textContent = n.charAt(0).toUpperCase();
-      }
+      document.getElementById('auth-overlay').style.display = 'flex';
+      document.getElementById('main-site').style.display = 'none';
     }
-    mostrarToast('✅ Bem-vindo!');
-    await carregarTicker();
-    carregarDadosPublicos();
+  });
+</script>
+
+<script>
+  // Tab switching
+  function switchTab(tab) {
+    document.querySelectorAll('.auth-tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+    });
+    document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+    document.getElementById('panel-register').classList.toggle('active', tab === 'register');
   }
 
-  async function fazerLogout() {
-    await auth.signOut();
-    usuarioAtual = null; isAdmin = false; mensagensTicker = [];
-    document.getElementById('sitePage').classList.remove('active');
-    document.getElementById('sindicoPage').classList.remove('active');
-    document.getElementById('loginPage').style.display = 'flex';
-    document.getElementById('loginEmail').value = '';
-    document.getElementById('loginSenha').value = '';
-    document.getElementById('loginError').textContent = '';
-    mostrarToast('Logout realizado.');
+  function showMsg(id, msg, type) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = 'auth-msg ' + type;
   }
 
-  function irParaSindico() {
-    document.getElementById('sitePage').classList.remove('active');
-    document.getElementById('sindicoPage').classList.add('active');
-    carregarPainel();
-  }
-
-  function irParaSite() {
-    document.getElementById('sindicoPage').classList.remove('active');
-    document.getElementById('sitePage').classList.add('active');
-  }
-
-  // ── TICKER ───────────────────────────────────────────────────
-  async function carregarTicker() {
+  // Login
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pwd = document.getElementById('login-pwd').value;
+    if (!email || !pwd) return showMsg('login-msg', 'Preencha todos os campos.', 'error');
     try {
-      const doc = await db.collection('config').doc('ticker').get();
-      if (doc.exists && Array.isArray(doc.data().mensagens)) {
-        mensagensTicker = doc.data().mensagens;
-      } else {
-        mensagensTicker = [
-          "📢 Reunião de Condôminos: 15/04/2026 às 19h",
-          "🔧 Manutenção do portão eletrônico: 02/04/2026",
-          "💧 Limpeza da caixa d'água: 10/04/2026",
-          "📋 Prestação de contas Março/2026 disponível"
-        ];
-        await db.collection('config').doc('ticker').set({ mensagens: mensagensTicker });
-      }
-      renderizarTickerPublico();
-    } catch(e) { console.error('Erro ticker:', e); }
-  }
-
-  function renderizarTickerPublico() {
-    const el = document.getElementById('tickerInner');
-    if (!el) return;
-    if (!mensagensTicker.length) {
-      el.innerHTML = '<span class="ticker-item">Sem avisos no momento.</span>';
-      return;
+      await window._signIn(window._auth, email, pwd);
+    } catch(e) {
+      let msg = 'Erro ao entrar. Verifique seus dados.';
+      if (e.code === 'auth/user-not-found') msg = 'Usuário não encontrado.';
+      if (e.code === 'auth/wrong-password') msg = 'Senha incorreta.';
+      if (e.code === 'auth/invalid-email') msg = 'E-mail inválido.';
+      if (e.code === 'auth/invalid-credential') msg = 'Credenciais inválidas.';
+      showMsg('login-msg', msg, 'error');
     }
-    const duplo = [...mensagensTicker, ...mensagensTicker];
-    el.innerHTML = duplo.map(m => `<span class="ticker-item">${esc(m)}</span>`).join('');
   }
 
-  function renderizarListaTicker() {
-    const el = document.getElementById('listaTicker');
-    if (!el) return;
-    if (!mensagensTicker.length) {
-      el.innerHTML = '<p class="empty-state">Nenhum aviso ativo.</p>';
-      return;
+  // Register
+  async function doRegister() {
+    const name = document.getElementById('reg-name').value.trim();
+    const unit = document.getElementById('reg-unit').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pwd = document.getElementById('reg-pwd').value;
+    if (!name || !unit || !email || !pwd) return showMsg('register-msg', 'Preencha todos os campos.', 'error');
+    if (pwd.length < 6) return showMsg('register-msg', 'A senha deve ter ao menos 6 caracteres.', 'error');
+    try {
+      const cred = await window._createUser(window._auth, email, pwd);
+      await window._updateProfile(cred.user, { displayName: name });
+      // Salvar no Realtime DB
+      await window._set(window._ref(window._db, 'condominios/' + cred.user.uid), {
+        name, unit, email, createdAt: new Date().toISOString()
+      });
+      showMsg('register-msg', 'Cadastro realizado com sucesso!', 'success');
+    } catch(e) {
+      let msg = 'Erro ao cadastrar.';
+      if (e.code === 'auth/email-already-in-use') msg = 'E-mail já cadastrado.';
+      if (e.code === 'auth/invalid-email') msg = 'E-mail inválido.';
+      if (e.code === 'auth/weak-password') msg = 'Senha muito fraca.';
+      showMsg('register-msg', msg, 'error');
     }
-    el.innerHTML = mensagensTicker.map((msg, idx) => `
-      <div class="ticker-message-item">
-        <span class="ticker-text">${esc(msg)}</span>
-        <button class="btn btn-danger btn-sm" onclick="removerMensagemTicker(${idx})">Excluir</button>
-      </div>`).join('');
   }
 
-  async function adicionarMensagemTicker() {
-    const val = document.getElementById('novaMensagem').value.trim();
-    if (!val) { mostrarToast('Digite uma mensagem.', 'erro'); return; }
-    mensagensTicker.push(val);
+  // Logout
+  async function doLogout() {
+    await window._signOut(window._auth);
+  }
+
+  // Hamburger
+  function toggleMenu() {
+    document.getElementById('main-nav').classList.toggle('open');
+  }
+
+  // Poll vote mock
+  function votePoll(btn) {
+    btn.textContent = 'Votado ✓';
+    btn.disabled = true;
+    btn.style.background = '#27ae60';
+  }
+
+  // Contact form
+  async function sendContact() {
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const subject = document.getElementById('contact-subject').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    if (!name || !email || !subject || !message) {
+      return showMsg('contact-msg', 'Preencha todos os campos.', 'error');
+    }
     try {
-      await db.collection('config').doc('ticker').set({ mensagens: mensagensTicker });
-      document.getElementById('novaMensagem').value = '';
-      renderizarTickerPublico();
-      renderizarListaTicker();
-      mostrarToast('✅ Aviso adicionado!');
-    } catch(e) { mensagensTicker.pop(); mostrarToast('Erro ao salvar.', 'erro'); }
+      await window._push(window._ref(window._db, 'contatos'), {
+        name, email, subject, message, createdAt: new Date().toISOString()
+      });
+      showMsg('contact-msg', 'Mensagem enviada com sucesso! Responderemos em breve.', 'success');
+      ['contact-name','contact-email','contact-subject','contact-message'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+    } catch(e) {
+      showMsg('contact-msg', 'Erro ao enviar mensagem. Tente novamente.', 'error');
+    }
   }
 
-  async function removerMensagemTicker(idx) {
-    const bkp = [...mensagensTicker];
-    mensagensTicker.splice(idx, 1);
-    try {
-      await db.collection('config').doc('ticker').set({ mensagens: mensagensTicker });
-      renderizarTickerPublico();
-      renderizarListaTicker();
-      mostrarToast('Aviso removido!');
-    } catch(e) { mensagensTicker = bkp; mostrarToast('Erro ao remover.', 'erro'); }
-  }
+  // Enter key nos inputs de login
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const loginPanel = document.getElementById('panel-login');
+      const regPanel = document.getElementById('panel-register');
+      if (loginPanel.classList.contains('active')) doLogin();
+      else if (regPanel.classList.contains('active')) doRegister();
+    }
+  });
 
-  async function limparTicker() {
-    if (!confirm('Remover todos os avisos?')) return;
-    const bkp = [...mensagensTicker];
-    mensagensTicker = [];
-    try {
-      await db.collection('config').doc('ticker').set({ mensagens: [] });
-      renderizarTickerPublico();
-      renderizarListaTicker();
-      mostrarToast('Todos os avisos removidos!');
-    } catch(e) { mensagensTicker = bkp; mostrarToast('Erro ao limpar.', 'erro'); }
-  }
+  // Tenta carregar logo
+  window.addEventListener('load', () => {
+    const img = new Image();
+    img.onload = () => {
+      const authWrap = document.getElementById('auth-logo-wrap');
+      const headerWrap = document.getElementById('header-logo');
 
-  // ── DADOS PÚBLICOS ───────────────────────────────────────────
-  async function carregarDadosPublicos() {
-    await Promise.all([
-      carregarFinanceiroPublico(),
-      carregarProjetosPublico(),
-      carregarEnquetesPublico(),
-      carregarDocumentosPublico(),
-      carregarStatsPublicos()
-    ]);
+      const authImg = document.createElement('img');
+      authImg.src = 'logo.png';
+      authImg.className = 'auth-logo';
+      authWrap.replaceWith(authImg);
 
+      const headerImg = document.createElement('img');
+      headerImg.src = 'logo.png';
+      headerImg.className = 'brand-logo';
+      headerWrap.replaceWith(headerImg);
+    };
+    img.src = 'logo.png';
+  });
+</script>
+
+</body>
+</html>
