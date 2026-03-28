@@ -259,7 +259,6 @@
       <button class="login-tab" onclick="switchTab('cadastrar')">Cadastrar</button>
     </div>
     
-    <!-- Formulário de Login -->
     <div id="formLogin" class="login-form active">
       <div class="form-group">
         <label>E-mail</label>
@@ -273,7 +272,6 @@
       <p class="auth-error" id="loginError"></p>
     </div>
     
-    <!-- Formulário de Cadastro -->
     <div id="formCadastro" class="login-form">
       <div class="form-group">
         <label>Nome completo</label>
@@ -370,13 +368,13 @@
     <div class="sindico-sidebar" id="sindicoSidebar">
       <div class="sidebar-logo"><img src="logo.png" onerror="this.src='https://via.placeholder.com/45?text=MG'"/><div><span style="font-size:0.6rem;color:var(--dourado)">CONDOMÍNIO</span><br/><span>Maurício Gnoato</span></div></div>
       <ul class="sidebar-menu">
-        <li><a class="active" onclick="showSection('painel')"><span>📊</span> Painel</a></li>
-        <li><a onclick="showSection('financeiro')"><span>💰</span> Financeiro</a></li>
-        <li><a onclick="showSection('projetos')"><span>🔨</span> Projetos</a></li>
-        <li><a onclick="showSection('enquetes')"><span>🗳️</span> Enquetes</a></li>
-        <li><a onclick="showSection('documentos')"><span>📁</span> Documentos</a></li>
-        <li><a onclick="showSection('ticker')"><span>📢</span> Ticker / Avisos</a></li>
-        <li><a onclick="showSection('moradores')"><span>👥</span> Condôminos</a></li>
+        <li><a class="active" onclick="mostrarSecao('painel')"><span>📊</span> Painel</a></li>
+        <li><a onclick="mostrarSecao('financeiro')"><span>💰</span> Financeiro</a></li>
+        <li><a onclick="mostrarSecao('projetos')"><span>🔨</span> Projetos</a></li>
+        <li><a onclick="mostrarSecao('enquetes')"><span>🗳️</span> Enquetes</a></li>
+        <li><a onclick="mostrarSecao('documentos')"><span>📁</span> Documentos</a></li>
+        <li><a onclick="mostrarSecao('ticker')"><span>📢</span> Ticker / Avisos</a></li>
+        <li><a onclick="mostrarSecao('moradores')"><span>👥</span> Condôminos</a></li>
       </ul>
       <div class="sidebar-footer"><div>Área administrativa</div></div>
     </div>
@@ -398,7 +396,7 @@
               <div class="form-group"><label>Mês/Ano</label><input type="month" id="finMes"/></div>
               <div class="form-group"><label>Receitas (R$)</label><input type="number" id="finReceitas" step="0.01"/></div>
               <div class="form-group"><label>Despesas (R$)</label><input type="number" id="finDespesas" step="0.01"/></div>
-              <div class="form-group"><label>Detalhes</label><textarea id="finDetalhes" rows="2" placeholder='{"Energia":1840,"Água":980,"Manutenção":1200}'></textarea></div>
+              <div class="form-group"><label>Detalhes</label><textarea id="finDetalhes" rows="2" placeholder='{"Energia":1840,"Água":980}'></textarea></div>
             </div>
             <button class="btn btn-primary" onclick="salvarFinanceiro()">💾 Salvar Dados Financeiros</button>
             <hr style="margin:20px 0"/>
@@ -433,7 +431,7 @@
           <div class="admin-card-header"><h3>🗳️ Gerenciar Enquetes</h3></div>
           <div class="admin-card-body">
             <div class="form-group"><label>Título</label><input type="text" id="pollTitulo" placeholder="Ex: Qual melhoria devemos priorizar?"/></div>
-            <div class="form-group"><label>Descrição</label><textarea id="pollDesc" rows="2" placeholder="Descreva o que será votado..."></textarea></div>
+            <div class="form-group"><label>Descrição</label><textarea id="pollDesc" rows="2"></textarea></div>
             <div class="form-group"><label>Opções (separadas por vírgula)</label><input type="text" id="pollOpcoes" placeholder="Opção 1, Opção 2, Opção 3"/></div>
             <div class="form-group"><label>Data de encerramento</label><input type="datetime-local" id="pollFim"/></div>
             <button class="btn btn-primary" onclick="criarEnquete()">➕ Criar Enquete</button>
@@ -450,7 +448,7 @@
           <div class="admin-card-header"><h3>📁 Upload de Documentos</h3></div>
           <div class="admin-card-body">
             <div class="form-group"><label>Título</label><input type="text" id="docTitulo" placeholder="Ex: Prestação de Contas - Março 2026"/></div>
-            <div class="form-group"><label>Descrição</label><textarea id="docDesc" rows="2" placeholder="Breve descrição do documento..."></textarea></div>
+            <div class="form-group"><label>Descrição</label><textarea id="docDesc" rows="2"></textarea></div>
             <div class="upload-area" onclick="document.getElementById('docArquivo').click()">📁 Clique para selecionar arquivo PDF<input type="file" id="docArquivo" accept=".pdf" style="display:none"/></div>
             <button class="btn btn-primary" onclick="uploadDocumento()">📤 Enviar Documento</button>
             <hr style="margin:20px 0"/>
@@ -518,7 +516,7 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  // ========== FUNÇÕES DE AUTENTICAÇÃO ==========
+  // ========== AUTENTICAÇÃO ==========
   function switchTab(tab) {
     const tabs = document.querySelectorAll('.login-tab');
     const formLogin = document.getElementById('formLogin');
@@ -563,7 +561,6 @@
           nome: "Síndico", email: result.user.email, isAdmin: true, casa: 0
         }, { merge: true });
       } else {
-        // Buscar dados do usuário comum
         const userDoc = await db.collection('users').doc(result.user.uid).get();
         if (userDoc.exists) {
           const userData = userDoc.data();
@@ -590,7 +587,7 @@
     const senha = document.getElementById('cadSenha').value;
     
     if (!nome || !casa || !email || senha.length < 6) {
-      document.getElementById('cadastroError').textContent = 'Preencha todos os campos (senha: mínimo 6 caracteres)';
+      document.getElementById('cadastroError').textContent = 'Preencha todos os campos (senha: mínimo 6)';
       return;
     }
     
@@ -603,14 +600,12 @@
         isAdmin: false,
         createdAt: new Date()
       });
-      document.getElementById('cadastroSuccess').textContent = 'Cadastro realizado com sucesso! Faça login.';
+      document.getElementById('cadastroSuccess').textContent = 'Cadastro realizado! Faça login.';
       document.getElementById('cadastroError').textContent = '';
-      // Limpar campos
       document.getElementById('cadNome').value = '';
       document.getElementById('cadCasa').value = '';
       document.getElementById('cadEmail').value = '';
       document.getElementById('cadSenha').value = '';
-      // Mudar para aba de login após 2 segundos
       setTimeout(() => {
         switchTab('entrar');
         document.getElementById('cadastroSuccess').textContent = '';
@@ -643,7 +638,7 @@
     document.getElementById('sitePage').classList.add('active');
   }
 
-  function showSection(sectionId) {
+  function mostrarSecao(sectionId) {
     const sections = ['painel', 'financeiro', 'projetos', 'enquetes', 'documentos', 'ticker', 'moradores'];
     sections.forEach(s => {
       const sec = document.getElementById('sec' + s.charAt(0).toUpperCase() + s.slice(1));
@@ -653,12 +648,10 @@
     if (secaoAtiva) secaoAtiva.classList.add('active');
     
     document.querySelectorAll('.sidebar-menu li a').forEach(a => a.classList.remove('active'));
-    if (event && event.target) {
-      event.target.closest('a').classList.add('active');
-    }
+    event.target.closest('a').classList.add('active');
   }
 
-  // ========== FUNÇÕES DE TICKER ==========
+  // ========== TICKER ==========
   async function carregarTicker() {
     try {
       const doc = await db.collection('config').doc('ticker').get();
@@ -683,7 +676,6 @@
       tickerInner.innerHTML = mensagensTicker.map(msg => `<span class="ticker-item">${msg}</span>`).join('');
       tickerInner.innerHTML += mensagensTicker.map(msg => `<span class="ticker-item">${msg}</span>`).join('');
     }
-    
     const listaTicker = document.getElementById('listaTicker');
     if (listaTicker) {
       if (mensagensTicker.length === 0) {
@@ -706,7 +698,7 @@
     await db.collection('config').doc('ticker').set({ mensagens: mensagensTicker });
     document.getElementById('novaMensagem').value = '';
     atualizarTickerNaTela();
-    mostrarToast('Aviso adicionado com sucesso!');
+    mostrarToast('Aviso adicionado!');
   }
 
   async function removerMensagemTicker(index) {
@@ -717,15 +709,15 @@
   }
 
   async function limparTicker() {
-    if (confirm('Tem certeza que deseja remover todos os avisos?')) {
+    if (confirm('Remover todos os avisos?')) {
       mensagensTicker = [];
       await db.collection('config').doc('ticker').set({ mensagens: mensagensTicker });
       atualizarTickerNaTela();
-      mostrarToast('Todos os avisos foram removidos!');
+      mostrarToast('Todos os avisos removidos!');
     }
   }
 
-  // ========== FUNÇÕES DE DADOS PÚBLICOS ==========
+  // ========== DADOS PÚBLICOS ==========
   async function carregarDadosPublicos() {
     try {
       const finSnap = await db.collection('finances').orderBy('mes', 'desc').limit(3).get();
@@ -748,7 +740,7 @@
           <div class="saldo-bar"><div>Saldo</div><div class="saldo-valor">R$ ${saldo.toFixed(2)}</div></div>
         </div>`;
       });
-      if (finSnap.empty) html = '<p>Nenhum dado financeiro. Adicione no painel do síndico.</p>';
+      if (finSnap.empty) html = '<p>Nenhum dado financeiro.</p>';
       document.getElementById('publicFinanceiro').innerHTML = html;
 
       const projSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
@@ -760,7 +752,7 @@
         if (p.status === 'planejado') { statusClass = 'status-planejado'; statusText = 'Planejado'; }
         projHtml += `<div class="project-card"><span class="project-status ${statusClass}">${statusText}</span><h3>${p.titulo}</h3><p>${p.descricao}</p><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progresso}%"></div></div><div class="progress-label">${p.progresso}%</div></div>`;
       });
-      document.getElementById('publicProjetos').innerHTML = projHtml || '<p>Nenhum projeto cadastrado.</p>';
+      document.getElementById('publicProjetos').innerHTML = projHtml || '<p>Nenhum projeto.</p>';
 
       const pollSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
       let pollHtml = '';
@@ -784,7 +776,7 @@
         pollHtml += `</div></div>`;
         carregarComentarios(doc.id);
       }
-      document.getElementById('publicEnquetes').innerHTML = pollHtml || '<p>Nenhuma enquete ativa.</p>';
+      document.getElementById('publicEnquetes').innerHTML = pollHtml || '<p>Nenhuma enquete.</p>';
 
       const docsSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
       let docsHtml = '';
@@ -792,7 +784,7 @@
         const d = doc.data();
         docsHtml += `<div class="doc-card"><div class="doc-icon">📄</div><div><h4>${d.titulo}</h4><p>${d.descricao}</p><a href="${d.url}" target="_blank">Baixar PDF →</a></div></div>`;
       });
-      document.getElementById('publicDocumentos').innerHTML = docsHtml || '<p>Nenhum documento disponível.</p>';
+      document.getElementById('publicDocumentos').innerHTML = docsHtml || '<p>Nenhum documento.</p>';
     } catch(e) { console.error(e); }
   }
 
@@ -835,7 +827,7 @@
     } catch(e) { console.error(e); }
   }
 
-  // ========== FUNÇÕES ADMIN ==========
+  // ========== ADMIN ==========
   async function carregarDadosAdmin() {
     try {
       const usersSnap = await db.collection('users').get();
@@ -843,13 +835,13 @@
       document.getElementById('adminStats').innerHTML = `<div class="grid2"><div class="stat-card"><div class="stat-number">${usersSnap.size}</div><div>Moradores</div></div><div class="stat-card"><div class="stat-number">${projSnap.size}</div><div>Projetos</div></div><div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div></div>`;
 
       const histSnap = await db.collection('finances').orderBy('mes', 'desc').get();
-      let histHtml = '耒<thead> <th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th> </thead><tbody>';
+      let histHtml = '<table><thead><tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr></thead><tbody>';
       histSnap.forEach(doc => {
         const d = doc.data();
-        histHtml += `   <tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
+        histHtml += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
       });
       histHtml += '</tbody></table>';
-      document.getElementById('historicoFinanceiro').innerHTML = histHtml || '<p>Nenhum dado financeiro</p>';
+      document.getElementById('historicoFinanceiro').innerHTML = histHtml || '<p>Nenhum dado</p>';
 
       const projListSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
       let projList = '';
@@ -857,7 +849,7 @@
         const p = doc.data();
         projList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.progresso}% (${p.status})</span><button class="btn-danger btn-sm" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
       });
-      document.getElementById('listaProjetos').innerHTML = projList || '<p>Nenhum projeto cadastrado</p>';
+      document.getElementById('listaProjetos').innerHTML = projList || '<p>Nenhum projeto</p>';
 
       const pollListSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
       let pollList = '';
@@ -865,7 +857,7 @@
         const p = doc.data();
         pollList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.totalVotos || 0} votos</span><button class="btn-danger btn-sm" onclick="deletarEnquete('${doc.id}')">Excluir</button></div>`;
       });
-      document.getElementById('listaEnquetes').innerHTML = pollList || '<p>Nenhuma enquete criada</p>';
+      document.getElementById('listaEnquetes').innerHTML = pollList || '<p>Nenhuma enquete</p>';
 
       const docsListSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
       let docsList = '';
@@ -873,16 +865,16 @@
         const d = doc.data();
         docsList += `<div class="document-item"><span><strong>${d.titulo}</strong> - ${d.descricao}</span><button class="btn-danger btn-sm" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
       });
-      document.getElementById('listaDocumentos').innerHTML = docsList || '<p>Nenhum documento enviado</p>';
+      document.getElementById('listaDocumentos').innerHTML = docsList || '<p>Nenhum documento</p>';
 
       const moradoresSnap = await db.collection('users').orderBy('casa').get();
-      let moradoresList = '耒<thead> <th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th> </thead><tbody>';
+      let moradoresList = '<table><thead><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr></thead><tbody>';
       moradoresSnap.forEach(doc => {
         const u = doc.data();
-        moradoresList += `   <tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
+        moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
       });
       moradoresList += '</tbody></table>';
-      document.getElementById('listaMoradores').innerHTML = moradoresList || '<p>Nenhum morador cadastrado</p>';
+      document.getElementById('listaMoradores').innerHTML = moradoresList || '<p>Nenhum morador</p>';
     } catch(e) { console.error(e); }
   }
 
@@ -894,9 +886,7 @@
       mostrarToast('Preencha todos os campos');
       return;
     }
-    await db.collection('finances').doc(mes).set({ 
-      mes, receitas, despesas, detalhes: document.getElementById('finDetalhes').value, updatedAt: new Date() 
-    });
+    await db.collection('finances').doc(mes).set({ mes, receitas, despesas, detalhes: document.getElementById('finDetalhes').value, updatedAt: new Date() });
     mostrarToast('Dados financeiros salvos!');
     carregarDadosPublicos();
     carregarDadosAdmin();
@@ -908,7 +898,7 @@
 
   async function salvarProjeto() {
     const titulo = document.getElementById('projTitulo').value;
-    if (!titulo) { mostrarToast('Informe o título do projeto'); return; }
+    if (!titulo) { mostrarToast('Informe o título'); return; }
     await db.collection('projects').add({ 
       titulo, 
       status: document.getElementById('projStatus').value, 
@@ -1004,10 +994,9 @@
   
   function enviarContato(e) { 
     e.preventDefault(); 
-    mostrarToast('Mensagem enviada! O síndico responderá em breve.'); 
+    mostrarToast('Mensagem enviada!'); 
   }
 
-  // Expor funções globalmente
   window.switchTab = switchTab;
   window.fazerLogin = fazerLogin;
   window.fazerCadastro = fazerCadastro;
@@ -1016,7 +1005,7 @@
   window.toggleSidebar = toggleSidebar;
   window.irParaSindico = irParaSindico;
   window.irParaSite = irParaSite;
-  window.showSection = showSection;
+  window.mostrarSecao = mostrarSecao;
   window.salvarFinanceiro = salvarFinanceiro;
   window.salvarProjeto = salvarProjeto;
   window.deletarProjeto = deletarProjeto;
