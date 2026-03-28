@@ -3,186 +3,856 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
-  <title>Condomínio Maurício Gnoato - Gestão Transparente</title>
+  <title>Condomínio Maurício Gnoato</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    :root{
-      --azul:#1F3140;--azul-escuro:#17232F;--dourado:#C4A776;--dourado-dk:#B2915F;
-      --bege-claro:#F1E6D4;--bege-fundo:#F5F0E6;--borda:#E0D4C0;--branco:#FFFFFF;
-      --texto:#17232F;--verde:#1a5c3a;--vermelho:#7a2020;--sidebar-w:280px;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    html{scroll-behavior:smooth}
-    body{font-family:'Montserrat',sans-serif;background:var(--bege-fundo);color:var(--texto);font-size:15px;line-height:1.6}
-    h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--azul)}
-    a{text-decoration:none;color:inherit}
-    img{max-width:100%;display:block}
 
-    .container{width:90%;max-width:1200px;margin:0 auto}
-    .section{padding:60px 0}
-    .section--branca{background:var(--branco)}
-    .section--bege{background:var(--bege-fundo)}
-    .section--azul{background:var(--azul);color:var(--branco)}
-    .section-title{font-size:2rem;text-align:center;margin-bottom:12px;color:var(--azul)}
-    .section--azul .section-title{color:var(--branco)}
-    .section-divider{width:60px;height:3px;background:var(--dourado);margin:0 auto 40px;border:none}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;transition:all .3s;border:none;font-size:.85rem}
-    .btn-primary{background:var(--azul);color:var(--branco)}
-    .btn-primary:hover{background:#254057;transform:translateY(-2px)}
-    .btn-secondary{background:var(--dourado);color:var(--azul)}
-    .btn-secondary:hover{background:var(--dourado-dk);color:var(--branco)}
-    .btn-outline{background:transparent;border:2px solid var(--branco);color:var(--branco)}
-    .btn-outline:hover{background:var(--branco);color:var(--azul)}
-    .btn-danger{background:#c0392b;color:white}
-    .btn-danger:hover{background:#962d22}
-    .btn-sm{padding:6px 14px;font-size:.75rem}
-    .btn-full{width:100%}
+    :root {
+      --azul: #1F3140;
+      --azul-escuro: #17232F;
+      --dourado: #C4A776;
+      --dourado-dk: #B2915F;
+      --bege-claro: #F1E6D4;
+      --bege-fundo: #F5F0E6;
+      --borda: #E0D4C0;
+      --branco: #FFFFFF;
+      --texto: #17232F;
+      --verde: #1a5c3a;
+      --vermelho: #7a2020;
+    }
 
-    /* Login */
-    #page-login{min-height:100vh;background:linear-gradient(135deg,var(--azul-escuro),var(--azul));display:none;align-items:center;justify-content:center;padding:20px}
-    #page-login.active{display:flex}
-    .login-card{background:var(--branco);border-radius:24px;padding:40px 32px;width:100%;max-width:400px;box-shadow:0 20px 40px rgba(0,0,0,.2);text-align:center}
-    .login-logo{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 16px;background:var(--bege-fundo);padding:8px}
-    .login-card h2{font-size:1.5rem;margin-bottom:4px}
-    .login-card .subtitle{font-size:.8rem;color:#999;margin-bottom:24px}
-    .login-tabs{display:flex;border-bottom:2px solid var(--borda);margin-bottom:24px}
-    .login-tab{flex:1;padding:10px;background:none;border:none;font-size:.85rem;font-weight:600;color:#aaa;cursor:pointer}
-    .login-tab.active{color:var(--azul);border-bottom:2px solid var(--dourado);margin-bottom:-2px}
-    .login-form{display:none}
-    .login-form.active{display:block}
-    .form-group{margin-bottom:16px;text-align:left}
-    .form-group label{display:block;font-size:.7rem;font-weight:600;color:var(--azul);margin-bottom:5px}
-    .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1px solid var(--borda);border-radius:8px;font-size:.85rem;background:var(--bege-fundo)}
-    .form-group input:focus{outline:none;border-color:var(--dourado)}
-    .auth-error{color:#c0392b;font-size:.75rem;margin-top:8px}
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bege-fundo);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--azul);
+    }
+
+    /* Botões */
+    .btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+    .btn-primary {
+      background: var(--azul);
+      color: var(--branco);
+    }
+    .btn-primary:hover {
+      background: #254057;
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: var(--dourado);
+      color: var(--azul);
+    }
+    .btn-secondary:hover {
+      background: var(--dourado-dk);
+      color: var(--branco);
+    }
+    .btn-danger {
+      background: var(--vermelho);
+      color: white;
+    }
+    .btn-danger:hover {
+      background: #962d22;
+    }
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 0.7rem;
+    }
+    .btn-full {
+      width: 100%;
+    }
+
+    /* Container */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--azul);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 9999;
+      font-size: 0.85rem;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ========== PÁGINA DE LOGIN ========== */
+    #page-login {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-card {
+      background: var(--branco);
+      border-radius: 24px;
+      padding: 40px 32px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .login-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 16px;
+      background: var(--bege-fundo);
+      padding: 8px;
+    }
+    .login-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+      color: var(--azul);
+    }
+    .login-card .subtitle {
+      font-size: 0.8rem;
+      color: #999;
+      margin-bottom: 24px;
+    }
+    .login-tabs {
+      display: flex;
+      border-bottom: 2px solid var(--borda);
+      margin-bottom: 24px;
+    }
+    .login-tab {
+      flex: 1;
+      padding: 10px;
+      background: none;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #aaa;
+      cursor: pointer;
+    }
+    .login-tab.active {
+      color: var(--azul);
+      border-bottom: 2px solid var(--dourado);
+      margin-bottom: -2px;
+    }
+    .login-form {
+      display: none;
+    }
+    .login-form.active {
+      display: block;
+    }
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--azul);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--borda);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      background: var(--bege-fundo);
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--dourado);
+    }
+    .auth-error {
+      color: var(--vermelho);
+      font-size: 0.75rem;
+      margin-top: 8px;
+    }
+
+    /* ========== SITE PÚBLICO ========== */
+    #page-site {
+      display: none;
+    }
+    #page-site.active {
+      display: block;
+    }
 
     /* Header */
-    header{background:var(--azul);position:sticky;top:0;z-index:900;box-shadow:0 2px 12px rgba(0,0,0,.2)}
-    .navbar{display:flex;align-items:center;justify-content:space-between;padding:12px 0;flex-wrap:wrap}
-    .navbar-logo{display:flex;align-items:center;gap:10px}
-    .navbar-logo img{height:45px;width:45px;border-radius:50%;object-fit:cover;background:var(--bege-fundo);padding:4px}
-    .logo-text{display:flex;flex-direction:column;color:white}
-    .logo-text span:first-child{font-size:.55rem;letter-spacing:2px;color:var(--dourado)}
-    .logo-text span:last-child{font-size:.9rem}
-    nav ul{list-style:none;display:flex;gap:16px;flex-wrap:wrap}
-    nav ul li a{color:white;font-size:.75rem;font-weight:500;transition:color .2s}
-    nav ul li a:hover{color:var(--dourado)}
-    .header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .user-avatar{width:32px;height:32px;border-radius:50%;background:var(--dourado);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--azul);font-size:.75rem}
-    .btn-logout{background:rgba(255,255,255,.15);border:none;color:white;padding:6px 12px;border-radius:6px;font-size:.7rem;cursor:pointer}
-    .btn-logout:hover{background:rgba(255,255,255,.25)}
-    .hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:6px}
-    .hamburger span{width:22px;height:2px;background:white;border-radius:2px}
+    header {
+      background: var(--azul);
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .navbar-logo img {
+      height: 45px;
+      width: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bege-fundo);
+      padding: 4px;
+    }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      color: white;
+    }
+    .logo-text span:first-child {
+      font-size: 0.55rem;
+      letter-spacing: 2px;
+      color: var(--dourado);
+    }
+    .logo-text span:last-child {
+      font-size: 0.9rem;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    nav ul li a {
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav ul li a:hover {
+      color: var(--dourado);
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--dourado);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--azul);
+      font-size: 0.75rem;
+    }
+    .btn-logout {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+    .btn-sindico {
+      background: var(--dourado);
+      color: var(--azul);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .hamburger span {
+      width: 22px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+    }
 
     /* Hero */
-    .hero{background:linear-gradient(135deg,var(--azul-escuro),var(--azul));padding:60px 0 50px;text-align:center}
-    .hero-logo{width:90px;height:90px;border-radius:50%;margin:0 auto 16px;background:rgba(255,255,255,.1);padding:8px}
-    .hero h1{font-size:2rem;color:white;margin-bottom:8px}
-    .hero h1 span{color:var(--dourado)}
-    .hero p{font-size:.9rem;color:#cdd8e0;max-width:500px;margin:12px auto}
-    .hero-badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px 0}
-    .hero-badge{background:rgba(196,167,118,.2);border:1px solid rgba(196,167,118,.4);color:var(--dourado);padding:4px 12px;border-radius:20px;font-size:.7rem}
-    .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .hero {
+      background: linear-gradient(135deg, var(--azul-escuro), var(--azul));
+      padding: 60px 0 50px;
+      text-align: center;
+    }
+    .hero-logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      background: rgba(255,255,255,0.1);
+      padding: 8px;
+    }
+    .hero h1 {
+      font-size: 2rem;
+      color: white;
+    }
+    .hero h1 span {
+      color: var(--dourado);
+    }
+    .hero p {
+      font-size: 0.9rem;
+      color: #cdd8e0;
+      max-width: 500px;
+      margin: 12px auto;
+    }
+    .hero-badges {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    .hero-badge {
+      background: rgba(196,167,118,0.2);
+      border: 1px solid rgba(196,167,118,0.4);
+      color: var(--dourado);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
     /* Ticker */
-    .ticker-bar{background:var(--dourado);color:var(--azul-escuro);padding:8px 0;overflow:hidden}
-    .ticker-inner{display:flex;gap:40px;white-space:nowrap;animation:ticker 25s linear infinite}
-    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .ticker-bar {
+      background: var(--dourado);
+      color: var(--azul-escuro);
+      padding: 8px 0;
+      overflow: hidden;
+    }
+    .ticker-inner {
+      display: flex;
+      gap: 40px;
+      white-space: nowrap;
+      animation: ticker 25s linear infinite;
+    }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Seções */
+    .section {
+      padding: 60px 0;
+    }
+    .section--branca {
+      background: var(--branco);
+    }
+    .section--bege {
+      background: var(--bege-fundo);
+    }
+    .section--azul {
+      background: var(--azul);
+      color: var(--branco);
+    }
+    .section-title {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .section--azul .section-title {
+      color: var(--branco);
+    }
+    .section-divider {
+      width: 60px;
+      height: 3px;
+      background: var(--dourado);
+      margin: 0 auto 40px;
+      border: none;
+    }
 
     /* Cards */
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px}
-    .stat-card{background:white;border:1px solid var(--borda);border-radius:12px;padding:20px;text-align:center}
-    .stat-number{font-size:1.8rem;font-weight:700;color:var(--azul)}
-    .finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-    .finance-box{background:white;border-radius:12px;overflow:hidden}
-    .finance-box-header{padding:12px 16px;font-weight:600;color:white}
-    .finance-box-header.receita{background:var(--verde)}
-    .finance-box-header.despesa{background:var(--vermelho)}
-    .finance-list li{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bege-claro);font-size:.8rem}
-    .finance-total{padding:12px 16px;background:var(--bege-claro);font-weight:700;display:flex;justify-content:space-between}
-    .saldo-bar{background:white;border-radius:12px;padding:16px 20px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-    .saldo-valor{font-size:1.5rem;font-weight:700;color:var(--verde)}
-    .tab-menu{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-    .tab-btn{padding:6px 16px;border:2px solid var(--borda);background:white;border-radius:8px;cursor:pointer;font-size:.8rem}
-    .tab-btn.active{background:var(--azul);color:white;border-color:var(--azul)}
-    .tab-content{display:none}
-    .tab-content.active{display:block}
-    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-    .project-card{background:white;border-radius:12px;padding:20px}
-    .project-status{display:inline-block;font-size:.65rem;padding:3px 10px;border-radius:20px;margin-bottom:10px}
-    .status-andamento{background:#fff3cd;color:#856404}
-    .status-concluido{background:#d1e7dd;color:#0a3622}
-    .status-planejado{background:#cfe2ff;color:#084298}
-    .progress-bar-wrap{background:var(--bege-claro);border-radius:20px;height:6px;overflow:hidden;margin:10px 0}
-    .progress-bar-fill{height:100%;background:var(--dourado);border-radius:20px}
-    .poll-card{background:white;border-radius:12px;padding:20px;margin-bottom:20px}
-    .poll-option{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
-    .poll-option-text{min-width:100px;font-size:.85rem}
-    .poll-bar-wrap{flex:1;background:var(--bege-claro);border-radius:20px;height:26px;overflow:hidden;position:relative}
-    .poll-bar-fill{height:100%;background:linear-gradient(90deg,var(--azul),#2a5a85);border-radius:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:white;font-size:.7rem}
-    .comments-section{margin-top:16px;border-top:1px solid var(--borda);padding-top:16px}
-    .comment{padding:8px 0;border-bottom:1px solid var(--bege-claro);font-size:.8rem}
-    .comment-form{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-    .comment-form input{flex:1;padding:8px 12px;border:1px solid var(--borda);border-radius:8px}
-    .docs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .doc-card{background:white;border-radius:12px;padding:16px;display:flex;gap:12px}
-    .doc-icon{font-size:1.8rem}
-    .contact-form{max-width:500px;margin:0 auto;background:white;border-radius:12px;padding:28px}
-    footer{background:var(--azul-escuro);color:var(--bege-fundo);padding:40px 0 20px}
-    .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px}
-    .toast{position:fixed;bottom:20px;right:20px;background:var(--azul);color:white;padding:10px 20px;border-radius:8px;transform:translateY(80px);opacity:0;transition:.3s;z-index:9999}
-    .toast.show{transform:translateY(0);opacity:1}
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--azul);
+    }
 
-    /* Área do Síndico */
-    #page-sindico{display:none;min-height:100vh;background:#f5f7fa}
-    #page-sindico.active{display:flex;flex-direction:column}
-    .sindico-header{background:var(--azul);color:white;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-    .sindico-header h2{color:white;font-size:1.2rem}
-    .sindico-container{display:flex;flex:1;flex-wrap:wrap}
-    .sindico-sidebar{width:260px;background:var(--azul-escuro);color:white;min-height:calc(100vh - 60px)}
-    .sindico-sidebar .sidebar-logo{padding:20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:12px}
-    .sidebar-logo img{width:40px;height:40px;border-radius:50%}
-    .sidebar-menu{list-style:none;padding:16px 0}
-    .sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:12px 20px;color:#a0b8c8;cursor:pointer;transition:.2s}
-    .sidebar-menu li a:hover,.sidebar-menu li a.active{background:rgba(196,167,118,.15);color:white;border-left:3px solid var(--dourado)}
-    .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1)}
-    .sindico-main{flex:1;padding:20px;min-width:0}
-    .admin-card{background:white;border-radius:12px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-    .admin-card-header{padding:16px 20px;border-bottom:1px solid var(--borda)}
-    .admin-card-body{padding:20px}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    table{width:100%;border-collapse:collapse}
-    table th{background:var(--bege-fundo);padding:10px;text-align:left;font-size:.7rem}
-    table td{padding:10px;border-bottom:1px solid var(--bege-claro);font-size:.8rem}
-    .upload-area{border:2px dashed var(--borda);border-radius:12px;padding:30px;text-align:center;background:var(--bege-fundo);cursor:pointer;margin-bottom:20px}
-    .document-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bege-fundo);border-radius:8px;margin-bottom:8px;flex-wrap:wrap;gap:8px}
-    .sindico-section{display:none}
-    .sindico-section.active{display:block}
-    .morador-card{padding:12px;border-bottom:1px solid var(--borda);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+    /* Financeiro */
+    .finance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .finance-box {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .finance-box-header {
+      padding: 12px 16px;
+      font-weight: 600;
+      color: white;
+    }
+    .finance-box-header.receita {
+      background: var(--verde);
+    }
+    .finance-box-header.despesa {
+      background: var(--vermelho);
+    }
+    .finance-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--bege-claro);
+      font-size: 0.8rem;
+    }
+    .finance-total {
+      padding: 12px 16px;
+      background: var(--bege-claro);
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+    }
+    .saldo-bar {
+      background: white;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .saldo-valor {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--verde);
+    }
+    .tab-menu {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 6px 16px;
+      border: 2px solid var(--borda);
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .tab-btn.active {
+      background: var(--azul);
+      color: white;
+      border-color: var(--azul);
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Projetos */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .project-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .project-status {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .status-andamento { background: #fff3cd; color: #856404; }
+    .status-concluido { background: #d1e7dd; color: #0a3622; }
+    .status-planejado { background: #cfe2ff; color: #084298; }
+    .progress-bar-wrap {
+      background: var(--bege-claro);
+      border-radius: 20px;
+      height: 6px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--dourado);
+      border-radius: 20px;
+    }
+
+    /* Enquetes */
+    .poll-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .poll-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .poll-option-text {
+      min-width: 100px;
+      font-size: 0.85rem;
+    }
+    .poll-bar-wrap {
+      flex: 1;
+      background: var(--bege-claro);
+      border-radius: 20px;
+      height: 26px;
+      overflow: hidden;
+      position: relative;
+    }
+    .poll-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--azul), #2a5a85);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      color: white;
+      font-size: 0.7rem;
+    }
+    .comments-section {
+      margin-top: 16px;
+      border-top: 1px solid var(--borda);
+      padding-top: 16px;
+    }
+    .comment {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--bege-claro);
+      font-size: 0.8rem;
+    }
+    .comment-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .comment-form input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--borda);
+      border-radius: 8px;
+    }
+
+    /* Documentos */
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .doc-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+    }
+    .doc-icon {
+      font-size: 1.8rem;
+    }
+    .doc-card a {
+      color: var(--dourado);
+      font-weight: 600;
+      font-size: 0.8rem;
+      display: inline-block;
+      margin-top: 6px;
+    }
+
+    /* Contato */
+    .contact-form {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--azul-escuro);
+      color: var(--bege-fundo);
+      padding: 40px 0 20px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+    }
+    footer h4 {
+      color: var(--dourado);
+      margin-bottom: 12px;
+    }
+    footer ul {
+      list-style: none;
+    }
+    footer ul li a {
+      color: #a0b0bc;
+      font-size: 0.8rem;
+    }
+
+    /* ========== ÁREA DO SÍNDICO ========== */
+    #page-sindico {
+      display: none;
+      min-height: 100vh;
+      background: #f5f7fa;
+    }
+    #page-sindico.active {
+      display: block;
+    }
+    .sindico-header {
+      background: var(--azul);
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .sindico-header h2 {
+      color: white;
+      font-size: 1.2rem;
+    }
+    .sindico-container {
+      display: flex;
+    }
+    .sindico-sidebar {
+      width: 260px;
+      background: var(--azul-escuro);
+      color: white;
+      min-height: calc(100vh - 56px);
+    }
+    .sidebar-logo {
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sidebar-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    .sidebar-menu {
+      list-style: none;
+      padding: 16px 0;
+    }
+    .sidebar-menu li a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      color: #a0b8c8;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sidebar-menu li a:hover,
+    .sidebar-menu li a.active {
+      background: rgba(196,167,118,0.15);
+      color: white;
+      border-left: 3px solid var(--dourado);
+    }
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.7rem;
+    }
+    .sindico-main {
+      flex: 1;
+      padding: 20px;
+    }
+    .admin-card {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .admin-card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--borda);
+    }
+    .admin-card-body {
+      padding: 20px;
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table th {
+      background: var(--bege-fundo);
+      padding: 10px;
+      text-align: left;
+      font-size: 0.7rem;
+    }
+    table td {
+      padding: 10px;
+      border-bottom: 1px solid var(--bege-claro);
+      font-size: 0.8rem;
+    }
+    .upload-area {
+      border: 2px dashed var(--borda);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      background: var(--bege-fundo);
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .document-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: var(--bege-fundo);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .sindico-section {
+      display: none;
+    }
+    .sindico-section.active {
+      display: block;
+    }
 
     /* Responsivo */
-    @media(max-width:768px){
-      .section{padding:40px 0}
-      .section-title{font-size:1.5rem}
-      .finance-grid{grid-template-columns:1fr}
-      .navbar{flex-direction:column;gap:12px}
-      nav{display:none;width:100%}
-      nav.open{display:block}
-      nav ul{flex-direction:column;align-items:center;gap:10px;padding:10px 0}
-      .hamburger{display:flex}
-      .header-right{width:100%;justify-content:center}
-      .sindico-sidebar{position:fixed;left:-280px;top:0;bottom:0;z-index:1000;transition:.3s;overflow-y:auto}
-      .sindico-sidebar.open{left:0}
-      .sindico-main{width:100%}
-      .grid2{grid-template-columns:1fr}
-      .hero h1{font-size:1.5rem}
-      .tab-menu{justify-content:center}
-      .poll-option{flex-direction:column;align-items:stretch}
-      .poll-option-text{min-width:auto}
+    @media (max-width: 768px) {
+      .section {
+        padding: 40px 0;
+      }
+      .section-title {
+        font-size: 1.5rem;
+      }
+      .finance-grid {
+        grid-template-columns: 1fr;
+      }
+      .navbar {
+        flex-direction: column;
+      }
+      nav {
+        display: none;
+        width: 100%;
+      }
+      nav.open {
+        display: block;
+      }
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .header-right {
+        width: 100%;
+        justify-content: center;
+      }
+      .sindico-sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        bottom: 0;
+        z-index: 1000;
+        transition: 0.3s;
+        overflow-y: auto;
+      }
+      .sindico-sidebar.open {
+        left: 0;
+      }
+      .sindico-main {
+        width: 100%;
+      }
+      .grid2 {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -190,8 +860,8 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- PÁGINA DE LOGIN -->
-<div id="page-login" class="active">
+<!-- ========== PÁGINA DE LOGIN ========== -->
+<div id="page-login">
   <div class="login-card">
     <img src="logo.png" alt="Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/80?text=MG'"/>
     <h2>Maurício Gnoato</h2>
@@ -201,69 +871,221 @@
       <button class="login-tab" onclick="switchLoginTab('cadastrar',this)">Cadastrar</button>
     </div>
     <div id="form-entrar" class="login-form active">
-      <div class="form-group"><label>E-mail</label><input type="email" id="l-email" placeholder="seu@email.com"/></div>
-      <div class="form-group"><label>Senha</label><input type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')loginEmail()"/></div>
-      <button class="btn btn-primary btn-full" onclick="loginEmail()">Entrar</button>
-      <p class="auth-error" id="l-error"></p>
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" id="login-email" placeholder="seu@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()"/>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="login()">Entrar</button>
+      <p class="auth-error" id="login-error"></p>
     </div>
     <div id="form-cadastrar" class="login-form">
-      <div class="form-group"><label>Nome completo</label><input type="text" id="r-nome" placeholder="João da Silva"/></div>
-      <div class="form-group"><label>Casa nº (1-25)</label><input type="number" id="r-casa" placeholder="Ex.: 7" min="1" max="25"/></div>
-      <div class="form-group"><label>E-mail</label><input type="email" id="r-email" placeholder="seu@email.com"/></div>
-      <div class="form-group"><label>Senha (mín. 6 caracteres)</label><input type="password" id="r-pass" placeholder="••••••••"/></div>
-      <button class="btn btn-primary btn-full" onclick="registerEmail()">Criar conta</button>
-      <p class="auth-error" id="r-error"></p>
+      <div class="form-group">
+        <label>Nome completo</label>
+        <input type="text" id="reg-nome" placeholder="João da Silva"/>
+      </div>
+      <div class="form-group">
+        <label>Casa nº (1-25)</label>
+        <input type="number" id="reg-casa" placeholder="Ex.: 7" min="1" max="25"/>
+      </div>
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" id="reg-email" placeholder="seu@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Senha (mín. 6 caracteres)</label>
+        <input type="password" id="reg-password" placeholder="••••••••"/>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="register()">Criar conta</button>
+      <p class="auth-error" id="register-error"></p>
     </div>
   </div>
 </div>
 
-<!-- SITE PÚBLICO -->
+<!-- ========== SITE PÚBLICO ========== -->
 <div id="page-site">
   <header>
     <div class="container">
       <div class="navbar">
         <div class="navbar-logo">
           <img src="logo.png" alt="Logo" onerror="this.style.display='none'"/>
-          <div class="logo-text"><span>Condomínio</span><span>Maurício Gnoato</span></div>
+          <div class="logo-text">
+            <span>Condomínio</span>
+            <span>Maurício Gnoato</span>
+          </div>
         </div>
-        <nav id="main-nav"><ul><li><a href="#sobre">Sobre</a></li><li><a href="#financeiro">Financeiro</a></li><li><a href="#projetos">Projetos</a></li><li><a href="#enquetes">Enquetes</a></li><li><a href="#documentos">Documentos</a></li><li><a href="#contato">Contato</a></li></ul></nav>
-        <div class="header-right"><div class="user-avatar" id="h-avatar">?</div><span id="h-name" style="color:#fff;font-size:.7rem"></span><button class="btn-sindico-nav" id="btn-go-sindico" onclick="goSindico()" style="display:none;background:var(--dourado);color:var(--azul);padding:5px 12px;border-radius:6px;font-size:.7rem;border:none;cursor:pointer">⚙️ Síndico</button><button class="btn-logout" onclick="logout()">Sair</button><button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button></div>
+        <nav id="main-nav">
+          <ul>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#financeiro">Financeiro</a></li>
+            <li><a href="#projetos">Projetos</a></li>
+            <li><a href="#enquetes">Enquetes</a></li>
+            <li><a href="#documentos">Documentos</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </nav>
+        <div class="header-right">
+          <div class="user-avatar" id="user-avatar">?</div>
+          <span id="user-name" style="color:#fff;font-size:0.7rem"></span>
+          <button class="btn-sindico" id="btn-go-sindico" style="display:none" onclick="goToSindico()">⚙️ Síndico</button>
+          <button class="btn-logout" onclick="logout()">Sair</button>
+          <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+        </div>
       </div>
     </div>
   </header>
 
-  <section class="hero"><div class="container"><div class="hero-content"><img src="logo.png" class="hero-logo" onerror="this.style.display='none'"/><h1>Condomínio <span>Maurício Gnoato</span></h1><p>Transparência, gestão participativa e qualidade de vida para os 25 moradores</p><div class="hero-badges"><span class="hero-badge">🏡 25 Casas</span><span class="hero-badge">📊 Gestão Transparente</span><span class="hero-badge">🗳️ Participação Ativa</span></div><div class="hero-btns"><a href="#financeiro" class="btn btn-secondary">Ver Finanças</a><a href="#enquetes" class="btn btn-outline">Participar</a></div></div></div></section>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <img src="logo.png" class="hero-logo" onerror="this.style.display='none'"/>
+        <h1>Condomínio <span>Maurício Gnoato</span></h1>
+        <p>Transparência, gestão participativa e qualidade de vida para os 25 moradores</p>
+        <div class="hero-badges">
+          <span class="hero-badge">🏡 25 Casas</span>
+          <span class="hero-badge">📊 Gestão Transparente</span>
+          <span class="hero-badge">🗳️ Participação Ativa</span>
+        </div>
+        <div class="hero-btns">
+          <a href="#financeiro" class="btn btn-secondary">Ver Finanças</a>
+          <a href="#enquetes" class="btn btn-outline">Participar</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="ticker-bar"><div style="overflow:hidden"><div class="ticker-inner"><span>📢 Reunião: 15/04/2026 às 19h</span><span>🔧 Manutenção portão: 02/04</span><span>💧 Limpeza caixa d'água: 10/04</span><span>📋 Prestação de contas Março disponível</span></div></div></div>
+  <div class="ticker-bar">
+    <div style="overflow:hidden">
+      <div class="ticker-inner">
+        <span>📢 Reunião: 15/04/2026 às 19h</span>
+        <span>🔧 Manutenção portão: 02/04</span>
+        <span>💧 Limpeza caixa d'água: 10/04</span>
+        <span>📋 Prestação de contas Março disponível</span>
+      </div>
+    </div>
+  </div>
 
-  <section class="section section--branca" id="sobre"><div class="container"><h2 class="section-title">O Condomínio</h2><hr class="section-divider"/><div class="stats-grid"><div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div><div class="stat-card"><div class="stat-number">R$18k</div><div>Arrecadação</div></div><div class="stat-card"><div class="stat-number">3</div><div>Projetos</div></div><div class="stat-card"><div class="stat-number">92%</div><div>Adimplência</div></div></div></div></section>
+  <section class="section section--branca" id="sobre">
+    <div class="container">
+      <h2 class="section-title">O Condomínio</h2>
+      <hr class="section-divider"/>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div>
+        <div class="stat-card"><div class="stat-number">R$18k</div><div>Arrecadação</div></div>
+        <div class="stat-card"><div class="stat-number">3</div><div>Projetos</div></div>
+        <div class="stat-card"><div class="stat-number">92%</div><div>Adimplência</div></div>
+      </div>
+    </div>
+  </section>
 
-  <section class="section section--bege" id="financeiro"><div class="container"><h2 class="section-title">Transparência Financeira</h2><hr class="section-divider"/><div id="financeiro-dinamico"></div></div></section>
+  <section class="section section--bege" id="financeiro">
+    <div class="container">
+      <h2 class="section-title">Transparência Financeira</h2>
+      <hr class="section-divider"/>
+      <div id="public-financeiro"></div>
+    </div>
+  </section>
 
-  <section class="section section--branca" id="projetos"><div class="container"><h2 class="section-title">Projetos</h2><hr class="section-divider"/><div id="projetos-dinamico" class="projects-grid"></div></div></section>
+  <section class="section section--branca" id="projetos">
+    <div class="container">
+      <h2 class="section-title">Projetos</h2>
+      <hr class="section-divider"/>
+      <div id="public-projetos" class="projects-grid"></div>
+    </div>
+  </section>
 
-  <section class="section section--azul" id="enquetes"><div class="container"><h2 class="section-title">Enquetes</h2><hr class="section-divider"/><div id="enquetes-dinamico"></div></div></section>
+  <section class="section section--azul" id="enquetes">
+    <div class="container">
+      <h2 class="section-title">Enquetes</h2>
+      <hr class="section-divider"/>
+      <div id="public-enquetes"></div>
+    </div>
+  </section>
 
-  <section class="section section--bege" id="documentos"><div class="container"><h2 class="section-title">Documentos</h2><hr class="section-divider"/><div id="documentos-dinamico" class="docs-grid"></div></div></section>
+  <section class="section section--bege" id="documentos">
+    <div class="container">
+      <h2 class="section-title">Documentos</h2>
+      <hr class="section-divider"/>
+      <div id="public-documentos" class="docs-grid"></div>
+    </div>
+  </section>
 
-  <section class="section section--branca" id="contato"><div class="container"><h2 class="section-title">Fale com o Síndico</h2><hr class="section-divider"/><form class="contact-form" onsubmit="sendContact(event)"><div class="form-group"><input type="text" placeholder="Seu nome / Casa" required/></div><div class="form-group"><select required><option>Dúvida sobre cobrança</option><option>Reclamação</option><option>Sugestão</option><option>Manutenção</option></select></div><div class="form-group"><textarea rows="3" placeholder="Mensagem..."></textarea></div><button type="submit" class="btn btn-primary btn-full">Enviar</button></form></div></section>
+  <section class="section section--branca" id="contato">
+    <div class="container">
+      <h2 class="section-title">Fale com o Síndico</h2>
+      <hr class="section-divider"/>
+      <form class="contact-form" onsubmit="sendContact(event)">
+        <div class="form-group">
+          <input type="text" placeholder="Seu nome / Casa" required/>
+        </div>
+        <div class="form-group">
+          <select required>
+            <option>Dúvida sobre cobrança</option>
+            <option>Reclamação</option>
+            <option>Sugestão</option>
+            <option>Manutenção</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <textarea rows="3" placeholder="Mensagem..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Enviar Mensagem</button>
+      </form>
+    </div>
+  </section>
 
-  <footer><div class="container"><div class="footer-grid"><div><h4>Condomínio Maurício Gnoato</h4><p>📍 Endereço do Condomínio<br/>📞 (XX) XXXXX-XXXX<br/>✉️ sindico@condominio.com.br</p></div><div><h4>Links</h4><ul><li><a href="#sobre">Sobre</a></li><li><a href="#financeiro">Financeiro</a></li><li><a href="#documentos">Documentos</a></li></ul></div><div><h4>Acesso Rápido</h4><ul><li><a href="#">Boleto</a></li><li><a href="#">Regimento</a></li></ul></div></div><div class="footer-bottom" style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)">© 2026 Condomínio Maurício Gnoato</div></div></footer>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Condomínio Maurício Gnoato</h4>
+          <p>📍 Endereço do Condomínio<br/>📞 (XX) XXXXX-XXXX<br/>✉️ sindico@condominio.com.br</p>
+        </div>
+        <div>
+          <h4>Links</h4>
+          <ul>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#financeiro">Financeiro</a></li>
+            <li><a href="#documentos">Documentos</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Acesso Rápido</h4>
+          <ul>
+            <li><a href="#">Boleto</a></li>
+            <li><a href="#">Regimento</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom" style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1)">
+        © 2026 Condomínio Maurício Gnoato
+      </div>
+    </div>
+  </footer>
 </div>
 
-<!-- ÁREA DO SÍNDICO -->
+<!-- ========== ÁREA DO SÍNDICO ========== -->
 <div id="page-sindico">
   <div class="sindico-header">
     <h2>⚙️ Painel do Síndico</h2>
     <div style="display:flex;gap:10px;align-items:center">
-      <span id="sb-name" style="font-size:.8rem"></span>
-      <button class="btn-logout" style="background:rgba(255,255,255,.2);color:white" onclick="logout()">Sair</button>
-      <button class="hamburger" style="display:none" onclick="toggleSindicoSidebar()"><span></span><span></span><span></span></button>
+      <span id="sindico-name" style="font-size:0.8rem"></span>
+      <button class="btn-logout" style="background:rgba(255,255,255,0.2);color:white" onclick="logout()">Sair</button>
+      <button class="hamburger" style="display:flex" onclick="toggleSindicoSidebar()"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="sindico-container">
     <div class="sindico-sidebar" id="sindico-sidebar">
-      <div class="sidebar-logo"><img src="logo.png" onerror="this.style.display='none'"/><div><span style="font-size:.6rem;color:var(--dourado)">CONDOMÍNIO</span><br/><span>Maurício Gnoato</span></div></div>
+      <div class="sidebar-logo">
+        <img src="logo.png" onerror="this.style.display='none'"/>
+        <div>
+          <span style="font-size:0.6rem;color:var(--dourado)">CONDOMÍNIO</span><br/>
+          <span>Maurício Gnoato</span>
+        </div>
+      </div>
       <ul class="sidebar-menu">
         <li><a class="active" onclick="showSindicoSection('s-painel',this)"><span>📊</span> Painel</a></li>
         <li><a onclick="showSindicoSection('s-financeiro',this)"><span>💰</span> Financeiro</a></li>
@@ -272,75 +1094,95 @@
         <li><a onclick="showSindicoSection('s-documentos',this)"><span>📁</span> Documentos</a></li>
         <li><a onclick="showSindicoSection('s-moradores',this)"><span>👥</span> Condôminos</a></li>
       </ul>
-      <div class="sidebar-footer"><div style="font-size:.7rem;color:#a0b8c8">Síndico: <span id="sb-name-footer"></span></div></div>
+      <div class="sidebar-footer">
+        <div>Área administrativa</div>
+      </div>
     </div>
     <div class="sindico-main">
       <!-- Painel -->
       <div id="s-painel" class="sindico-section active">
-        <div class="admin-card"><div class="admin-card-header"><h3>Resumo do Condomínio</h3></div><div class="admin-card-body"><div id="admin-stats"></div></div></div>
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Resumo do Condomínio</h3></div>
+          <div class="admin-card-body"><div id="admin-stats"></div></div>
+        </div>
       </div>
 
       <!-- Financeiro -->
       <div id="s-financeiro" class="sindico-section">
-        <div class="admin-card"><div class="admin-card-header"><h3>Gerenciar Dados Financeiros</h3></div><div class="admin-card-body">
-          <div class="grid2">
-            <div class="form-group"><label>Mês/Ano</label><input type="month" id="fin-mes"/></div>
-            <div class="form-group"><label>Total Receitas (R$)</label><input type="number" id="fin-receitas" step="0.01"/></div>
-            <div class="form-group"><label>Total Despesas (R$)</label><input type="number" id="fin-despesas" step="0.01"/></div>
-            <div class="form-group"><label>Detalhamento</label><textarea id="fin-detalhes" rows="2" placeholder='{"Energia":1840,"Água":980,"Manutenção":1200}'></textarea></div>
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Gerenciar Dados Financeiros</h3></div>
+          <div class="admin-card-body">
+            <div class="grid2">
+              <div class="form-group"><label>Mês/Ano</label><input type="month" id="fin-mes"/></div>
+              <div class="form-group"><label>Total Receitas (R$)</label><input type="number" id="fin-receitas" step="0.01"/></div>
+              <div class="form-group"><label>Total Despesas (R$)</label><input type="number" id="fin-despesas" step="0.01"/></div>
+              <div class="form-group"><label>Detalhamento</label><textarea id="fin-detalhes" rows="2" placeholder='{"Energia":1840,"Água":980}'></textarea></div>
+            </div>
+            <button class="btn btn-primary" onclick="salvarFinanceiro()">Salvar Dados</button>
+            <hr style="margin:20px 0"/>
+            <h4>Histórico Financeiro</h4>
+            <div id="historico-financeiro"></div>
           </div>
-          <button class="btn btn-primary" onclick="salvarFinanceiro()">Salvar Dados</button>
-          <hr style="margin:20px 0"/>
-          <h4>Histórico Financeiro</h4>
-          <div id="historico-financeiro"></div>
-        </div></div>
+        </div>
       </div>
 
       <!-- Projetos -->
       <div id="s-projetos" class="sindico-section">
-        <div class="admin-card"><div class="admin-card-header"><h3>Gerenciar Projetos</h3></div><div class="admin-card-body">
-          <div class="grid2">
-            <div class="form-group"><label>Título</label><input type="text" id="proj-titulo"/></div>
-            <div class="form-group"><label>Status</label><select id="proj-status"><option>andamento</option><option>planejado</option><option>concluido</option></select></div>
-            <div class="form-group"><label>Progresso (%)</label><input type="number" id="proj-progresso" min="0" max="100"/></div>
-            <div class="form-group"><label>Descrição</label><textarea id="proj-descricao" rows="2"></textarea></div>
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Gerenciar Projetos</h3></div>
+          <div class="admin-card-body">
+            <div class="grid2">
+              <div class="form-group"><label>Título</label><input type="text" id="proj-titulo"/></div>
+              <div class="form-group"><label>Status</label><select id="proj-status"><option>andamento</option><option>planejado</option><option>concluido</option></select></div>
+              <div class="form-group"><label>Progresso (%)</label><input type="number" id="proj-progresso" min="0" max="100"/></div>
+              <div class="form-group"><label>Descrição</label><textarea id="proj-descricao" rows="2"></textarea></div>
+            </div>
+            <button class="btn btn-primary" onclick="salvarProjeto()">Adicionar Projeto</button>
+            <hr style="margin:20px 0"/>
+            <div id="lista-projetos"></div>
           </div>
-          <button class="btn btn-primary" onclick="salvarProjeto()">Adicionar Projeto</button>
-          <hr style="margin:20px 0"/>
-          <div id="lista-projetos"></div>
-        </div></div>
+        </div>
       </div>
 
       <!-- Enquetes -->
       <div id="s-enquetes" class="sindico-section">
-        <div class="admin-card"><div class="admin-card-header"><h3>Criar Enquete</h3></div><div class="admin-card-body">
-          <div class="form-group"><label>Título</label><input type="text" id="poll-titulo"/></div>
-          <div class="form-group"><label>Descrição</label><textarea id="poll-desc" rows="2"></textarea></div>
-          <div class="form-group"><label>Opções (separadas por vírgula)</label><input type="text" id="poll-opcoes" placeholder="Opção 1, Opção 2, Opção 3"/></div>
-          <div class="form-group"><label>Data de encerramento</label><input type="datetime-local" id="poll-fim"/></div>
-          <button class="btn btn-primary" onclick="criarEnquete()">Criar Enquete</button>
-          <hr style="margin:20px 0"/>
-          <div id="lista-enquetes"></div>
-        </div></div>
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Criar Enquete</h3></div>
+          <div class="admin-card-body">
+            <div class="form-group"><label>Título</label><input type="text" id="poll-titulo"/></div>
+            <div class="form-group"><label>Descrição</label><textarea id="poll-desc" rows="2"></textarea></div>
+            <div class="form-group"><label>Opções (separadas por vírgula)</label><input type="text" id="poll-opcoes" placeholder="Opção 1, Opção 2, Opção 3"/></div>
+            <div class="form-group"><label>Data de encerramento</label><input type="datetime-local" id="poll-fim"/></div>
+            <button class="btn btn-primary" onclick="criarEnquete()">Criar Enquete</button>
+            <hr style="margin:20px 0"/>
+            <div id="lista-enquetes"></div>
+          </div>
+        </div>
       </div>
 
       <!-- Documentos -->
       <div id="s-documentos" class="sindico-section">
-        <div class="admin-card"><div class="admin-card-header"><h3>Upload de Documentos</h3></div><div class="admin-card-body">
-          <div class="form-group"><label>Título</label><input type="text" id="doc-titulo"/></div>
-          <div class="form-group"><label>Descrição</label><textarea id="doc-desc" rows="2"></textarea></div>
-          <div class="upload-area" onclick="document.getElementById('doc-arquivo').click()">📁 Clique para selecionar arquivo PDF<input type="file" id="doc-arquivo" accept=".pdf" style="display:none"/></div>
-          <button class="btn btn-primary" onclick="uploadDocumento()">Enviar Documento</button>
-          <hr style="margin:20px 0"/>
-          <div id="lista-documentos"></div>
-        </div></div>
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Upload de Documentos</h3></div>
+          <div class="admin-card-body">
+            <div class="form-group"><label>Título</label><input type="text" id="doc-titulo"/></div>
+            <div class="form-group"><label>Descrição</label><textarea id="doc-desc" rows="2"></textarea></div>
+            <div class="upload-area" onclick="document.getElementById('doc-arquivo').click()">📁 Clique para selecionar arquivo PDF<input type="file" id="doc-arquivo" accept=".pdf" style="display:none"/></div>
+            <button class="btn btn-primary" onclick="uploadDocumento()">Enviar Documento</button>
+            <hr style="margin:20px 0"/>
+            <div id="lista-documentos"></div>
+          </div>
+        </div>
       </div>
 
       <!-- Condôminos -->
       <div id="s-moradores" class="sindico-section">
-        <div class="admin-card"><div class="admin-card-header"><h3>Condôminos Cadastrados</h3></div><div class="admin-card-body">
-          <div id="lista-moradores"></div>
-        </div></div>
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Condôminos Cadastrados</h3></div>
+          <div class="admin-card-body">
+            <div id="lista-moradores"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -365,11 +1207,11 @@
   let currentUser = null;
   let isAdmin = false;
 
-  function showToast(msg) { 
-    const t = document.getElementById('toast'); 
-    t.textContent = msg; 
-    t.classList.add('show'); 
-    setTimeout(() => t.classList.remove('show'), 3000); 
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
   }
 
   function switchLoginTab(tab, el) {
@@ -379,39 +1221,39 @@
     document.getElementById('form-cadastrar').classList.toggle('active', tab === 'cadastrar');
   }
 
-  async function loginEmail() {
-    const email = document.getElementById('l-email').value;
-    const pass = document.getElementById('l-pass').value;
+  async function login() {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
     try {
       await auth.signInWithEmailAndPassword(email, pass);
       showToast('Login realizado!');
-    } catch(e) { 
-      document.getElementById('l-error').textContent = e.message; 
+    } catch(e) {
+      document.getElementById('login-error').textContent = e.message;
     }
   }
 
-  async function registerEmail() {
-    const nome = document.getElementById('r-nome').value;
-    const casa = document.getElementById('r-casa').value;
-    const email = document.getElementById('r-email').value;
-    const pass = document.getElementById('r-pass').value;
+  async function register() {
+    const nome = document.getElementById('reg-nome').value;
+    const casa = document.getElementById('reg-casa').value;
+    const email = document.getElementById('reg-email').value;
+    const pass = document.getElementById('reg-password').value;
     if (!nome || !casa || !email || pass.length < 6) {
-      document.getElementById('r-error').textContent = 'Preencha todos os campos (senha: mínimo 6 caracteres)';
+      document.getElementById('register-error').textContent = 'Preencha todos os campos (senha: mínimo 6 caracteres)';
       return;
     }
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
-      await db.collection('users').doc(cred.user.uid).set({ 
-        nome, 
-        casa: parseInt(casa), 
-        email, 
-        isAdmin: false, 
-        createdAt: new Date() 
+      await db.collection('users').doc(cred.user.uid).set({
+        nome,
+        casa: parseInt(casa),
+        email,
+        isAdmin: false,
+        createdAt: new Date()
       });
       showToast('Cadastro realizado!');
-      document.getElementById('r-error').textContent = '';
-    } catch(e) { 
-      document.getElementById('r-error').textContent = e.message; 
+      document.getElementById('register-error').textContent = '';
+    } catch(e) {
+      document.getElementById('register-error').textContent = e.message;
     }
   }
 
@@ -420,11 +1262,18 @@
     showToast('Logout realizado');
   }
 
-  function toggleMenu() { document.getElementById('main-nav').classList.toggle('open'); }
-  function toggleSindicoSidebar() { document.getElementById('sindico-sidebar').classList.toggle('open'); }
-  function goSindico() { 
-    document.getElementById('page-site').classList.remove('active'); 
-    document.getElementById('page-sindico').classList.add('active'); 
+  function toggleMenu() {
+    document.getElementById('main-nav').classList.toggle('open');
+  }
+
+  function toggleSindicoSidebar() {
+    document.getElementById('sindico-sidebar').classList.toggle('open');
+  }
+
+  function goToSindico() {
+    document.getElementById('page-site').classList.remove('active');
+    document.getElementById('page-sindico').classList.add('active');
+    carregarDadosAdmin();
   }
 
   function showSindicoSection(sectionId, el) {
@@ -440,19 +1289,17 @@
       const doc = await db.collection('users').doc(user.uid).get();
       const userData = doc.exists ? doc.data() : { nome: user.email.split('@')[0], isAdmin: false };
       isAdmin = userData.isAdmin || false;
-      document.getElementById('h-name').textContent = userData.nome || user.email.split('@')[0];
-      document.getElementById('h-avatar').textContent = (userData.nome || 'U')[0].toUpperCase();
-      document.getElementById('sb-name').textContent = userData.nome || 'Síndico';
-      document.getElementById('sb-name-footer').textContent = userData.nome || 'Síndico';
-      document.getElementById('btn-go-sindico').style.display = isAdmin ? 'flex' : 'none';
-      document.getElementById('page-login').classList.remove('active');
+      document.getElementById('user-name').textContent = userData.nome || user.email.split('@')[0];
+      document.getElementById('user-avatar').textContent = (userData.nome || 'U')[0].toUpperCase();
+      document.getElementById('sindico-name').textContent = userData.nome || 'Síndico';
+      document.getElementById('btn-go-sindico').style.display = isAdmin ? 'block' : 'none';
+      document.getElementById('page-login').style.display = 'none';
       document.getElementById('page-site').classList.add('active');
       carregarDadosPublicos();
-      if (isAdmin) carregarDadosAdmin();
     } else {
       document.getElementById('page-site').classList.remove('active');
       document.getElementById('page-sindico').classList.remove('active');
-      document.getElementById('page-login').classList.add('active');
+      document.getElementById('page-login').style.display = 'flex';
     }
   });
 
@@ -463,33 +1310,42 @@
     let i = 0;
     financeiroSnap.forEach(doc => {
       const d = doc.data();
-      html += `<button class="tab-btn ${i===0?'active':''}" onclick="switchTabDinamico('tab-${doc.id}',this)">${d.mes}</button>`;
+      html += `<button class="tab-btn ${i === 0 ? 'active' : ''}" onclick="switchTabDinamico('tab-${doc.id}',this)">${d.mes}</button>`;
       i++;
     });
     html += `</div>`;
     financeiroSnap.forEach((doc, idx) => {
       const d = doc.data();
       const saldo = d.receitas - d.despesas;
-      html += `<div id="tab-${doc.id}" class="tab-content ${idx===0?'active':''}">
-        <div class="finance-grid"><div class="finance-box"><div class="finance-box-header receita">📈 Receitas</div><div class="finance-total">R$ ${d.receitas.toFixed(2)}</div></div>
-        <div class="finance-box"><div class="finance-box-header despesa">📉 Despesas</div><div class="finance-total">R$ ${d.despesas.toFixed(2)}</div></div></div>
+      html += `<div id="tab-${doc.id}" class="tab-content ${idx === 0 ? 'active' : ''}">
+        <div class="finance-grid">
+          <div class="finance-box"><div class="finance-box-header receita">📈 Receitas</div><div class="finance-total">R$ ${d.receitas.toFixed(2)}</div></div>
+          <div class="finance-box"><div class="finance-box-header despesa">📉 Despesas</div><div class="finance-total">R$ ${d.despesas.toFixed(2)}</div></div>
+        </div>
         <div class="saldo-bar"><div>Saldo do período</div><div class="saldo-valor">R$ ${saldo.toFixed(2)}</div></div>
       </div>`;
     });
     if (financeiroSnap.empty) html = '<p>Nenhum dado financeiro disponível.</p>';
-    document.getElementById('financeiro-dinamico').innerHTML = html;
+    document.getElementById('public-financeiro').innerHTML = html;
 
     // Projetos
     const projetosSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
     let projHtml = '';
     projetosSnap.forEach(doc => {
       const p = doc.data();
-      let statusClass = 'status-andamento', statusText = 'Em andamento';
+      let statusClass = 'status-andamento';
+      let statusText = 'Em andamento';
       if (p.status === 'concluido') { statusClass = 'status-concluido'; statusText = 'Concluído'; }
       if (p.status === 'planejado') { statusClass = 'status-planejado'; statusText = 'Planejado'; }
-      projHtml += `<div class="project-card"><span class="project-status ${statusClass}">${statusText}</span><h3>${p.titulo}</h3><p>${p.descricao}</p><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progresso}%"></div></div><div class="progress-label">${p.progresso}%</div></div>`;
+      projHtml += `<div class="project-card">
+        <span class="project-status ${statusClass}">${statusText}</span>
+        <h3>${p.titulo}</h3>
+        <p>${p.descricao}</p>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progresso}%"></div></div>
+        <div class="progress-label">${p.progresso}%</div>
+      </div>`;
     });
-    document.getElementById('projetos-dinamico').innerHTML = projHtml || '<p>Nenhum projeto cadastrado.</p>';
+    document.getElementById('public-projetos').innerHTML = projHtml || '<p>Nenhum projeto cadastrado.</p>';
 
     // Enquetes
     const enquetesSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
@@ -498,17 +1354,22 @@
       const p = doc.data();
       const totalVotos = p.totalVotos || 0;
       const jaVotou = currentUser && p.votos && p.votos[currentUser.uid];
-      pollHtml += `<div class="poll-card"><h3>📊 ${p.titulo}</h3><p>${p.descricao || ''}</p>`;
+      pollHtml += `<div class="poll-card">
+        <h3>📊 ${p.titulo}</h3>
+        <p>${p.descricao || ''}</p>`;
       p.opcoes.forEach(opt => {
         const votos = p.votos?.[opt] || 0;
-        const percent = totalVotos > 0 ? (votos/totalVotos*100).toFixed(1) : 0;
-        pollHtml += `<div class="poll-option"><span class="poll-option-text">${opt}</span><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:${percent}%">${percent}%</div></div></div>`;
+        const percent = totalVotos > 0 ? (votos / totalVotos * 100).toFixed(1) : 0;
+        pollHtml += `<div class="poll-option">
+          <span class="poll-option-text">${opt}</span>
+          <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:${percent}%">${percent}%</div></div>
+        </div>`;
       });
-      pollHtml += `<p class="poll-meta" style="font-size:.7rem;color:#888;margin-top:10px">🗳️ ${totalVotos} votos · Encerra em ${new Date(p.endDate).toLocaleDateString()}</p>`;
+      pollHtml += `<p style="font-size:0.7rem;color:#888;margin-top:10px">🗳️ ${totalVotos} votos · Encerra em ${new Date(p.endDate).toLocaleDateString()}</p>`;
       if (currentUser && !jaVotou && new Date(p.endDate) > new Date()) {
         pollHtml += `<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">${p.opcoes.map(opt => `<button class="btn-secondary btn-sm" onclick="votarEnquete('${doc.id}','${opt}')">${opt}</button>`).join('')}</div>`;
       } else if (jaVotou) {
-        pollHtml += `<p style="color:var(--verde);font-size:.75rem">✓ Você já votou nesta enquete</p>`;
+        pollHtml += `<p style="color:var(--verde);font-size:0.75rem">✓ Você já votou nesta enquete</p>`;
       }
       pollHtml += `<div class="comments-section"><div id="coments-${doc.id}"></div>`;
       if (currentUser) {
@@ -517,16 +1378,23 @@
       pollHtml += `</div></div>`;
       carregarComentarios(doc.id);
     }
-    document.getElementById('enquetes-dinamico').innerHTML = pollHtml || '<p>Nenhuma enquete ativa.</p>';
+    document.getElementById('public-enquetes').innerHTML = pollHtml || '<p>Nenhuma enquete ativa.</p>';
 
     // Documentos
     const docsSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
     let docsHtml = '';
     docsSnap.forEach(doc => {
       const d = doc.data();
-      docsHtml += `<div class="doc-card"><div class="doc-icon">📄</div><div><h4>${d.titulo}</h4><p>${d.descricao}</p><a href="${d.url}" target="_blank" style="color:var(--dourado);font-weight:600">Baixar PDF →</a></div></div>`;
+      docsHtml += `<div class="doc-card">
+        <div class="doc-icon">📄</div>
+        <div>
+          <h4>${d.titulo}</h4>
+          <p>${d.descricao}</p>
+          <a href="${d.url}" target="_blank">Baixar PDF →</a>
+        </div>
+      </div>`;
     });
-    document.getElementById('documentos-dinamico').innerHTML = docsHtml || '<p>Nenhum documento disponível.</p>';
+    document.getElementById('public-documentos').innerHTML = docsHtml || '<p>Nenhum documento disponível.</p>';
   }
 
   async function carregarComentarios(pollId) {
@@ -556,11 +1424,11 @@
   async function comentarEnquete(pollId) {
     const texto = document.getElementById(`coment-${pollId}`).value;
     if (!texto.trim()) return;
-    await db.collection(`polls/${pollId}/comments`).add({ 
-      texto, 
-      userId: currentUser.uid, 
-      userNome: currentUser.email.split('@')[0], 
-      createdAt: new Date() 
+    await db.collection(`polls/${pollId}/comments`).add({
+      texto,
+      userId: currentUser.uid,
+      userNome: currentUser.email.split('@')[0],
+      createdAt: new Date()
     });
     document.getElementById(`coment-${pollId}`).value = '';
     carregarComentarios(pollId);
@@ -588,7 +1456,7 @@
 
     // Histórico Financeiro
     const histSnap = await db.collection('finances').orderBy('mes', 'desc').get();
-    let histHtml = '<table><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr>';
+    let histHtml = '<table><tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr>';
     histSnap.forEach(doc => {
       const d = doc.data();
       histHtml += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas - d.despesas).toFixed(2)}</td></tr>`;
@@ -625,7 +1493,7 @@
 
     // Moradores
     const moradoresSnap = await db.collection('users').orderBy('casa').get();
-    let moradoresList = '<div style="overflow-x:auto"> <table> <tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Admin</th></tr>';
+    let moradoresList = '<div style="overflow-x:auto"><table><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr>';
     moradoresSnap.forEach(doc => {
       const u = doc.data();
       moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? '✓ Síndico' : 'Condômino'}</td></tr>`;
@@ -643,9 +1511,6 @@
     showToast('Dados financeiros salvos!');
     carregarDadosPublicos();
     carregarDadosAdmin();
-    document.getElementById('fin-mes').value = '';
-    document.getElementById('fin-receitas').value = '';
-    document.getElementById('fin-despesas').value = '';
   }
 
   async function salvarProjeto() {
@@ -658,12 +1523,14 @@
     showToast('Projeto salvo!');
     carregarDadosPublicos();
     carregarDadosAdmin();
-    document.getElementById('proj-titulo').value = '';
-    document.getElementById('proj-progresso').value = '';
-    document.getElementById('proj-descricao').value = '';
   }
 
-  async function deletarProjeto(id) { await db.collection('projects').doc(id).delete(); carregarDadosPublicos(); carregarDadosAdmin(); showToast('Projeto removido'); }
+  async function deletarProjeto(id) {
+    await db.collection('projects').doc(id).delete();
+    carregarDadosPublicos();
+    carregarDadosAdmin();
+    showToast('Projeto removido');
+  }
 
   async function criarEnquete() {
     const titulo = document.getElementById('poll-titulo').value;
@@ -675,12 +1542,14 @@
     showToast('Enquete criada!');
     carregarDadosPublicos();
     carregarDadosAdmin();
-    document.getElementById('poll-titulo').value = '';
-    document.getElementById('poll-desc').value = '';
-    document.getElementById('poll-opcoes').value = '';
   }
 
-  async function deletarEnquete(id) { await db.collection('polls').doc(id).delete(); carregarDadosPublicos(); carregarDadosAdmin(); showToast('Enquete removida'); }
+  async function deletarEnquete(id) {
+    await db.collection('polls').doc(id).delete();
+    carregarDadosPublicos();
+    carregarDadosAdmin();
+    showToast('Enquete removida');
+  }
 
   async function uploadDocumento() {
     const file = document.getElementById('doc-arquivo').files[0];
@@ -694,12 +1563,14 @@
     showToast('Documento enviado!');
     carregarDadosPublicos();
     carregarDadosAdmin();
-    document.getElementById('doc-titulo').value = '';
-    document.getElementById('doc-desc').value = '';
-    document.getElementById('doc-arquivo').value = '';
   }
 
-  async function deletarDocumento(id) { await db.collection('documents').doc(id).delete(); carregarDadosPublicos(); carregarDadosAdmin(); showToast('Documento removido'); }
+  async function deletarDocumento(id) {
+    await db.collection('documents').doc(id).delete();
+    carregarDadosPublicos();
+    carregarDadosAdmin();
+    showToast('Documento removido');
+  }
 
   function switchTabDinamico(tabId, el) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -708,15 +1579,18 @@
     el.classList.add('active');
   }
 
-  function sendContact(e) { e.preventDefault(); showToast('Mensagem enviada! O síndico responderá em breve.'); }
+  function sendContact(e) {
+    e.preventDefault();
+    showToast('Mensagem enviada! O síndico responderá em breve.');
+  }
 
   window.switchLoginTab = switchLoginTab;
-  window.loginEmail = loginEmail;
-  window.registerEmail = registerEmail;
+  window.login = login;
+  window.register = register;
   window.logout = logout;
   window.toggleMenu = toggleMenu;
   window.toggleSindicoSidebar = toggleSindicoSidebar;
-  window.goSindico = goSindico;
+  window.goToSindico = goToSindico;
   window.showSindicoSection = showSindicoSection;
   window.salvarFinanceiro = salvarFinanceiro;
   window.salvarProjeto = salvarProjeto;
