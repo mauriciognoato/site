@@ -5,278 +5,268 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Condomínio Maurício Gnoato</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-
-  <!-- Firebase SDKs (compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --azul: #1F3140; --azul-escuro: #17232F; --dourado: #C4A776;
-      --dourado-dk: #B2915F; --bege-claro: #F1E6D4; --bege-fundo: #F5F0E6;
-      --borda: #E0D4C0; --branco: #FFFFFF; --texto: #17232F;
-      --verde: #1a5c3a; --vermelho: #7a2020; --sidebar-w: 260px;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --azul:#1F3140;--azul-escuro:#17232F;--dourado:#C4A776;--dourado-dk:#B2915F;
+      --bege-claro:#F1E6D4;--bege-fundo:#F5F0E6;--borda:#E0D4C0;--branco:#FFFFFF;
+      --texto:#17232F;--verde:#1a5c3a;--vermelho:#7a2020;--sidebar-w:260px;
     }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Montserrat', sans-serif; background: var(--bege-fundo); color: var(--texto); font-size: 15px; line-height: 1.7; }
-    h1,h2,h3,h4 { font-family: 'Playfair Display', serif; color: var(--azul); }
-    a { text-decoration: none; color: inherit; }
-    img { max-width: 100%; display: block; }
+    html{scroll-behavior:smooth}
+    body{font-family:'Montserrat',sans-serif;background:var(--bege-fundo);color:var(--texto);font-size:15px;line-height:1.7}
+    h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--azul)}
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
 
-    .container { width: 90%; max-width: 1100px; margin: 0 auto; }
-    .section { padding: 72px 0; }
-    .section--branca { background: var(--branco); }
-    .section--bege   { background: var(--bege-fundo); }
-    .section--azul   { background: var(--azul); color: var(--branco); }
-    .section-title { font-size: 2rem; text-align: center; margin-bottom: 12px; color: var(--azul); }
-    .section--azul .section-title { color: var(--branco); }
-    .section-divider { width: 60px; height: 3px; background: var(--dourado); margin: 0 auto 48px; border: none; }
-    .section-subtitle { text-align: center; color: #666; margin-bottom: 8px; font-size: 0.95rem; }
+    /* ── UTILITÁRIOS ── */
+    .container{width:90%;max-width:1100px;margin:0 auto}
+    .section{padding:72px 0}
+    .section--branca{background:var(--branco)}
+    .section--bege{background:var(--bege-fundo)}
+    .section--azul{background:var(--azul);color:var(--branco)}
+    .section-title{font-size:2rem;text-align:center;margin-bottom:12px;color:var(--azul)}
+    .section--azul .section-title{color:var(--branco)}
+    .section-divider{width:60px;height:3px;background:var(--dourado);margin:0 auto 48px;border:none}
+    .section-subtitle{text-align:center;color:#666;margin-bottom:8px;font-size:.95rem}
 
-    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 24px; border-radius: 4px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.25s; border: none; font-size: 0.88rem; }
-    .btn-primary { background: var(--azul); color: var(--branco); }
-    .btn-primary:hover { background: #254057; }
-    .btn-secondary { background: var(--dourado); color: var(--azul); }
-    .btn-secondary:hover { background: var(--dourado-dk); color: var(--branco); }
-    .btn-outline { background: transparent; border: 2px solid var(--branco); color: var(--branco); }
-    .btn-outline:hover { background: var(--branco); color: var(--azul); }
-    .btn-danger { background: #c0392b; color: var(--branco); }
-    .btn-danger:hover { background: #962d22; }
-    .btn-success { background: var(--verde); color: var(--branco); }
-    .btn-sm { padding: 6px 14px; font-size: 0.78rem; }
-    .btn-full { width: 100%; justify-content: center; }
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:11px 24px;border-radius:4px;font-weight:600;font-family:'Montserrat',sans-serif;cursor:pointer;transition:all .25s;border:none;font-size:.88rem}
+    .btn-primary{background:var(--azul);color:var(--branco)}
+    .btn-primary:hover{background:#254057}
+    .btn-secondary{background:var(--dourado);color:var(--azul)}
+    .btn-secondary:hover{background:var(--dourado-dk);color:var(--branco)}
+    .btn-outline{background:transparent;border:2px solid var(--branco);color:var(--branco)}
+    .btn-outline:hover{background:var(--branco);color:var(--azul)}
+    .btn-danger{background:#c0392b;color:var(--branco)}
+    .btn-danger:hover{background:#962d22}
+    .btn-success{background:var(--verde);color:var(--branco)}
+    .btn-sm{padding:6px 14px;font-size:.78rem}
+    .btn-full{width:100%;justify-content:center}
 
-    /* LOGIN */
-    #page-login { min-height: 100vh; background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 60%, #2a4560 100%); display: none; align-items: center; justify-content: center; padding: 20px; }
-    #page-login.active { display: flex; }
-    .login-card { background: var(--branco); border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; }
-    .login-logo { width: 100px; height: 100px; border-radius: 18px; object-fit: contain; margin: 0 auto 16px; background: var(--bege-fundo); padding: 8px; }
-    .login-logo-fallback { width: 100px; height: 100px; border-radius: 18px; background: var(--azul); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
-    .login-card .cond-label { font-size: 0.65rem; letter-spacing: 2px; color: var(--dourado); text-transform: uppercase; margin-bottom: 2px; }
-    .login-card h2 { font-size: 1.6rem; margin-bottom: 4px; }
-    .login-card .subtitle { font-size: 0.82rem; color: #999; margin-bottom: 28px; }
-    .login-tabs { display: flex; border-bottom: 2px solid var(--borda); margin-bottom: 24px; }
-    .login-tab { flex: 1; padding: 10px; background: none; border: none; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 600; color: #aaa; cursor: pointer; transition: color 0.2s; }
-    .login-tab.active { color: var(--azul); border-bottom: 2px solid var(--dourado); margin-bottom: -2px; }
-    .login-form { display: none; }
-    .login-form.active { display: block; }
+    /* ── LOGIN ── */
+    #page-login{min-height:100vh;background:linear-gradient(135deg,var(--azul-escuro) 0%,var(--azul) 60%,#2a4560 100%);display:none;align-items:center;justify-content:center;padding:20px}
+    #page-login.active{display:flex}
+    .login-card{background:var(--branco);border-radius:16px;padding:48px 40px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center}
+    .login-logo{width:100px;height:100px;border-radius:18px;object-fit:contain;margin:0 auto 16px;background:var(--bege-fundo);padding:8px}
+    .login-logo-fb{width:100px;height:100px;border-radius:18px;background:var(--azul);margin:0 auto 16px;display:none;align-items:center;justify-content:center;font-size:2.5rem}
+    .login-card .cond-label{font-size:.65rem;letter-spacing:2px;color:var(--dourado);text-transform:uppercase;margin-bottom:2px}
+    .login-card h2{font-size:1.6rem;margin-bottom:4px}
+    .login-card .subtitle{font-size:.82rem;color:#999;margin-bottom:28px}
+    .login-tabs{display:flex;border-bottom:2px solid var(--borda);margin-bottom:24px}
+    .login-tab{flex:1;padding:10px;background:none;border:none;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:600;color:#aaa;cursor:pointer;transition:color .2s}
+    .login-tab.active{color:var(--azul);border-bottom:2px solid var(--dourado);margin-bottom:-2px}
+    .login-form{display:none}
+    .login-form.active{display:block}
 
-    .form-group { margin-bottom: 16px; text-align: left; }
-    .form-group label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--azul); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 14px; border: 1px solid var(--borda); border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; background: var(--bege-fundo); color: var(--texto); transition: border-color 0.2s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--dourado); }
-    .form-group textarea { resize: vertical; min-height: 100px; }
-    .divider-text { text-align: center; color: #bbb; font-size: 0.78rem; margin: 16px 0; }
-    .btn-google { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 11px; border: 1px solid var(--borda); border-radius: 6px; background: var(--branco); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'Montserrat', sans-serif; }
-    .btn-google:hover { background: var(--bege-fundo); }
-    .auth-error { color: #c0392b; font-size: 0.8rem; margin-top: 10px; min-height: 16px; }
-    .auth-success { color: var(--verde); font-size: 0.8rem; margin-top: 10px; }
+    /* ── FORMS ── */
+    .form-group{margin-bottom:16px;text-align:left}
+    .form-group label{display:block;font-size:.78rem;font-weight:600;color:var(--azul);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+    .form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;border:1px solid var(--borda);border-radius:6px;font-family:'Montserrat',sans-serif;font-size:.88rem;background:var(--bege-fundo);color:var(--texto);transition:border-color .2s}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--dourado)}
+    .form-group textarea{resize:vertical;min-height:100px}
+    .divider-text{text-align:center;color:#bbb;font-size:.78rem;margin:16px 0}
+    .btn-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;border:1px solid var(--borda);border-radius:6px;background:var(--branco);font-size:.85rem;font-weight:600;cursor:pointer;transition:background .2s;font-family:'Montserrat',sans-serif}
+    .btn-google:hover{background:var(--bege-fundo)}
+    .auth-error{color:#c0392b;font-size:.8rem;margin-top:10px;min-height:16px}
+    .auth-success{color:var(--verde);font-size:.8rem;margin-top:10px}
 
-    /* SITE */
-    #page-site { display: none; }
-    #page-site.active { display: block; }
+    /* ── SITE ── */
+    #page-site{display:none}
+    #page-site.active{display:block}
 
-    /* HEADER */
-    header { background: var(--azul); position: sticky; top: 0; z-index: 900; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
-    .navbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
-    .navbar-logo { display: flex; align-items: center; gap: 10px; }
-    .navbar-logo img { height: 48px; width: 48px; border-radius: 10px; object-fit: contain; background: var(--bege-fundo); padding: 4px; }
-    .navbar-logo .logo-text { display: flex; flex-direction: column; color: var(--branco); }
-    .navbar-logo .logo-text span:first-child { font-size: 0.6rem; letter-spacing: 2px; color: var(--dourado); text-transform: uppercase; }
-    .navbar-logo .logo-text span:last-child { font-family: 'Playfair Display', serif; font-size: 1rem; }
-    nav ul { list-style: none; display: flex; gap: 20px; align-items: center; }
-    nav ul li a { color: var(--branco); font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
-    nav ul li a:hover { color: var(--dourado); }
-    .header-right { display: flex; align-items: center; gap: 10px; }
-    .btn-sindico-nav { background: var(--dourado); color: var(--azul); padding: 7px 14px; border-radius: 4px; font-weight: 700; font-size: 0.78rem; cursor: pointer; border: none; transition: background 0.2s; display: flex; align-items: center; gap: 5px; font-family: 'Montserrat', sans-serif; }
-    .btn-sindico-nav:hover { background: var(--dourado-dk); color: var(--branco); }
-    .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--dourado); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--azul); font-size: 0.8rem; flex-shrink: 0; }
-    .btn-logout { background: none; border: 1px solid rgba(255,255,255,0.3); color: var(--branco); padding: 5px 12px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; font-family: 'Montserrat', sans-serif; }
-    .btn-logout:hover { background: rgba(255,255,255,0.1); }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--branco); border-radius: 2px; }
+    /* ── HEADER ── */
+    header{background:var(--azul);position:sticky;top:0;z-index:900;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+    .navbar{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .navbar-logo{display:flex;align-items:center;gap:10px}
+    .navbar-logo img{height:48px;width:48px;border-radius:10px;object-fit:contain;background:var(--bege-fundo);padding:4px}
+    .navbar-logo .logo-text{display:flex;flex-direction:column;color:var(--branco)}
+    .navbar-logo .logo-text span:first-child{font-size:.6rem;letter-spacing:2px;color:var(--dourado);text-transform:uppercase}
+    .navbar-logo .logo-text span:last-child{font-family:'Playfair Display',serif;font-size:1rem}
+    nav ul{list-style:none;display:flex;gap:20px;align-items:center}
+    nav ul li a{color:var(--branco);font-size:.82rem;font-weight:500;transition:color .2s}
+    nav ul li a:hover{color:var(--dourado)}
+    .header-right{display:flex;align-items:center;gap:10px}
+    .btn-sindico-nav{background:var(--dourado);color:var(--azul);padding:7px 14px;border-radius:4px;font-weight:700;font-size:.78rem;cursor:pointer;border:none;transition:background .2s;display:flex;align-items:center;gap:5px;font-family:'Montserrat',sans-serif}
+    .btn-sindico-nav:hover{background:var(--dourado-dk);color:var(--branco)}
+    .user-avatar{width:34px;height:34px;border-radius:50%;background:var(--dourado);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--azul);font-size:.8rem;flex-shrink:0}
+    .btn-logout{background:none;border:1px solid rgba(255,255,255,.3);color:var(--branco);padding:5px 12px;border-radius:4px;font-size:.75rem;cursor:pointer;transition:all .2s;font-family:'Montserrat',sans-serif}
+    .btn-logout:hover{background:rgba(255,255,255,.1)}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--branco);border-radius:2px}
 
-    /* HERO */
-    .hero { background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 60%, #2a4560 100%); color: var(--branco); padding: 90px 0 70px; text-align: center; position: relative; overflow: hidden; }
-    .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C4A776' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"); }
-    .hero-content { position: relative; z-index: 1; }
-    .hero-logo { width: 110px; height: 110px; border-radius: 20px; object-fit: contain; margin: 0 auto 20px; background: rgba(255,255,255,0.1); padding: 8px; }
-    .hero h1 { font-size: 2.6rem; color: var(--branco); margin-bottom: 8px; line-height: 1.2; }
-    .hero h1 span { color: var(--dourado); }
-    .hero p { font-size: 1rem; color: #cdd8e0; max-width: 520px; margin: 14px auto 28px; }
-    .hero-badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
-    .hero-badge { background: rgba(196,167,118,0.18); border: 1px solid rgba(196,167,118,0.4); color: var(--dourado); padding: 5px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 500; }
-    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    /* ── HERO ── */
+    .hero{background:linear-gradient(135deg,var(--azul-escuro) 0%,var(--azul) 60%,#2a4560 100%);color:var(--branco);padding:90px 0 70px;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C4A776' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")}
+    .hero-content{position:relative;z-index:1}
+    .hero-logo{width:110px;height:110px;border-radius:20px;object-fit:contain;margin:0 auto 20px;background:rgba(255,255,255,.1);padding:8px}
+    .hero h1{font-size:2.6rem;color:var(--branco);margin-bottom:8px;line-height:1.2}
+    .hero h1 span{color:var(--dourado)}
+    .hero p{font-size:1rem;color:#cdd8e0;max-width:520px;margin:14px auto 28px}
+    .hero-badges{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:32px}
+    .hero-badge{background:rgba(196,167,118,.18);border:1px solid rgba(196,167,118,.4);color:var(--dourado);padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:500}
+    .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
-    /* TICKER */
-    .ticker-bar { background: var(--dourado); color: var(--azul-escuro); padding: 9px 0; overflow: hidden; font-size: 0.82rem; font-weight: 600; }
-    .ticker-inner { display: flex; gap: 60px; white-space: nowrap; animation: ticker 30s linear infinite; }
-    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    /* ── TICKER ── */
+    .ticker-bar{background:var(--dourado);color:var(--azul-escuro);padding:9px 0;overflow:hidden;font-size:.82rem;font-weight:600}
+    .ticker-inner{display:flex;gap:60px;white-space:nowrap;animation:ticker 30s linear infinite}
+    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-    /* STATS */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
-    .stat-card { background: var(--branco); border: 1px solid var(--borda); border-top: 4px solid var(--dourado); border-radius: 8px; padding: 24px 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .stat-number { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--azul); line-height: 1; margin-bottom: 6px; }
-    .stat-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+    /* ── STATS ── */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px}
+    .stat-card{background:var(--branco);border:1px solid var(--borda);border-top:4px solid var(--dourado);border-radius:8px;padding:24px 16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    .stat-number{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--azul);line-height:1;margin-bottom:6px}
+    .stat-label{font-size:.75rem;color:#888;text-transform:uppercase;letter-spacing:1px}
 
-    /* FINANCEIRO */
-    .finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .finance-box { background: var(--branco); border: 1px solid var(--borda); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .finance-box-header { padding: 14px 20px; font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--branco); }
-    .finance-box-header.receita { background: var(--verde); }
-    .finance-box-header.despesa { background: var(--vermelho); }
-    .finance-list { list-style: none; }
-    .finance-list li { display: flex; justify-content: space-between; padding: 10px 20px; border-bottom: 1px solid var(--bege-claro); font-size: 0.85rem; gap: 10px; }
-    .finance-list li:last-child { border-bottom: none; }
-    .finance-list li .valor { font-weight: 600; color: var(--azul); white-space: nowrap; }
-    .finance-total { display: flex; justify-content: space-between; padding: 12px 20px; background: var(--bege-claro); font-weight: 700; font-size: 0.9rem; color: var(--azul); }
-    .finance-period { text-align: center; font-size: 0.78rem; color: #888; margin-bottom: 24px; }
-    .saldo-bar { background: var(--branco); border: 1px solid var(--borda); border-radius: 8px; padding: 18px 22px; margin-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    .saldo-label { font-size: 0.82rem; color: #888; }
-    .saldo-valor { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: var(--verde); font-weight: 700; }
-    .tab-menu { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
-    .tab-btn { padding: 8px 18px; border: 2px solid var(--borda); background: var(--branco); border-radius: 4px; font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--azul); cursor: pointer; transition: all 0.2s; }
-    .tab-btn.active, .tab-btn:hover { background: var(--azul); color: var(--branco); border-color: var(--azul); }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    /* ── FINANCEIRO ── */
+    .finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .finance-box{background:var(--branco);border:1px solid var(--borda);border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    .finance-box-header{padding:14px 20px;font-family:'Playfair Display',serif;font-size:1rem;color:var(--branco)}
+    .finance-box-header.receita{background:var(--verde)}
+    .finance-box-header.despesa{background:var(--vermelho)}
+    .finance-list{list-style:none}
+    .finance-list li{display:flex;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--bege-claro);font-size:.85rem;gap:10px}
+    .finance-list li:last-child{border-bottom:none}
+    .finance-list li .valor{font-weight:600;color:var(--azul);white-space:nowrap}
+    .finance-total{display:flex;justify-content:space-between;padding:12px 20px;background:var(--bege-claro);font-weight:700;font-size:.9rem;color:var(--azul)}
+    .finance-period{text-align:center;font-size:.78rem;color:#888;margin-bottom:24px}
+    .saldo-bar{background:var(--branco);border:1px solid var(--borda);border-radius:8px;padding:18px 22px;margin-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .saldo-label{font-size:.82rem;color:#888}
+    .saldo-valor{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--verde);font-weight:700}
+    .tab-menu{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
+    .tab-btn{padding:8px 18px;border:2px solid var(--borda);background:var(--branco);border-radius:4px;font-family:'Montserrat',sans-serif;font-size:.82rem;font-weight:600;color:var(--azul);cursor:pointer;transition:all .2s}
+    .tab-btn.active,.tab-btn:hover{background:var(--azul);color:var(--branco);border-color:var(--azul)}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
 
-    /* PROJETOS */
-    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-    .project-card { background: var(--branco); border: 1px solid var(--borda); border-radius: 8px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .project-status { display: inline-block; font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .status-andamento { background: #fff3cd; color: #856404; }
-    .status-concluido { background: #d1e7dd; color: #0a3622; }
-    .status-planejado { background: #cfe2ff; color: #084298; }
-    .project-card h3 { font-size: 1rem; margin-bottom: 6px; }
-    .project-card p { font-size: 0.84rem; color: #666; margin-bottom: 14px; }
-    .progress-bar-wrap { background: var(--bege-claro); border-radius: 20px; height: 8px; overflow: hidden; }
-    .progress-bar-fill { height: 100%; background: var(--dourado); border-radius: 20px; }
-    .progress-label { font-size: 0.75rem; color: #888; margin-top: 5px; text-align: right; }
+    /* ── PROJETOS ── */
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+    .project-card{background:var(--branco);border:1px solid var(--borda);border-radius:8px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    .project-status{display:inline-block;font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+    .status-andamento{background:#fff3cd;color:#856404}
+    .status-concluido{background:#d1e7dd;color:#0a3622}
+    .status-planejado{background:#cfe2ff;color:#084298}
+    .project-card h3{font-size:1rem;margin-bottom:6px}
+    .project-card p{font-size:.84rem;color:#666;margin-bottom:14px}
+    .progress-bar-wrap{background:var(--bege-claro);border-radius:20px;height:8px;overflow:hidden}
+    .progress-bar-fill{height:100%;background:var(--dourado);border-radius:20px}
+    .progress-label{font-size:.75rem;color:#888;margin-top:5px;text-align:right}
 
-    /* ENQUETES */
-    .poll-card { background: var(--branco); border: 1px solid var(--borda); border-radius: 8px; padding: 26px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .poll-card h3 { font-size: 1.1rem; margin-bottom: 16px; color: var(--azul); }
-    .poll-option { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .poll-bar-wrap { flex: 1; background: var(--bege-claro); border-radius: 20px; height: 22px; overflow: hidden; position: relative; }
-    .poll-bar-fill { height: 100%; background: linear-gradient(90deg, var(--azul), #2a5a85); border-radius: 20px; transition: width 0.6s ease; }
-    .poll-bar-label { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 0.7rem; font-weight: 600; color: var(--branco); }
-    .poll-option-text { font-size: 0.85rem; min-width: 130px; }
-    .poll-meta { font-size: 0.76rem; color: #999; margin-top: 14px; }
-    .comments-section { margin-top: 14px; border-top: 1px solid var(--borda); padding-top: 14px; }
-    .comment { font-size: 0.83rem; color: #555; padding: 7px 0; border-bottom: 1px solid var(--bege-claro); }
-    .comment strong { color: var(--azul); }
-    .comment-form { display: flex; gap: 8px; margin-top: 10px; }
-    .comment-form input { flex: 1; padding: 8px 12px; border: 1px solid var(--borda); border-radius: 4px; font-family: 'Montserrat', sans-serif; font-size: 0.82rem; background: var(--bege-fundo); }
+    /* ── ENQUETES ── */
+    .poll-card{background:var(--branco);border:1px solid var(--borda);border-radius:8px;padding:26px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    .poll-card h3{font-size:1.1rem;margin-bottom:16px;color:var(--azul)}
+    .poll-option{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .poll-bar-wrap{flex:1;background:var(--bege-claro);border-radius:20px;height:22px;overflow:hidden;position:relative}
+    .poll-bar-fill{height:100%;background:linear-gradient(90deg,var(--azul),#2a5a85);border-radius:20px;transition:width .6s ease}
+    .poll-bar-label{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:.7rem;font-weight:600;color:var(--branco)}
+    .poll-option-text{font-size:.85rem;min-width:130px}
+    .poll-meta{font-size:.76rem;color:#999;margin-top:14px}
+    .comments-section{margin-top:14px;border-top:1px solid var(--borda);padding-top:14px}
+    .comment{font-size:.83rem;color:#555;padding:7px 0;border-bottom:1px solid var(--bege-claro)}
+    .comment strong{color:var(--azul)}
+    .comment-form{display:flex;gap:8px;margin-top:10px}
+    .comment-form input{flex:1;padding:8px 12px;border:1px solid var(--borda);border-radius:4px;font-family:'Montserrat',sans-serif;font-size:.82rem;background:var(--bege-fundo)}
 
-    /* DOCS */
-    .docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
-    .doc-card { background: var(--branco); border: 1px solid var(--borda); border-radius: 8px; padding: 18px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.2s; }
-    .doc-card:hover { transform: translateY(-2px); }
-    .doc-icon { font-size: 1.8rem; flex-shrink: 0; }
-    .doc-card h4 { font-size: 0.9rem; margin-bottom: 3px; }
-    .doc-card p { font-size: 0.76rem; color: #888; }
-    .doc-card a { font-size: 0.78rem; color: var(--dourado); font-weight: 600; display: inline-block; margin-top: 6px; }
+    /* ── DOCS ── */
+    .docs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    .doc-card{background:var(--branco);border:1px solid var(--borda);border-radius:8px;padding:18px;display:flex;align-items:flex-start;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s}
+    .doc-card:hover{transform:translateY(-2px)}
+    .doc-icon{font-size:1.8rem;flex-shrink:0}
+    .doc-card h4{font-size:.9rem;margin-bottom:3px}
+    .doc-card p{font-size:.76rem;color:#888}
+    .doc-card a{font-size:.78rem;color:var(--dourado);font-weight:600;display:inline-block;margin-top:6px}
 
-    /* CONTATO */
-    .contact-form { max-width: 580px; margin: 0 auto; background: var(--branco); border: 1px solid var(--borda); border-radius: 8px; padding: 32px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    /* ── CONTATO ── */
+    .contact-form{max-width:580px;margin:0 auto;background:var(--branco);border:1px solid var(--borda);border-radius:8px;padding:32px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
 
-    /* FOOTER */
-    footer { background: var(--azul-escuro); color: var(--bege-fundo); padding: 48px 0 22px; }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 36px; margin-bottom: 36px; }
-    footer h4 { font-family: 'Playfair Display', serif; color: var(--dourado); margin-bottom: 12px; font-size: 0.95rem; }
-    footer p, footer li { font-size: 0.82rem; color: #a0b0bc; line-height: 1.9; }
-    footer ul { list-style: none; }
-    footer ul li a { color: #a0b0bc; transition: color 0.2s; }
-    footer ul li a:hover { color: var(--dourado); }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; text-align: center; font-size: 0.76rem; color: #6a8090; }
+    /* ── FOOTER ── */
+    footer{background:var(--azul-escuro);color:var(--bege-fundo);padding:48px 0 22px}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:36px;margin-bottom:36px}
+    footer h4{font-family:'Playfair Display',serif;color:var(--dourado);margin-bottom:12px;font-size:.95rem}
+    footer p,footer li{font-size:.82rem;color:#a0b0bc;line-height:1.9}
+    footer ul{list-style:none}
+    footer ul li a{color:#a0b0bc;transition:color .2s}
+    footer ul li a:hover{color:var(--dourado)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:18px;text-align:center;font-size:.76rem;color:#6a8090}
 
-    /* TOAST */
-    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--azul); color: var(--branco); padding: 12px 20px; border-radius: 6px; font-size: 0.85rem; box-shadow: 0 4px 16px rgba(0,0,0,0.2); transform: translateY(80px); opacity: 0; transition: all 0.35s; z-index: 9999; max-width: 320px; }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .toast.success { background: var(--verde); }
-    .toast.error { background: var(--vermelho); }
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--azul);color:var(--branco);padding:12px 20px;border-radius:6px;font-size:.85rem;box-shadow:0 4px 16px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .35s;z-index:9999;max-width:320px}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast.success{background:var(--verde)}
+    .toast.error{background:var(--vermelho)}
 
-    /* MODAL */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(23,35,47,0.75); z-index: 2000; align-items: center; justify-content: center; padding: 16px; }
-    .modal-overlay.active { display: flex; }
-    .modal { background: var(--branco); border-radius: 10px; padding: 36px 30px; width: 100%; max-width: 540px; position: relative; max-height: 90vh; overflow-y: auto; }
-    .modal h3 { font-size: 1.3rem; margin-bottom: 20px; }
-    .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 1.3rem; cursor: pointer; color: #aaa; }
+    /* ── MODAL ── */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(23,35,47,.75);z-index:2000;align-items:center;justify-content:center;padding:16px}
+    .modal-overlay.active{display:flex}
+    .modal{background:var(--branco);border-radius:10px;padding:36px 30px;width:100%;max-width:540px;position:relative;max-height:90vh;overflow-y:auto}
+    .modal h3{font-size:1.3rem;margin-bottom:20px}
+    .modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#aaa}
 
-    /* SÍNDICO */
-    #page-sindico { display: none; min-height: 100vh; background: #f0f4f8; }
-    #page-sindico.active { display: flex; }
-    .sindico-sidebar { width: var(--sidebar-w); background: var(--azul-escuro); color: var(--branco); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 800; overflow-y: auto; transition: transform 0.3s; }
-    .sindico-sidebar.hidden { transform: translateX(-100%); }
-    .sidebar-logo { padding: 20px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 10px; }
-    .sidebar-logo img { width: 44px; height: 44px; border-radius: 10px; object-fit: contain; background: var(--bege-fundo); padding: 4px; }
-    .sidebar-logo .logo-text span:first-child { font-size: 0.58rem; letter-spacing: 1.5px; color: var(--dourado); text-transform: uppercase; display: block; }
-    .sidebar-logo .logo-text span:last-child { font-family: 'Playfair Display', serif; font-size: 0.88rem; display: block; }
-    .sidebar-menu { list-style: none; padding: 16px 0; flex: 1; }
-    .sidebar-menu li a { display: flex; align-items: center; gap: 10px; padding: 12px 20px; color: #a0b8c8; font-size: 0.83rem; font-weight: 500; transition: all 0.2s; cursor: pointer; border-left: 3px solid transparent; }
-    .sidebar-menu li a:hover, .sidebar-menu li a.active { color: var(--branco); background: rgba(196,167,118,0.15); border-left-color: var(--dourado); }
-    .sidebar-menu li a .icon { font-size: 1.1rem; width: 22px; }
-    .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); }
-    .sidebar-user { font-size: 0.78rem; color: #a0b8c8; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    /* ── SÍNDICO ── */
+    #page-sindico{display:none;min-height:100vh;background:#f0f4f8}
+    #page-sindico.active{display:flex}
+    .sindico-sidebar{width:var(--sidebar-w);background:var(--azul-escuro);color:var(--branco);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:800;overflow-y:auto;transition:transform .3s}
+    .sindico-sidebar.hidden{transform:translateX(-100%)}
+    .sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px}
+    .sidebar-logo img{width:44px;height:44px;border-radius:10px;object-fit:contain;background:var(--bege-fundo);padding:4px}
+    .sidebar-logo .lt span:first-child{font-size:.58rem;letter-spacing:1.5px;color:var(--dourado);text-transform:uppercase;display:block}
+    .sidebar-logo .lt span:last-child{font-family:'Playfair Display',serif;font-size:.88rem;display:block}
+    .sidebar-menu{list-style:none;padding:16px 0;flex:1}
+    .sidebar-menu li a{display:flex;align-items:center;gap:10px;padding:12px 20px;color:#a0b8c8;font-size:.83rem;font-weight:500;transition:all .2s;cursor:pointer;border-left:3px solid transparent}
+    .sidebar-menu li a:hover,.sidebar-menu li a.active{color:var(--branco);background:rgba(196,167,118,.15);border-left-color:var(--dourado)}
+    .sidebar-menu li a .icon{font-size:1.1rem;width:22px}
+    .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1)}
+    .sidebar-user{font-size:.78rem;color:#a0b8c8;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+    .sindico-main{margin-left:var(--sidebar-w);flex:1;padding:32px;min-height:100vh}
+    .sindico-topbar{background:var(--branco);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:28px;border-radius:8px;flex-wrap:wrap;gap:10px}
+    .sindico-topbar h2{font-size:1.4rem}
+    .admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:28px}
+    .admin-stat{background:var(--branco);border-radius:8px;padding:20px;border-left:4px solid var(--dourado);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .admin-stat .num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--azul)}
+    .admin-stat .lbl{font-size:.74rem;color:#888;text-transform:uppercase;letter-spacing:.8px;margin-top:4px}
+    .admin-card{background:var(--branco);border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden;margin-bottom:24px}
+    .admin-card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--borda);flex-wrap:wrap;gap:10px}
+    .admin-card-header h3{font-size:1rem}
+    .admin-card-body{padding:20px}
+    table{width:100%;border-collapse:collapse}
+    table th{background:var(--bege-fundo);padding:10px 14px;text-align:left;font-size:.74rem;font-weight:600;color:var(--azul);text-transform:uppercase;letter-spacing:.5px}
+    table td{padding:10px 14px;font-size:.83rem;border-bottom:1px solid var(--bege-claro);color:var(--texto);vertical-align:middle}
+    table tr:last-child td{border-bottom:none}
+    table tr:hover td{background:var(--bege-fundo)}
+    .sindico-section{display:none}
+    .sindico-section.active{display:block}
+    .upload-area{border:2px dashed var(--borda);border-radius:8px;padding:32px;text-align:center;background:var(--bege-fundo);cursor:pointer;transition:border-color .2s;margin-bottom:20px}
+    .upload-area:hover{border-color:var(--dourado)}
+    .upload-area .upload-icon{font-size:2.4rem;margin-bottom:8px}
+    .upload-area p{font-size:.88rem;color:#888}
+    .badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:600}
+    .badge-ativa{background:#d1e7dd;color:#0a3622}
+    .badge-encerrada{background:#f8d7da;color:#58151c}
+    .badge-rascunho{background:#fff3cd;color:#664d03}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .grid2 .span2{grid-column:span 2}
 
-    .sindico-main { margin-left: var(--sidebar-w); flex: 1; padding: 32px; min-height: 100vh; }
-    .sindico-topbar { background: var(--branco); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 28px; border-radius: 8px; flex-wrap: wrap; gap: 10px; }
-    .sindico-topbar h2 { font-size: 1.4rem; }
-
-    .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
-    .admin-stat { background: var(--branco); border-radius: 8px; padding: 20px; border-left: 4px solid var(--dourado); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .admin-stat .num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--azul); }
-    .admin-stat .lbl { font-size: 0.74rem; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 4px; }
-
-    .admin-card { background: var(--branco); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 24px; }
-    .admin-card-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--borda); flex-wrap: wrap; gap: 10px; }
-    .admin-card-header h3 { font-size: 1rem; }
-    .admin-card-body { padding: 20px; }
-
-    table { width: 100%; border-collapse: collapse; }
-    table th { background: var(--bege-fundo); padding: 10px 14px; text-align: left; font-size: 0.74rem; font-weight: 600; color: var(--azul); text-transform: uppercase; letter-spacing: 0.5px; }
-    table td { padding: 10px 14px; font-size: 0.83rem; border-bottom: 1px solid var(--bege-claro); color: var(--texto); vertical-align: middle; }
-    table tr:last-child td { border-bottom: none; }
-    table tr:hover td { background: var(--bege-fundo); }
-
-    .sindico-section { display: none; }
-    .sindico-section.active { display: block; }
-
-    .upload-area { border: 2px dashed var(--borda); border-radius: 8px; padding: 32px; text-align: center; background: var(--bege-fundo); cursor: pointer; transition: border-color 0.2s; margin-bottom: 20px; }
-    .upload-area:hover { border-color: var(--dourado); }
-    .upload-area .upload-icon { font-size: 2.4rem; margin-bottom: 8px; }
-    .upload-area p { font-size: 0.88rem; color: #888; }
-
-    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
-    .badge-ativa { background: #d1e7dd; color: #0a3622; }
-    .badge-encerrada { background: #f8d7da; color: #58151c; }
-    .badge-rascunho { background: #fff3cd; color: #664d03; }
-
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .grid2 .span2 { grid-column: span 2; }
-
-    @media (max-width: 900px) {
-      .sindico-sidebar { transform: translateX(-100%); }
-      .sindico-sidebar.open { transform: translateX(0); }
-      .sindico-main { margin-left: 0; }
-      .finance-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .grid2 { grid-template-columns: 1fr; }
-      .grid2 .span2 { grid-column: span 1; }
+    @media(max-width:900px){
+      .sindico-sidebar{transform:translateX(-100%)}
+      .sindico-sidebar.open{transform:translateX(0)}
+      .sindico-main{margin-left:0}
+      .finance-grid{grid-template-columns:1fr}
+      .footer-grid{grid-template-columns:1fr}
+      .grid2{grid-template-columns:1fr}
+      .grid2 .span2{grid-column:span 1}
     }
-    @media (max-width: 768px) {
-      .hamburger { display: flex; }
-      nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--azul-escuro); padding: 16px; }
-      nav.open { display: block; }
-      nav ul { flex-direction: column; gap: 14px; }
-      .hero h1 { font-size: 1.8rem; }
-      .section { padding: 48px 0; }
-      .section-title { font-size: 1.5rem; }
-      .sindico-main { padding: 14px; }
-      .login-card { padding: 32px 22px; }
+    @media(max-width:768px){
+      .hamburger{display:flex}
+      nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--azul-escuro);padding:16px}
+      nav.open{display:block}
+      nav ul{flex-direction:column;gap:14px}
+      .hero h1{font-size:1.8rem}
+      .section{padding:48px 0}
+      .section-title{font-size:1.5rem}
+      .sindico-main{padding:14px}
+      .login-card{padding:32px 22px}
     }
   </style>
 </head>
@@ -284,20 +274,19 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- ========== LOGIN ========== -->
+<!-- ══════════ LOGIN ══════════ -->
 <div id="page-login" class="active">
   <div class="login-card">
     <img src="logo.png" alt="Logo" class="login-logo" id="ll-img"
          onerror="this.style.display='none';document.getElementById('ll-fb').style.display='flex'"/>
-    <div class="login-logo-fallback" id="ll-fb" style="display:none">🏡</div>
+    <div class="login-logo-fb" id="ll-fb">🏡</div>
     <p class="cond-label">Condomínio</p>
     <h2>Maurício Gnoato</h2>
-    <p class="subtitle">Área exclusiva para condôminos e síndico</p>
+    <p class="subtitle">Acesso exclusivo para condôminos e síndico</p>
     <div class="login-tabs">
       <button class="login-tab active" onclick="switchLoginTab('entrar',this)">Entrar</button>
       <button class="login-tab" onclick="switchLoginTab('cadastrar',this)">Cadastrar</button>
     </div>
-    <!-- Entrar -->
     <div id="form-entrar" class="login-form active">
       <div class="form-group"><label>E-mail</label><input type="email" id="l-email" placeholder="seu@email.com"/></div>
       <div class="form-group"><label>Senha</label><input type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')loginEmail()"/></div>
@@ -309,7 +298,6 @@
       </button>
       <p class="auth-error" id="l-error"></p>
     </div>
-    <!-- Cadastrar -->
     <div id="form-cadastrar" class="login-form">
       <div class="form-group"><label>Nome completo</label><input type="text" id="r-nome" placeholder="João da Silva"/></div>
       <div class="form-group"><label>Casa nº</label><input type="number" id="r-casa" placeholder="Ex.: 7" min="1" max="25"/></div>
@@ -322,7 +310,7 @@
   </div>
 </div>
 
-<!-- ========== SITE ========== -->
+<!-- ══════════ SITE PÚBLICO ══════════ -->
 <div id="page-site">
   <header>
     <div class="container">
@@ -343,7 +331,7 @@
         </nav>
         <div class="header-right">
           <div class="user-avatar" id="h-avatar">?</div>
-          <span id="h-name" style="color:#fff;font-size:0.78rem;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+          <span id="h-name" style="color:#fff;font-size:.78rem;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
           <button class="btn-sindico-nav" id="btn-go-sindico" onclick="goSindico()" style="display:none">⚙️ Síndico</button>
           <button class="btn-logout" onclick="logout()">Sair</button>
           <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
@@ -352,41 +340,33 @@
     </div>
   </header>
 
-  <!-- HERO -->
   <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <img src="logo.png" alt="Logo" class="hero-logo" onerror="this.style.display='none'"/>
-        <h1>Condomínio <span>Maurício Gnoato</span></h1>
-        <p>Transparência, gestão participativa e qualidade de vida para os 25 moradores da nossa comunidade.</p>
-        <div class="hero-badges">
-          <span class="hero-badge">🏡 25 Casas</span>
-          <span class="hero-badge">📊 Gestão Transparente</span>
-          <span class="hero-badge">🗳️ Participação Ativa</span>
-        </div>
-        <div class="hero-btns">
-          <a href="#financeiro" class="btn btn-secondary">Ver Finanças</a>
-          <a href="#enquetes" class="btn btn-outline">Participar das Enquetes</a>
-        </div>
+    <div class="container"><div class="hero-content">
+      <img src="logo.png" alt="Logo" class="hero-logo" onerror="this.style.display='none'"/>
+      <h1>Condomínio <span>Maurício Gnoato</span></h1>
+      <p>Transparência, gestão participativa e qualidade de vida para os 25 moradores da nossa comunidade.</p>
+      <div class="hero-badges">
+        <span class="hero-badge">🏡 25 Casas</span>
+        <span class="hero-badge">📊 Gestão Transparente</span>
+        <span class="hero-badge">🗳️ Participação Ativa</span>
       </div>
-    </div>
+      <div class="hero-btns">
+        <a href="#financeiro" class="btn btn-secondary">Ver Finanças</a>
+        <a href="#enquetes" class="btn btn-outline">Participar das Enquetes</a>
+      </div>
+    </div></div>
   </section>
 
-  <!-- TICKER -->
-  <div class="ticker-bar">
-    <div style="overflow:hidden">
-      <div class="ticker-inner">
-        <span>📢 Reunião: 15/04/2026 às 19h no espaço comum</span>
-        <span>🔧 Manutenção do portão: 02/04/2026</span>
-        <span>💧 Limpeza da caixa d'água: 10/04/2026</span>
-        <span>📋 Prestação de contas Março/2026 disponível</span>
-        <span>📢 Reunião: 15/04/2026 às 19h no espaço comum</span>
-        <span>🔧 Manutenção do portão: 02/04/2026</span>
-        <span>💧 Limpeza da caixa d'água: 10/04/2026</span>
-        <span>📋 Prestação de contas Março/2026 disponível</span>
-      </div>
-    </div>
-  </div>
+  <div class="ticker-bar"><div style="overflow:hidden"><div class="ticker-inner">
+    <span>📢 Reunião: 15/04/2026 às 19h</span>
+    <span>🔧 Manutenção do portão: 02/04/2026</span>
+    <span>💧 Limpeza da caixa d'água: 10/04/2026</span>
+    <span>📋 Prestação de contas Março/2026 disponível</span>
+    <span>📢 Reunião: 15/04/2026 às 19h</span>
+    <span>🔧 Manutenção do portão: 02/04/2026</span>
+    <span>💧 Limpeza da caixa d'água: 10/04/2026</span>
+    <span>📋 Prestação de contas Março/2026 disponível</span>
+  </div></div></div>
 
   <!-- SOBRE -->
   <section class="section section--branca" id="sobre">
@@ -563,9 +543,54 @@
       <div class="footer-grid">
         <div>
           <h4>Condomínio Maurício Gnoato</h4>
-          <p>Comprometidos com a transparência e a qualidade de vida dos 25 moradores.</p>
+          <p>Comprometidos com a transparência e qualidade de vida dos 25 moradores.</p>
           <p style="margin-top:12px">📍 Endereço do Condomínio<br/>📞 (XX) XXXXX-XXXX<br/>✉️ sindico@condominioMauricioGnoato.com.br</p>
         </div>
         <div>
-          <h4>Navegação
+          <h4>Navegação</h4>
+          <ul>
+            <li><a href="#sobre">Sobre o Condomínio</a></li>
+            <li><a href="#financeiro">Financeiro</a></li>
+            <li><a href="#projetos">Projetos</a></li>
+            <li><a href="#enquetes">Enquetes</a></li>
+            <li><a href="#documentos">Documentos</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Acesso Rápido</h4>
+          <ul>
+            <li><a href="#">Boleto de condomínio</a></li>
+            <li><a href="#">Solicitar manutenção</a></li>
+            <li><a href="#">Reservar salão de festas</a></li>
+            <li><a href="#documentos">Regimento interno</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Condomínio Maurício Gnoato — Todos os direitos reservados.</div>
+    </div>
+  </footer>
+</div><!-- fim page-site -->
+
+<!-- ══════════ SÍNDICO ══════════ -->
+<div id="page-sindico">
+  <div class="sindico-sidebar" id="sindico-sidebar">
+    <div class="sidebar-logo">
+      <img src="logo.png" alt="Logo" onerror="this.style.display='none'"/>
+      <div class="lt"><span>Condomínio</span><span>Maurício Gnoato</span></div>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a class="active" onclick="showSection('s-painel',this)"><span class="icon">📊</span>Painel</a></li>
+      <li><a onclick="showSection('s-financeiro',this)"><span class="icon">💰</span>Financeiro</a></li>
+      <li><a onclick="showSection('s-projetos',this)"><span class="icon">🔨</span>Projetos</a></li>
+      <li><a onclick="showSection('s-enquetes',this)"><span class="icon">🗳️</span>Enquetes</a></li>
+      <li><a onclick="showSection('s-documentos',this)"><span class="icon">📁</span>Documentos</a></li>
+      <li><a onclick="showSection('s-avisos',this)"><span class="icon">📢</span>Avisos</a></li>
+      <li><a onclick="showSection('s-moradores',this)"><span class="icon">👥</span>Moradores</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-user"><div class="user-avatar" id="sb-avatar" style="width:28px;height:28px;font-size:.7rem">S</div><span id="sb-name">Síndico</span></div>
+      <button class="btn btn-danger btn-sm btn-full" onclick="logout()">Sair</button>
+      <button class="btn btn-sm btn-full" style="background:var(--bege-claro);color
+
 
