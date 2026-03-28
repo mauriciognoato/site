@@ -134,7 +134,10 @@
     .auth-panel { display: none; }
     .auth-panel.active { display: block; }
 
-    .form-group { margin-bottom: 18px; }
+    .form-group { 
+      margin-bottom: 18px;
+      position: relative;
+    }
 
     .form-group label {
       display: block;
@@ -157,6 +160,32 @@
       color: var(--texto);
       transition: border-color 0.2s;
       outline: none;
+    }
+
+    /* Campo de senha com espaço para o olho */
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-wrapper input {
+      padding-right: 45px;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.1rem;
+      background: none;
+      border: none;
+      color: #888;
+      transition: color 0.2s;
+      padding: 5px;
+    }
+    .toggle-password:hover {
+      color: var(--dourado);
     }
 
     .form-group input:focus { border-color: var(--dourado); }
@@ -357,7 +386,7 @@
       font-size: 0.8rem;
     }
 
-    /* HERO - COM FUNDO ESCURO GARANTIDO */
+    /* HERO - COM FUNDO ESCURO MAIS FORTE E AZULADO */
     .hero {
       background: var(--azul);
       padding: 80px 24px;
@@ -365,7 +394,7 @@
       position: relative;
       overflow: hidden;
     }
-    /* OVERLAY ESCURO PARA GARANTIR LEGIBILIDADE */
+    /* OVERLAY ESCURO AZULADO PARA GARANTIR LEGIBILIDADE */
     .hero::before {
       content: '';
       position: absolute;
@@ -373,7 +402,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(15, 25, 35, 0.85); /* Azul escuro com alta opacidade */
       z-index: 1;
     }
     .hero::after {
@@ -978,7 +1007,7 @@
 <div id="auth-overlay">
   <div class="auth-box">
     <div class="auth-header">
-      <div class="auth-logo-fallback">MG</div>
+      <img src="logo.png" alt="Logo" style="width:90px;height:90px;border-radius:12px;border:3px solid var(--dourado);object-fit:cover;display:block;margin:0 auto 16px;" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'90\' height=\'90\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%231F3140\'/%3E%3Ctext x=\'50\' y=\'67\' font-size=\'48\' text-anchor=\'middle\' fill=\'%23C4A776\' font-family=\'Arial\'%3EMG%3C/text%3E%3C/svg%3E';"/>
       <h1>Condomínio<br>Maurício Gnoato</h1>
       <p>Portal do Condômino</p>
     </div>
@@ -994,7 +1023,10 @@
         </div>
         <div class="form-group">
           <label>Senha</label>
-          <input type="password" id="login-pwd" placeholder="••••••••"/>
+          <div class="password-wrapper">
+            <input type="password" id="login-pwd" placeholder="••••••••"/>
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('login-pwd', this)">👁️</button>
+          </div>
         </div>
         <button class="btn-primary" onclick="doLogin()">Acessar Portal</button>
         <div class="auth-divider">ou</div>
@@ -1007,8 +1039,8 @@
           <input type="text" id="reg-name" placeholder="Seu nome completo"/>
         </div>
         <div class="form-group">
-          <label>Unidade</label>
-          <input type="text" id="reg-unit" placeholder="Ex: CASA 31"/>
+          <label>Unidade / Apartamento</label>
+          <input type="text" id="reg-unit" placeholder="Ex: Bloco A - Apto 101"/>
         </div>
         <div class="form-group">
           <label>E-mail</label>
@@ -1016,7 +1048,10 @@
         </div>
         <div class="form-group">
           <label>Senha</label>
-          <input type="password" id="reg-pwd" placeholder="Mínimo 6 caracteres"/>
+          <div class="password-wrapper">
+            <input type="password" id="reg-pwd" placeholder="Mínimo 6 caracteres"/>
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-pwd', this)">👁️</button>
+          </div>
         </div>
         <button class="btn-primary" id="btn-register" onclick="doRegister()">Criar Conta</button>
         <div class="auth-msg" id="register-msg"></div>
@@ -1031,7 +1066,7 @@
   <header>
     <div class="header-inner">
       <a href="#" class="brand">
-        <div class="brand-logo-fb">MG</div>
+        <img src="logo.png" alt="Logo" style="width:44px;height:44px;border-radius:12px;border:2px solid var(--dourado);object-fit:cover;" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'44\' height=\'44\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%231F3140\'/%3E%3Ctext x=\'50\' y=\'67\' font-size=\'48\' text-anchor=\'middle\' fill=\'%23C4A776\' font-family=\'Arial\'%3EMG%3C/text%3E%3C/svg%3E';"/>
         <div class="brand-text">
           <span class="brand-name">Maurício Gnoato</span>
           <span class="brand-sub">Condomínio Residencial</span>
@@ -1056,7 +1091,7 @@
     </div>
   </header>
 
-  <!-- HERO COM FUNDO ESCURO -->
+  <!-- HERO COM FUNDO ESCURO AZULADO -->
   <section class="hero">
     <div class="hero-content">
       <div class="hero-badge" id="hero-badge">✦ Portal do Condomínio</div>
@@ -1198,12 +1233,12 @@
       </div>
       <div class="contact-grid">
         <div class="contact-info">
-          <h3>Fale com o Sindico</h3>
+          <h3>Fale com a Administração</h3>
           <p style="font-size:0.88rem;color:#666;line-height:1.8;margin-bottom:24px;">Tem dúvidas, sugestões ou precisa reportar algo? Respondemos em até 2 dias úteis.</p>
           <div class="contact-detail"><div class="contact-detail-icon">📍</div><div class="contact-detail-text"><strong>Endereço</strong><span id="info-endereco">Aguardando informação do síndico</span></div></div>
           <div class="contact-detail"><div class="contact-detail-icon">📞</div><div class="contact-detail-text"><strong>Telefone</strong><span id="info-telefone">Aguardando informação do síndico</span></div></div>
           <div class="contact-detail"><div class="contact-detail-icon">✉️</div><div class="contact-detail-text"><strong>E-mail</strong><span id="info-email">Aguardando informação do síndico</span></div></div>
-          <div class="contact-detail"><div class="contact-detail-icon">🕐</div><div class="contact-detail-text"><strong>Horário de Entregas</strong><span id="info-horario">Aguardando informação do síndico</span></div></div>
+          <div class="contact-detail"><div class="contact-detail-icon">🕐</div><div class="contact-detail-text"><strong>Horário da Portaria</strong><span id="info-horario">Aguardando informação do síndico</span></div></div>
         </div>
         <div>
           <div class="contact-form">
@@ -1242,8 +1277,8 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Condomínio Maurício Gnoato. Todos os direitos reservados.</p>
-        <p>Desenvolvido por Eduardo Linhares.</p>
+        <p>© 2025 Condomínio Maurício Gnoato. Todos os direitos reservados.</p>
+        <p>Desenvolvido com <span>♥</span> para a comunidade</p>
       </div>
     </div>
   </footer>
@@ -1390,7 +1425,7 @@
         <div class="s-form-grid">
           <div class="s-form-group"><label>Ícone (emoji)</label><input type="text" id="s-nc-icon" placeholder="📢" maxlength="4"/></div>
           <div class="s-form-group"><label>Data de Publicação</label><input type="text" id="s-nc-data" placeholder="Ex: 08 de Abril de 2025"/></div>
-          <div class="s-form-group s-form-full"><label>Título do Comunicado</label><input type="text" id="s-nc-titulo" placeholder="Ex: Manutenção do Jardim"/></div>
+          <div class="s-form-group s-form-full"><label>Título do Comunicado</label><input type="text" id="s-nc-titulo" placeholder="Ex: Manutenção dos Elevadores — Bloco C"/></div>
           <div class="s-form-group s-form-full"><label>Texto / Conteúdo</label><textarea id="s-nc-texto" rows="4" placeholder="Descreva o comunicado com detalhes..."></textarea></div>
         </div>
         <button class="btn-save" onclick="saveNotice()">📢 Publicar Comunicado</button>
@@ -1453,7 +1488,7 @@
           <div class="s-form-group s-form-full"><label>Endereço</label><input type="text" id="s-ct-endereco" placeholder="Rua do Condomínio, 500 — Curitiba, PR"/></div>
           <div class="s-form-group"><label>Telefone</label><input type="text" id="s-ct-telefone" placeholder="(41) 3000-0000 / (41) 99000-0000"/></div>
           <div class="s-form-group"><label>E-mail</label><input type="email" id="s-ct-email" placeholder="sindico@condominio.com.br"/></div>
-          <div class="s-form-group s-form-full"><label>Horário de Entregas</label><input type="text" id="s-ct-horario" placeholder="24 horas por dia, 7 dias por semana"/></div>
+          <div class="s-form-group s-form-full"><label>Horário da Portaria</label><input type="text" id="s-ct-horario" placeholder="24 horas por dia, 7 dias por semana"/></div>
         </div>
         <button class="btn-save" onclick="saveContactInfo()">💾 Atualizar Contato</button>
         <div class="s-msg" id="msg-contact-info"></div>
@@ -1468,7 +1503,7 @@
       </div>
     </div>
 
-    <!-- MORADORES - NOVA ABA CORRIGIDA -->
+    <!-- MORADORES -->
     <div class="sindico-section" id="s-moradores">
       <div class="s-card">
         <div class="s-card-header"><div><h3>👥 Lista de Moradores Cadastrados</h3><p>Relação de todos os condôminos registrados no portal</p></div></div>
@@ -1632,7 +1667,7 @@
       document.getElementById('d-comunicados').textContent = count;
     });
 
-    // Projetos (resumido)
+    // Projetos
     onValue(ref(db, 'projetos'), (snap) => {
       const timeline = document.getElementById('projects-timeline');
       const sList = document.getElementById('s-pr-list');
@@ -1693,7 +1728,7 @@
           const cor = isPositive ? 'var(--verde)' : 'var(--vermelho)';
           const sinal = isPositive ? '+' : '-';
           const badgeClass = d.status === 'Pago' || d.status === 'Recebido' ? 'badge-green' : d.status === 'Pendente' ? 'badge-yellow' : 'badge-red';
-          return `<tr><td>${d.descricao}</td><td>${d.categoria}</td><td>${d.data}</td><td style="color:${cor};font-weight:600">${sinal} R$ ${d.valor}</td><td><span class="badge ${badgeClass}">${d.status}</span></td>45</tr>`;
+          return `<tr><td>${d.descricao}</td><td>${d.categoria}</td><td>${d.data}</td><td style="color:${cor};font-weight:600">${sinal} R$ ${d.valor}</td><td><span class="badge ${badgeClass}">${d.status}</span></td>89</tr>`;
         }).join('');
         tableWrap.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
         sList.innerHTML = keys.map(key => {
@@ -1807,7 +1842,7 @@
       document.getElementById('d-mensagens').textContent = count;
     });
 
-    // ========== MORADORES ==========
+    // MORADORES
     onValue(ref(db, 'condominios'), (snap) => {
       const listContainer = document.getElementById('s-moradores-list');
       let count = 0;
@@ -1837,6 +1872,18 @@
 </script>
 
 <script>
+  // Função para alternar visibilidade da senha
+  function togglePasswordVisibility(inputId, button) {
+    const input = document.getElementById(inputId);
+    if (input.type === 'password') {
+      input.type = 'text';
+      button.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      button.textContent = '👁️';
+    }
+  }
+
   function switchTab(tab) {
     document.querySelectorAll('.auth-tab').forEach((t, i) => {
       t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
