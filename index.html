@@ -6,7 +6,7 @@
   <title>Condomínio Maurício Gnoato</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --azul: #1F3140;
@@ -76,7 +76,7 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto 16px;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Roboto', sans-serif;
       font-size: 28px;
       font-weight: 700;
       color: var(--azul);
@@ -84,10 +84,10 @@
     }
 
     .auth-header h1 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Roboto', sans-serif;
       color: var(--branco);
       font-size: 1.5rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.04em;
       line-height: 1.3;
     }
@@ -248,7 +248,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Roboto', sans-serif;
       font-size: 18px;
       font-weight: 700;
       color: var(--azul);
@@ -256,10 +256,10 @@
 
     .brand-text { display: flex; flex-direction: column; }
     .brand-name {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Roboto', sans-serif;
       color: var(--branco);
-      font-size: 1.15rem;
-      font-weight: 600;
+      font-size: 1.05rem;
+      font-weight: 700;
       letter-spacing: 0.03em;
       line-height: 1.2;
     }
@@ -357,9 +357,9 @@
       font-size: 0.8rem;
     }
 
-    /* HERO */
+    /* HERO — fundo azul */
     .hero {
-      background: var(--fundo);
+      background: var(--azul);
       padding: 80px 24px;
       text-align: center;
       position: relative;
@@ -369,14 +369,14 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4A776' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4A776' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
     .hero-content { position: relative; max-width: 700px; margin: 0 auto; }
     .hero-badge {
       display: inline-block;
-      background: rgba(196,167,118,0.15);
+      background: rgba(196,167,118,0.18);
       border: 1px solid var(--dourado);
-      color: var(--dourado-hover);
+      color: var(--dourado);
       font-size: 0.7rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -385,16 +385,16 @@
       margin-bottom: 24px;
     }
     .hero h1 {
-      font-family: 'Cormorant Garamond', serif;
-      color: var(--azul);
+      font-family: 'Roboto', sans-serif;
+      color: var(--branco);
       font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 700;
       line-height: 1.2;
       margin-bottom: 16px;
     }
-    .hero h1 em { color: var(--dourado); font-style: italic; }
+    .hero h1 em { color: var(--dourado); font-style: normal; }
     .hero p {
-      color: #555;
+      color: rgba(255,255,255,0.75);
       font-size: 1rem;
       line-height: 1.8;
       margin-bottom: 32px;
@@ -420,8 +420,8 @@
     .btn-outline-white {
       padding: 14px 28px;
       background: transparent;
-      color: var(--azul);
-      border: 1.5px solid var(--borda);
+      color: var(--branco);
+      border: 1.5px solid rgba(255,255,255,0.4);
       border-radius: 8px;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.82rem;
@@ -433,7 +433,19 @@
       transition: all 0.2s;
       display: inline-block;
     }
-    .btn-outline-white:hover { border-color: var(--azul); background: rgba(31,49,64,0.06); }
+    .btn-outline-white:hover { border-color: var(--dourado); color: var(--dourado); }
+
+    /* ESTADO VAZIO (hero sem dados) */
+    .hero-empty {
+      background: rgba(255,255,255,0.07);
+      border: 1px dashed rgba(196,167,118,0.4);
+      border-radius: 12px;
+      padding: 32px;
+      margin-top: 20px;
+      color: rgba(255,255,255,0.45);
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
 
     /* STATS BAR */
     .stats-bar { background: var(--branco); border-bottom: 3px solid var(--dourado); }
@@ -451,11 +463,12 @@
     }
     .stat-item:last-child { border-right: none; }
     .stat-number {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Roboto', sans-serif;
       font-size: 2rem;
       font-weight: 700;
       color: var(--azul);
     }
+    .stat-number.empty { color: #ccc; font-size: 1rem; font-family: 'Montserrat', sans-serif; font-weight: 400; }
     .stat-label {
       font-size: 0.72rem;
       letter-spacing: 0.1em;
@@ -478,8 +491,8 @@
       margin-bottom: 12px;
     }
     .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-family: 'Roboto', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
       color: var(--azul);
       font-weight: 700;
       line-height: 1.2;
@@ -501,10 +514,20 @@
     }
     section:nth-child(even) { background: var(--branco); }
 
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: #bbb;
+    }
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
+    .empty-state p { font-size: 0.88rem; line-height: 1.7; }
+    .empty-state strong { color: var(--dourado); }
+
     /* FINANCE */
     .finance-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 24px;
       margin-bottom: 40px;
     }
@@ -527,10 +550,11 @@
       margin-bottom: 18px;
       font-size: 1.4rem;
     }
-    .finance-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--azul); margin-bottom: 6px; }
-    .finance-card .amount { font-size: 1.8rem; font-weight: 700; color: var(--azul); font-family: 'Cormorant Garamond', serif; }
+    .finance-card h3 { font-family: 'Roboto', sans-serif; font-size: 1rem; font-weight: 700; color: var(--azul); margin-bottom: 6px; }
+    .finance-card .amount { font-size: 1.6rem; font-weight: 700; color: var(--azul); font-family: 'Roboto', sans-serif; }
     .finance-card .amount.positive { color: var(--verde); }
     .finance-card .amount.negative { color: var(--vermelho); }
+    .finance-card .amount.empty-val { font-size: 0.88rem; color: #ccc; font-weight: 400; }
     .finance-card p { font-size: 0.82rem; color: #888; margin-top: 4px; }
     .progress-bar { margin-top: 12px; background: var(--borda); border-radius: 100px; height: 6px; overflow: hidden; }
     .progress-fill { height: 100%; border-radius: 100px; background: var(--dourado); transition: width 1s ease; }
@@ -553,7 +577,7 @@
     .polls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
     .poll-card { background: var(--fundo); border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; }
     .poll-header { background: var(--azul); padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; }
-    .poll-header h3 { color: var(--branco); font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; }
+    .poll-header h3 { color: var(--branco); font-family: 'Roboto', sans-serif; font-size: 1rem; font-weight: 700; }
     .poll-header .poll-status { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dourado); font-weight: 600; }
     .poll-body { padding: 22px; }
     .poll-question { font-size: 0.88rem; color: var(--texto); margin-bottom: 18px; line-height: 1.6; font-weight: 500; }
@@ -577,7 +601,7 @@
     .project-dot.progress { background: var(--dourado); }
     .project-dot.planned { background: var(--borda); }
     .project-date { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dourado); font-weight: 600; margin-bottom: 6px; }
-    .project-item h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--azul); margin-bottom: 6px; }
+    .project-item h3 { font-family: 'Roboto', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--azul); margin-bottom: 6px; }
     .project-item p { font-size: 0.85rem; color: #666; line-height: 1.6; }
     .project-item .badge { margin-top: 8px; }
 
@@ -586,13 +610,13 @@
     .notice-card { background: var(--branco); border: 1px solid var(--borda); border-left: 4px solid var(--dourado); border-radius: 0 12px 12px 0; padding: 20px 24px; display: flex; align-items: flex-start; gap: 18px; transition: transform 0.2s; }
     .notice-card:hover { transform: translateX(4px); }
     .notice-icon { width: 42px; height: 42px; background: var(--fundo); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; border: 1px solid var(--borda); }
-    .notice-content h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--azul); margin-bottom: 4px; }
+    .notice-content h4 { font-family: 'Roboto', sans-serif; font-size: 1rem; font-weight: 700; color: var(--azul); margin-bottom: 4px; }
     .notice-content p { font-size: 0.83rem; color: #666; line-height: 1.6; }
     .notice-content .notice-date { font-size: 0.72rem; color: #aaa; margin-top: 6px; letter-spacing: 0.06em; }
 
     /* CONTACT */
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
-    .contact-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--azul); margin-bottom: 20px; }
+    .contact-info h3 { font-family: 'Roboto', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--azul); margin-bottom: 20px; }
     .contact-detail { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
     .contact-detail-icon { width: 40px; height: 40px; background: var(--azul); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
     .contact-detail-text strong { display: block; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--azul); margin-bottom: 3px; }
@@ -608,7 +632,7 @@
     footer { background: var(--azul-escuro); color: rgba(255,255,255,0.6); padding: 48px 24px 24px; }
     .footer-inner { max-width: 1200px; margin: 0 auto; }
     .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 28px; }
-    .footer-brand h2 { font-family: 'Cormorant Garamond', serif; color: var(--branco); font-size: 1.3rem; margin-bottom: 8px; }
+    .footer-brand h2 { font-family: 'Roboto', sans-serif; color: var(--branco); font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
     .footer-brand p { font-size: 0.83rem; line-height: 1.7; }
     .footer-col h4 { color: var(--dourado); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 16px; }
     .footer-col a { display: block; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.83rem; margin-bottom: 9px; transition: color 0.2s; }
@@ -644,7 +668,7 @@
     }
 
     .sindico-topbar-left h2 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Roboto', sans-serif;
       color: var(--branco);
       font-size: 2rem;
       font-weight: 700;
@@ -674,7 +698,6 @@
     }
     .btn-fechar-sindico:hover { border-color: var(--dourado); color: var(--dourado); }
 
-    /* Tabs do síndico */
     .sindico-tabs {
       display: flex;
       gap: 4px;
@@ -708,7 +731,6 @@
     .sindico-section { display: none; }
     .sindico-section.active { display: block; }
 
-    /* Cards do painel */
     .s-card {
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
@@ -727,9 +749,10 @@
     }
 
     .s-card-header h3 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Roboto', sans-serif;
       color: var(--branco);
-      font-size: 1.3rem;
+      font-size: 1.2rem;
+      font-weight: 700;
     }
 
     .s-card-header p {
@@ -738,7 +761,6 @@
       margin-top: 3px;
     }
 
-    /* Form síndico */
     .s-form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -825,7 +847,6 @@
     .s-msg.success { background: rgba(39,174,96,0.2); color: #2ecc71; border: 1px solid rgba(39,174,96,0.3); display: block; }
     .s-msg.error { background: rgba(192,57,43,0.2); color: #e74c3c; border: 1px solid rgba(192,57,43,0.3); display: block; }
 
-    /* Lista de itens existentes no painel */
     .s-list { margin-top: 20px; }
     .s-list-item {
       display: flex;
@@ -845,7 +866,6 @@
     .s-list-item-info span { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
     .s-list-item-actions { display: flex; gap: 8px; flex-shrink: 0; }
 
-    /* Stats síndico */
     .s-stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -860,7 +880,7 @@
       text-align: center;
     }
     .s-stat-card .num {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Roboto', sans-serif;
       font-size: 2.2rem;
       font-weight: 700;
       color: var(--dourado);
@@ -873,7 +893,6 @@
       margin-top: 4px;
     }
 
-    /* Contatos recebidos */
     .s-contact-item {
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.07);
@@ -893,16 +912,13 @@
     .s-contact-item .s-contact-subject { color: var(--branco); font-weight: 600; font-size: 0.88rem; margin-bottom: 6px; }
     .s-contact-item .s-contact-msg { color: rgba(255,255,255,0.6); font-size: 0.82rem; line-height: 1.6; }
 
-    /* Enquete no painel */
     .poll-option-row {
       display: flex;
       gap: 10px;
       align-items: center;
       margin-bottom: 10px;
     }
-    .poll-option-row input {
-      flex: 1;
-    }
+    .poll-option-row input { flex: 1; }
     .btn-add-opt {
       padding: 8px 14px;
       background: rgba(196,167,118,0.15);
@@ -919,6 +935,17 @@
     }
     .btn-add-opt:hover { background: rgba(196,167,118,0.25); }
 
+    /* HERO TEXT EDITOR (síndico) */
+    .s-hero-preview {
+      background: var(--azul);
+      border-radius: 10px;
+      padding: 24px;
+      margin-top: 16px;
+      text-align: center;
+    }
+    .s-hero-preview h3 { color: var(--branco); font-family: 'Roboto', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .s-hero-preview p { color: rgba(255,255,255,0.6); font-size: 0.83rem; line-height: 1.6; }
+
     /* MOBILE */
     @media (max-width: 768px) {
       .hamburger { display: flex; }
@@ -931,6 +958,7 @@
         padding: 16px 24px;
         border-top: 1px solid rgba(255,255,255,0.1);
         gap: 4px;
+        z-index: 99;
       }
       nav.open { display: flex; }
       nav a { padding: 10px 12px; }
@@ -955,7 +983,7 @@
 <div id="auth-overlay">
   <div class="auth-box">
     <div class="auth-header">
-      <div class="auth-logo-fallback" id="auth-logo-wrap">MG</div>
+      <div class="auth-logo-fallback">MG</div>
       <h1>Condomínio<br>Maurício Gnoato</h1>
       <p>Portal do Condômino</p>
     </div>
@@ -1008,7 +1036,7 @@
   <header>
     <div class="header-inner">
       <a href="#" class="brand">
-        <div class="brand-logo-fb" id="header-logo">MG</div>
+        <div class="brand-logo-fb">MG</div>
         <div class="brand-text">
           <span class="brand-name">Maurício Gnoato</span>
           <span class="brand-sub">Condomínio Residencial</span>
@@ -1025,7 +1053,7 @@
           <span id="user-name-header">Condômino</span>
         </div>
         <button class="btn-sindico-nav hidden" id="btn-sindico-nav" onclick="openSindico()">⚙ Síndico</button>
-        <button class="btn-logout" onclick="doLogout()">Sair</button>
+        <button class="btn-logout" id="btn-logout">Sair</button>
       </nav>
       <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -1036,9 +1064,9 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-badge">✦ Transparência & Gestão</div>
-      <h1>Bem-vindo ao Portal do <em>Condomínio</em></h1>
-      <p>Acesse todas as informações financeiras, projetos, enquetes e comunicados do seu condomínio em um só lugar — com total transparência e participação.</p>
+      <div class="hero-badge" id="hero-badge">✦ Portal do Condomínio</div>
+      <h1 id="hero-titulo">Bem-vindo ao Portal do <em>Condomínio</em></h1>
+      <p id="hero-subtitulo">Acesse todas as informações do seu condomínio em um só lugar.</p>
       <div class="hero-cta">
         <a href="#financeiro" class="btn-gold">Ver Prestação de Contas</a>
         <a href="#enquetes" class="btn-outline-white">Participar das Enquetes</a>
@@ -1050,20 +1078,20 @@
   <div class="stats-bar">
     <div class="stats-inner">
       <div class="stat-item">
-        <div class="stat-number" id="stat-unidades">—</div>
+        <div class="stat-number" id="stat-unidades"><span class="empty">—</span></div>
         <div class="stat-label">Unidades</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number" id="stat-fundo">—</div>
+        <div class="stat-number" id="stat-fundo"><span class="empty">—</span></div>
         <div class="stat-label">Fundo de Reserva</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number" id="stat-adimplencia">—</div>
+        <div class="stat-number" id="stat-adimplencia"><span class="empty">—</span></div>
         <div class="stat-label">Adimplência</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number" id="stat-projetos">—</div>
-        <div class="stat-label">Projetos em 2025</div>
+        <div class="stat-number" id="stat-projetos"><span class="empty">—</span></div>
+        <div class="stat-label">Projetos no Ano</div>
       </div>
     </div>
   </div>
@@ -1075,47 +1103,39 @@
         <span class="section-tag">✦ Transparência Financeira</span>
         <h2 class="section-title">Prestação de Contas</h2>
         <div class="section-divider"></div>
-        <p class="section-subtitle">Todas as receitas e despesas do condomínio com total clareza. Atualizado mensalmente pela administração.</p>
+        <p class="section-subtitle">Receitas e despesas do condomínio com total clareza. Atualizado pela administração.</p>
       </div>
-      <div class="finance-grid" id="finance-cards">
+      <div class="finance-grid">
         <div class="finance-card">
           <div class="finance-card-icon">💰</div>
           <h3>Receitas do Mês</h3>
           <div class="amount positive" id="fc-receitas">—</div>
-          <p id="fc-mes">Aguardando atualização</p>
-          <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+          <p id="fc-mes">Aguardando dados do síndico</p>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">📊</div>
           <h3>Despesas do Mês</h3>
           <div class="amount negative" id="fc-despesas">—</div>
-          <p>Aguardando atualização</p>
-          <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+          <p id="fc-mes-2">Aguardando dados do síndico</p>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">📈</div>
-          <h3>Saldo do Período</h3>
+          <h3>Saldo / Superávit</h3>
           <div class="amount" id="fc-saldo">—</div>
-          <p>Aguardando atualização</p>
-          <div class="progress-bar"><div class="progress-fill" style="width:0%; background:var(--verde)"></div></div>
+          <p>Resultado do período</p>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">🏦</div>
           <h3>Fundo de Reserva</h3>
           <div class="amount" id="fc-fundo">—</div>
           <p>Saldo acumulado</p>
-          <div class="progress-bar"><div class="progress-fill" style="width:0%; background:var(--azul-info)"></div></div>
         </div>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr>
-          </thead>
-          <tbody id="finance-tbody">
-            <tr><td colspan="5" style="text-align:center;color:#aaa;padding:32px;">Nenhuma transação cadastrada ainda.</td></tr>
-          </tbody>
-        </table>
+      <div id="finance-table-wrap">
+        <div class="empty-state">
+          <div class="empty-icon">🧾</div>
+          <p>Nenhuma transação cadastrada ainda.<br><strong>O síndico pode adicionar transações no painel administrativo.</strong></p>
+        </div>
       </div>
     </div>
   </section>
@@ -1130,7 +1150,10 @@
         <p class="section-subtitle">Acompanhe o progresso de todas as obras e iniciativas do condomínio.</p>
       </div>
       <div class="projects-timeline" id="projects-timeline">
-        <p id="projects-empty" style="color:#aaa;font-size:0.88rem;">Nenhum projeto cadastrado ainda.</p>
+        <div class="empty-state" id="projects-empty">
+          <div class="empty-icon">🏗️</div>
+          <p>Nenhum projeto cadastrado ainda.<br><strong>O síndico pode adicionar projetos no painel administrativo.</strong></p>
+        </div>
       </div>
     </div>
   </section>
@@ -1145,7 +1168,10 @@
         <p class="section-subtitle">Vote e opine sobre os temas mais relevantes para a comunidade.</p>
       </div>
       <div class="polls-grid" id="polls-grid">
-        <p id="polls-empty" style="color:#aaa;font-size:0.88rem;">Nenhuma enquete cadastrada ainda.</p>
+        <div class="empty-state" style="grid-column:1/-1" id="polls-empty">
+          <div class="empty-icon">🗳️</div>
+          <p>Nenhuma enquete ativa no momento.<br><strong>O síndico pode criar enquetes no painel administrativo.</strong></p>
+        </div>
       </div>
     </div>
   </section>
@@ -1159,7 +1185,10 @@
         <div class="section-divider"></div>
       </div>
       <div class="notices-list" id="notices-list">
-        <p id="notices-empty" style="color:#aaa;font-size:0.88rem;">Nenhum comunicado publicado ainda.</p>
+        <div class="empty-state">
+          <div class="empty-icon">📢</div>
+          <p>Nenhum comunicado publicado ainda.<br><strong>O síndico pode publicar comunicados no painel administrativo.</strong></p>
+        </div>
       </div>
     </div>
   </section>
@@ -1176,10 +1205,10 @@
         <div class="contact-info">
           <h3>Fale com a Administração</h3>
           <p style="font-size:0.88rem;color:#666;line-height:1.8;margin-bottom:24px;">Tem dúvidas, sugestões ou precisa reportar algo? Respondemos em até 2 dias úteis.</p>
-          <div class="contact-detail"><div class="contact-detail-icon">📍</div><div class="contact-detail-text"><strong>Endereço</strong><span id="info-endereco">—</span></div></div>
-          <div class="contact-detail"><div class="contact-detail-icon">📞</div><div class="contact-detail-text"><strong>Telefone</strong><span id="info-telefone">—</span></div></div>
-          <div class="contact-detail"><div class="contact-detail-icon">✉️</div><div class="contact-detail-text"><strong>E-mail</strong><span id="info-email">—</span></div></div>
-          <div class="contact-detail"><div class="contact-detail-icon">🕐</div><div class="contact-detail-text"><strong>Horário da Portaria</strong><span id="info-horario">—</span></div></div>
+          <div class="contact-detail"><div class="contact-detail-icon">📍</div><div class="contact-detail-text"><strong>Endereço</strong><span id="info-endereco">Aguardando informação do síndico</span></div></div>
+          <div class="contact-detail"><div class="contact-detail-icon">📞</div><div class="contact-detail-text"><strong>Telefone</strong><span id="info-telefone">Aguardando informação do síndico</span></div></div>
+          <div class="contact-detail"><div class="contact-detail-icon">✉️</div><div class="contact-detail-text"><strong>E-mail</strong><span id="info-email">Aguardando informação do síndico</span></div></div>
+          <div class="contact-detail"><div class="contact-detail-icon">🕐</div><div class="contact-detail-text"><strong>Horário da Portaria</strong><span id="info-horario">Aguardando informação do síndico</span></div></div>
         </div>
         <div>
           <div class="contact-form">
@@ -1236,20 +1265,20 @@
       <button class="btn-fechar-sindico" onclick="closeSindico()">✕ Fechar Painel</button>
     </div>
 
-    <!-- Tabs -->
     <div class="sindico-tabs">
-      <button class="sindico-tab active" onclick="sindicoTab('dashboard')">📊 Dashboard</button>
-      <button class="sindico-tab" onclick="sindicoTab('financeiro')">💰 Financeiro</button>
-      <button class="sindico-tab" onclick="sindicoTab('projetos')">🏗 Projetos</button>
-      <button class="sindico-tab" onclick="sindicoTab('comunicados')">📢 Comunicados</button>
-      <button class="sindico-tab" onclick="sindicoTab('enquetes')">🗳 Enquetes</button>
-      <button class="sindico-tab" onclick="sindicoTab('stats')">🏢 Estatísticas</button>
-      <button class="sindico-tab" onclick="sindicoTab('contatos')">✉️ Mensagens</button>
+      <button class="sindico-tab active" onclick="sindicoTab('dashboard', this)">📊 Dashboard</button>
+      <button class="sindico-tab" onclick="sindicoTab('hero', this)">🖼 Hero</button>
+      <button class="sindico-tab" onclick="sindicoTab('financeiro', this)">💰 Financeiro</button>
+      <button class="sindico-tab" onclick="sindicoTab('projetos', this)">🏗 Projetos</button>
+      <button class="sindico-tab" onclick="sindicoTab('comunicados', this)">📢 Comunicados</button>
+      <button class="sindico-tab" onclick="sindicoTab('enquetes', this)">🗳 Enquetes</button>
+      <button class="sindico-tab" onclick="sindicoTab('stats', this)">🏢 Estatísticas</button>
+      <button class="sindico-tab" onclick="sindicoTab('contatos', this)">✉️ Mensagens</button>
     </div>
 
     <!-- DASHBOARD -->
     <div class="sindico-section active" id="s-dashboard">
-      <div class="s-stats-grid" id="s-dash-stats">
+      <div class="s-stats-grid">
         <div class="s-stat-card"><div class="num" id="d-comunicados">—</div><div class="lbl">Comunicados</div></div>
         <div class="s-stat-card"><div class="num" id="d-projetos">—</div><div class="lbl">Projetos</div></div>
         <div class="s-stat-card"><div class="num" id="d-enquetes">—</div><div class="lbl">Enquetes</div></div>
@@ -1259,14 +1288,34 @@
       <div class="s-card">
         <div class="s-card-header"><div><h3>Bem-vindo ao Painel</h3><p>Use as abas acima para gerenciar cada seção do portal</p></div></div>
         <p style="color:rgba(255,255,255,0.5);font-size:0.85rem;line-height:1.8;">
-          Neste painel você pode: adicionar e remover <strong style="color:var(--dourado)">comunicados</strong>, gerenciar 
-          <strong style="color:var(--dourado)">projetos</strong> e sua linha do tempo, criar 
-          <strong style="color:var(--dourado)">enquetes</strong> interativas, lançar 
+          Neste painel você pode configurar o <strong style="color:var(--dourado)">texto do hero</strong>, adicionar 
+          <strong style="color:var(--dourado)">comunicados</strong>, gerenciar 
+          <strong style="color:var(--dourado)">projetos</strong>, criar 
+          <strong style="color:var(--dourado)">enquetes</strong>, lançar 
           <strong style="color:var(--dourado)">transações financeiras</strong>, atualizar os 
-          <strong style="color:var(--dourado)">números e estatísticas</strong> do condomínio, e ler as 
-          <strong style="color:var(--dourado)">mensagens</strong> enviadas pelos moradores.
-          <br><br>Todas as alterações são salvas em tempo real no Firebase e refletem imediatamente no portal.
+          <strong style="color:var(--dourado)">números e estatísticas</strong>, as 
+          <strong style="color:var(--dourado)">informações de contato</strong>, e ler as 
+          <strong style="color:var(--dourado)">mensagens</strong> enviadas pelos moradores.<br><br>
+          Todas as alterações refletem imediatamente no portal.
         </p>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <div class="sindico-section" id="s-hero">
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Texto do Hero (Banner Principal)</h3><p>Configure o título e subtítulo exibidos no topo do site</p></div></div>
+        <div class="s-form-grid">
+          <div class="s-form-group"><label>Badge / Etiqueta</label><input type="text" id="s-hero-badge" placeholder="✦ Transparência & Gestão"/></div>
+          <div class="s-form-group s-form-full"><label>Título Principal</label><input type="text" id="s-hero-titulo" placeholder="Bem-vindo ao Portal do Condomínio"/></div>
+          <div class="s-form-group s-form-full"><label>Subtítulo / Descrição</label><textarea id="s-hero-subtitulo" rows="3" placeholder="Acesse todas as informações financeiras, projetos, enquetes e comunicados do seu condomínio em um só lugar..."></textarea></div>
+        </div>
+        <button class="btn-save" onclick="saveHero()">💾 Salvar Hero</button>
+        <div class="s-msg" id="msg-hero"></div>
+        <div class="s-hero-preview" id="hero-preview-box" style="display:none;">
+          <h3 id="prev-titulo"></h3>
+          <p id="prev-subtitulo"></p>
+        </div>
       </div>
     </div>
 
@@ -1313,7 +1362,7 @@
       </div>
 
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Transações Cadastradas</h3><p>Clique em remover para excluir do Firebase</p></div></div>
+        <div class="s-card-header"><div><h3>Transações Cadastradas</h3></div></div>
         <div class="s-list" id="s-tx-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
       </div>
     </div>
@@ -1338,9 +1387,8 @@
         <button class="btn-save" onclick="saveProject()">➕ Adicionar Projeto</button>
         <div class="s-msg" id="msg-project"></div>
       </div>
-
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Projetos no Firebase</h3></div></div>
+        <div class="s-card-header"><div><h3>Projetos Cadastrados</h3></div></div>
         <div class="s-list" id="s-pr-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
       </div>
     </div>
@@ -1358,7 +1406,6 @@
         <button class="btn-save" onclick="saveNotice()">📢 Publicar Comunicado</button>
         <div class="s-msg" id="msg-notice"></div>
       </div>
-
       <div class="s-card">
         <div class="s-card-header"><div><h3>Comunicados Publicados</h3></div></div>
         <div class="s-list" id="s-nc-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
@@ -1370,7 +1417,7 @@
       <div class="s-card">
         <div class="s-card-header"><div><h3>Nova Enquete</h3><p>Crie uma enquete para os moradores votarem</p></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group"><label>Título (com emoji)</label><input type="text" id="s-eq-titulo" placeholder="🐾 Animais de Estimação"/></div>
+          <div class="s-form-group"><label>Título (com emoji)</label><input type="text" id="s-eq-titulo" placeholder="🏋️ Área de Lazer"/></div>
           <div class="s-form-group"><label>Status</label>
             <select id="s-eq-status">
               <option value="Ativa">● Ativa</option>
@@ -1381,9 +1428,9 @@
           <div class="s-form-group s-form-full">
             <label>Opções de Resposta</label>
             <div id="s-eq-opcoes">
-              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 1"/></div>
-              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 2"/></div>
-              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 3"/></div>
+              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 1" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);font-family:Montserrat,sans-serif;font-size:0.85rem;color:#fff;outline:none;"/></div>
+              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 2" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);font-family:Montserrat,sans-serif;font-size:0.85rem;color:#fff;outline:none;"/></div>
+              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 3" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);font-family:Montserrat,sans-serif;font-size:0.85rem;color:#fff;outline:none;"/></div>
             </div>
             <button class="btn-add-opt" onclick="addPollOption()">+ Adicionar opção</button>
           </div>
@@ -1391,9 +1438,8 @@
         <button class="btn-save" onclick="savePoll()">🗳 Publicar Enquete</button>
         <div class="s-msg" id="msg-poll"></div>
       </div>
-
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Enquetes no Firebase</h3></div></div>
+        <div class="s-card-header"><div><h3>Enquetes Cadastradas</h3></div></div>
         <div class="s-list" id="s-eq-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
       </div>
     </div>
@@ -1403,10 +1449,10 @@
       <div class="s-card">
         <div class="s-card-header"><div><h3>Números do Condomínio</h3><p>Atualize as estatísticas exibidas na barra de destaques</p></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group"><label>Total de Unidades</label><input type="text" id="s-st-unidades" placeholder="142"/></div>
-          <div class="s-form-group"><label>Fundo de Reserva</label><input type="text" id="s-st-fundo" placeholder="R$ 284k"/></div>
-          <div class="s-form-group"><label>Taxa de Adimplência</label><input type="text" id="s-st-adimplencia" placeholder="98%"/></div>
-          <div class="s-form-group"><label>Projetos no Ano</label><input type="text" id="s-st-projetos" placeholder="12"/></div>
+          <div class="s-form-group"><label>Total de Unidades</label><input type="text" id="s-st-unidades" placeholder="Ex: 142"/></div>
+          <div class="s-form-group"><label>Fundo de Reserva</label><input type="text" id="s-st-fundo" placeholder="Ex: R$ 284k"/></div>
+          <div class="s-form-group"><label>Taxa de Adimplência</label><input type="text" id="s-st-adimplencia" placeholder="Ex: 98%"/></div>
+          <div class="s-form-group"><label>Projetos no Ano</label><input type="text" id="s-st-projetos" placeholder="Ex: 12"/></div>
         </div>
         <button class="btn-save" onclick="saveStats()">💾 Atualizar Estatísticas</button>
         <div class="s-msg" id="msg-stats"></div>
@@ -1433,11 +1479,11 @@
       </div>
     </div>
 
-  </div><!-- /.sindico-container -->
-</div><!-- /#sindico-panel -->
+  </div>
+</div>
 
 <!-- ===================== FIREBASE ===================== -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
     getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
@@ -1461,11 +1507,8 @@
   const auth = getAuth(app);
   const db = getDatabase(app);
 
-  // E-mails com acesso ao painel do síndico — adicione quantos quiser
   const SINDICO_EMAILS = [
-    'sindico@condmauriciognoato.com.br',
-    'sindico@condmauriciognoato.com.br'.toLowerCase(),
-    // adicione outros e-mails de administrador aqui se necessário
+    'sindico@condmauriciognoato.com.br'
   ];
 
   // Expor globais
@@ -1484,21 +1527,21 @@
   window._updateProfile = updateProfile;
   window.SINDICO_EMAILS = SINDICO_EMAILS;
 
-  // Auth state
+  // ===== AUTH STATE =====
   onAuthStateChanged(auth, (user) => {
     if (user) {
       document.getElementById('auth-overlay').style.display = 'none';
       document.getElementById('main-site').style.display = 'block';
+
       const name = user.displayName || user.email.split('@')[0];
       const initials = name.charAt(0).toUpperCase();
       document.getElementById('user-avatar').textContent = initials;
       document.getElementById('user-name-header').textContent = name;
 
-      // Mostrar botão síndico — verifica pelo e-mail (case-insensitive)
       const btnSindico = document.getElementById('btn-sindico-nav');
       const emailLower = (user.email || '').toLowerCase().trim();
       const isSindico = SINDICO_EMAILS.some(e => e.toLowerCase().trim() === emailLower);
-      console.log('[Auth] e-mail logado:', emailLower, '| é síndico:', isSindico);
+
       if (isSindico) {
         btnSindico.classList.remove('hidden');
         btnSindico.style.display = 'inline-block';
@@ -1507,7 +1550,6 @@
         btnSindico.style.display = 'none';
       }
 
-      // Carregar dados dinâmicos do Firebase
       loadDynamicData();
     } else {
       document.getElementById('auth-overlay').style.display = 'flex';
@@ -1516,21 +1558,27 @@
     }
   });
 
-  // ===== CARREGAR DADOS DINÂMICOS DO FIREBASE =====
+  // ===== CARREGAR DADOS DINÂMICOS =====
   window.loadDynamicData = function() {
+
+    // Hero
+    onValue(ref(db, 'config/hero'), (snap) => {
+      if (snap.exists()) {
+        const d = snap.val();
+        if (d.badge) { document.getElementById('hero-badge').textContent = d.badge; document.getElementById('s-hero-badge').value = d.badge; }
+        if (d.titulo) { document.getElementById('hero-titulo').innerHTML = d.titulo; document.getElementById('s-hero-titulo').value = d.titulo; }
+        if (d.subtitulo) { document.getElementById('hero-subtitulo').textContent = d.subtitulo; document.getElementById('s-hero-subtitulo').value = d.subtitulo; }
+      }
+    });
+
     // Stats
     onValue(ref(db, 'config/stats'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
-        if (d.unidades) document.getElementById('stat-unidades').textContent = d.unidades;
-        if (d.fundo) document.getElementById('stat-fundo').textContent = d.fundo;
-        if (d.adimplencia) document.getElementById('stat-adimplencia').textContent = d.adimplencia;
-        if (d.projetos) document.getElementById('stat-projetos').textContent = d.projetos;
-        // preencher campos do painel
-        if (d.unidades) document.getElementById('s-st-unidades').value = d.unidades;
-        if (d.fundo) document.getElementById('s-st-fundo').value = d.fundo;
-        if (d.adimplencia) document.getElementById('s-st-adimplencia').value = d.adimplencia;
-        if (d.projetos) document.getElementById('s-st-projetos').value = d.projetos;
+        if (d.unidades) { document.getElementById('stat-unidades').textContent = d.unidades; document.getElementById('s-st-unidades').value = d.unidades; }
+        if (d.fundo) { document.getElementById('stat-fundo').textContent = d.fundo; document.getElementById('s-st-fundo').value = d.fundo; }
+        if (d.adimplencia) { document.getElementById('stat-adimplencia').textContent = d.adimplencia; document.getElementById('s-st-adimplencia').value = d.adimplencia; }
+        if (d.projetos) { document.getElementById('stat-projetos').textContent = d.projetos; document.getElementById('s-st-projetos').value = d.projetos; }
       }
     });
 
@@ -1542,7 +1590,11 @@
         if (d.despesas) { document.getElementById('fc-despesas').textContent = d.despesas; document.getElementById('s-fc-despesas').value = d.despesas; }
         if (d.saldo) { document.getElementById('fc-saldo').textContent = d.saldo; document.getElementById('s-fc-saldo').value = d.saldo; }
         if (d.fundo) { document.getElementById('fc-fundo').textContent = d.fundo; document.getElementById('s-fc-fundo').value = d.fundo; }
-        if (d.mes) { document.getElementById('fc-mes').textContent = d.mes; document.getElementById('s-fc-mes').value = d.mes; }
+        if (d.mes) {
+          document.getElementById('fc-mes').textContent = d.mes;
+          document.getElementById('fc-mes-2').textContent = d.mes;
+          document.getElementById('s-fc-mes').value = d.mes;
+        }
       }
     });
 
@@ -1561,16 +1613,14 @@
     onValue(ref(db, 'comunicados'), (snap) => {
       const noticesList = document.getElementById('notices-list');
       const sList = document.getElementById('s-nc-list');
-      let html = '';
-      let shtml = '';
       let count = 0;
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items).reverse();
         count = keys.length;
-        keys.forEach(key => {
+        noticesList.innerHTML = keys.map(key => {
           const d = items[key];
-          html += `<div class="notice-card">
+          return `<div class="notice-card">
             <div class="notice-icon">${d.icon || '📢'}</div>
             <div class="notice-content">
               <h4>${d.titulo}</h4>
@@ -1578,7 +1628,10 @@
               <div class="notice-date">📅 ${d.data}</div>
             </div>
           </div>`;
-          shtml += `<div class="s-list-item">
+        }).join('');
+        sList.innerHTML = keys.map(key => {
+          const d = items[key];
+          return `<div class="s-list-item">
             <div class="s-list-item-info">
               <strong>${d.icon || '📢'} ${d.titulo}</strong>
               <span>${d.data}</span>
@@ -1587,46 +1640,43 @@
               <button class="btn-danger" onclick="deleteItem('comunicados','${key}')">Remover</button>
             </div>
           </div>`;
-        });
-        // Manter os 3 estáticos originais só se não houver nenhum no Firebase
-        // Como temos Firebase, usamos só o Firebase
-        noticesList.innerHTML = html || noticesList.innerHTML;
+        }).join('');
+      } else {
+        noticesList.innerHTML = `<div class="empty-state"><div class="empty-icon">📢</div><p>Nenhum comunicado publicado ainda.<br><strong>O síndico pode publicar comunicados no painel administrativo.</strong></p></div>`;
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum comunicado cadastrado ainda.</p>';
       }
-      if (shtml) sList.innerHTML = shtml;
-      else sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum comunicado cadastrado no Firebase ainda.</p>';
       document.getElementById('d-comunicados').textContent = count;
     });
 
     // Projetos
     onValue(ref(db, 'projetos'), (snap) => {
+      const timeline = document.getElementById('projects-timeline');
       const sList = document.getElementById('s-pr-list');
-      let shtml = '';
       let count = 0;
+      // Remover itens dinâmicos anteriores
+      timeline.querySelectorAll('.dynamic-project').forEach(el => el.remove());
+
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items);
         count = keys.length;
+        // Remover estado vazio
+        const empty = document.getElementById('projects-empty');
+        if (empty) empty.remove();
 
-        // Adicionar ao timeline
-        const timeline = document.getElementById('projects-timeline');
-        const dynamic = timeline.querySelectorAll('.dynamic-project');
-        dynamic.forEach(el => el.remove());
-
-        keys.forEach(key => {
+        sList.innerHTML = keys.map(key => {
           const d = items[key];
-          const dotClass = d.status || 'planned';
           const newItem = document.createElement('div');
           newItem.className = 'project-item dynamic-project';
           newItem.innerHTML = `
-            <div class="project-dot ${dotClass}"></div>
+            <div class="project-dot ${d.status || 'planned'}"></div>
             <div class="project-date">${d.data}</div>
             <h3>${d.titulo}</h3>
             <p>${d.desc}</p>
-            <span class="badge ${dotClass === 'done' ? 'badge-green' : dotClass === 'progress' ? 'badge-yellow' : 'badge-blue'}">${d.badge}</span>
+            <span class="badge ${d.status === 'done' ? 'badge-green' : d.status === 'progress' ? 'badge-yellow' : 'badge-blue'}">${d.badge}</span>
           `;
           timeline.appendChild(newItem);
-
-          shtml += `<div class="s-list-item">
+          return `<div class="s-list-item">
             <div class="s-list-item-info">
               <strong>${d.titulo}</strong>
               <span>${d.data} — ${d.status}</span>
@@ -1635,38 +1685,46 @@
               <button class="btn-danger" onclick="deleteItem('projetos','${key}')">Remover</button>
             </div>
           </div>`;
-        });
+        }).join('');
+      } else {
+        if (!document.getElementById('projects-empty')) {
+          timeline.innerHTML = `<div class="empty-state" id="projects-empty"><div class="empty-icon">🏗️</div><p>Nenhum projeto cadastrado ainda.<br><strong>O síndico pode adicionar projetos no painel administrativo.</strong></p></div>`;
+        }
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum projeto cadastrado ainda.</p>';
       }
-      if (shtml) sList.innerHTML = shtml;
-      else sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum projeto cadastrado no Firebase ainda.</p>';
       document.getElementById('d-projetos').textContent = count;
     });
 
     // Transações
     onValue(ref(db, 'transacoes'), (snap) => {
-      const tbody = document.getElementById('finance-tbody');
+      const tableWrap = document.getElementById('finance-table-wrap');
       const sList = document.getElementById('s-tx-list');
-      let shtml = '';
       let count = 0;
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items).reverse();
         count = keys.length;
-        let rows = '';
-        keys.forEach(key => {
+        const rows = keys.map(key => {
           const d = items[key];
           const isPositive = d.categoria === 'Receita';
           const cor = isPositive ? 'var(--verde)' : 'var(--vermelho)';
           const sinal = isPositive ? '+' : '-';
           const badgeClass = d.status === 'Pago' || d.status === 'Recebido' ? 'badge-green' : d.status === 'Pendente' ? 'badge-yellow' : 'badge-red';
-          rows += `<tr>
+          return `<tr>
             <td>${d.descricao}</td>
             <td>${d.categoria}</td>
             <td>${d.data}</td>
             <td style="color:${cor};font-weight:600">${sinal} R$ ${d.valor}</td>
             <td><span class="badge ${badgeClass}">${d.status}</span></td>
           </tr>`;
-          shtml += `<div class="s-list-item">
+        }).join('');
+        tableWrap.innerHTML = `<div class="table-wrap"><table>
+          <thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table></div>`;
+        sList.innerHTML = keys.map(key => {
+          const d = items[key];
+          return `<div class="s-list-item">
             <div class="s-list-item-info">
               <strong>${d.descricao}</strong>
               <span>${d.categoria} — ${d.data} — R$ ${d.valor} — ${d.status}</span>
@@ -1675,13 +1733,11 @@
               <button class="btn-danger" onclick="deleteItem('transacoes','${key}')">Remover</button>
             </div>
           </div>`;
-        });
-        tbody.innerHTML = rows;
+        }).join('');
       } else {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#aaa;padding:32px;">Nenhuma transação cadastrada ainda.</td></tr>';
+        tableWrap.innerHTML = `<div class="empty-state"><div class="empty-icon">🧾</div><p>Nenhuma transação cadastrada ainda.<br><strong>O síndico pode adicionar transações no painel administrativo.</strong></p></div>`;
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma transação cadastrada ainda.</p>';
       }
-      if (shtml) sList.innerHTML = shtml;
-      else sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma transação cadastrada no Firebase ainda.</p>';
       document.getElementById('d-transacoes').textContent = count;
     });
 
@@ -1689,25 +1745,25 @@
     onValue(ref(db, 'enquetes'), (snap) => {
       const grid = document.getElementById('polls-grid');
       const sList = document.getElementById('s-eq-list');
-      let shtml = '';
       let count = 0;
+      grid.querySelectorAll('.dynamic-poll').forEach(el => el.remove());
+
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items).reverse();
         count = keys.length;
-        // Remover enquetes dinâmicas antigas
-        grid.querySelectorAll('.dynamic-poll').forEach(el => el.remove());
+        const empty = document.getElementById('polls-empty');
+        if (empty) empty.remove();
 
-        keys.forEach(key => {
+        sList.innerHTML = keys.map(key => {
           const d = items[key];
           const opts = d.opcoes || [];
-          let optsHtml = opts.map((op, i) => `
+          const optsHtml = opts.map((op, i) => `
             <div class="poll-option">
               <label><input type="radio" name="dyn_${key}"> ${op}</label>
               <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:0%"></div></div>
               <div class="poll-pct">0 votos</div>
             </div>`).join('');
-
           const card = document.createElement('div');
           card.className = 'poll-card dynamic-poll';
           card.innerHTML = `
@@ -1724,8 +1780,7 @@
               <button class="btn-sm" onclick="votePoll(this)">Votar</button>
             </div>`;
           grid.appendChild(card);
-
-          shtml += `<div class="s-list-item">
+          return `<div class="s-list-item">
             <div class="s-list-item-info">
               <strong>${d.titulo}</strong>
               <span>${d.pergunta.substring(0,60)}...</span>
@@ -1734,14 +1789,22 @@
               <button class="btn-danger" onclick="deleteItem('enquetes','${key}')">Remover</button>
             </div>
           </div>`;
-        });
+        }).join('');
+      } else {
+        if (!document.getElementById('polls-empty')) {
+          const emptyDiv = document.createElement('div');
+          emptyDiv.id = 'polls-empty';
+          emptyDiv.style.gridColumn = '1/-1';
+          emptyDiv.className = 'empty-state';
+          emptyDiv.innerHTML = `<div class="empty-icon">🗳️</div><p>Nenhuma enquete ativa no momento.<br><strong>O síndico pode criar enquetes no painel administrativo.</strong></p>`;
+          grid.appendChild(emptyDiv);
+        }
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma enquete cadastrada ainda.</p>';
       }
-      if (shtml) sList.innerHTML = shtml;
-      else sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma enquete cadastrada no Firebase ainda.</p>';
       document.getElementById('d-enquetes').textContent = count;
     });
 
-    // Mensagens / Contatos
+    // Mensagens
     onValue(ref(db, 'contatos'), (snap) => {
       const list = document.getElementById('s-contatos-list');
       let count = 0;
@@ -1833,20 +1896,15 @@
     }
   }
 
-  async function doLogout() {
+  // ===== LOGOUT — corrigido =====
+  document.getElementById('btn-logout').addEventListener('click', async function() {
     try {
       closeSindico();
-      if (window._auth && window._signOut) {
-        await window._signOut(window._auth);
-      } else {
-        // fallback: recarrega a página
-        location.reload();
-      }
+      await window._signOut(window._auth);
     } catch(e) {
-      console.error('Erro no logout:', e);
-      location.reload();
+      console.error('Erro ao sair:', e);
     }
-  }
+  });
 
   // ===== MENU =====
   function toggleMenu() {
@@ -1887,11 +1945,31 @@
     document.body.style.overflow = '';
   }
 
-  function sindicoTab(tab) {
+  function sindicoTab(tab, btn) {
     document.querySelectorAll('.sindico-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.sindico-section').forEach(s => s.classList.remove('active'));
-    event.target.classList.add('active');
+    if (btn) btn.classList.add('active');
     document.getElementById('s-' + tab).classList.add('active');
+  }
+
+  // ===== SALVAR HERO =====
+  async function saveHero() {
+    const data = {
+      badge: document.getElementById('s-hero-badge').value.trim(),
+      titulo: document.getElementById('s-hero-titulo').value.trim(),
+      subtitulo: document.getElementById('s-hero-subtitulo').value.trim()
+    };
+    if (!data.titulo) return showSMsg('msg-hero', 'Preencha ao menos o título.', 'error');
+    try {
+      await window._set(window._ref(window._db, 'config/hero'), data);
+      // Atualizar preview
+      document.getElementById('prev-titulo').textContent = data.titulo;
+      document.getElementById('prev-subtitulo').textContent = data.subtitulo;
+      document.getElementById('hero-preview-box').style.display = 'block';
+      showSMsg('msg-hero', '✓ Hero atualizado com sucesso!', 'success');
+    } catch(e) {
+      showSMsg('msg-hero', 'Erro ao salvar. Verifique as permissões do Firebase.', 'error');
+    }
   }
 
   // ===== SALVAR FINANCE CARDS =====
@@ -2041,8 +2119,13 @@
     }
   }
 
-  // Enter key login/register
+  // Enter key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       if (document.getElementById('panel-login').classList.contains('active')) doLogin();
-      else if (document
+      else if (document.getElementById('panel-register').classList.contains('active')) doRegister();
+    }
+  });
+</script>
+</body>
+</html>
