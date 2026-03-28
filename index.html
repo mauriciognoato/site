@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
-  <title>Condomínio Maurício Gnoato - Gestão Transparente</title>
+  <title>Condomínio Maurício Gnoato</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -72,15 +72,26 @@
     .form-group label { display: block; font-size: 0.7rem; font-weight: 600; color: var(--azul); margin-bottom: 5px; text-transform: uppercase; }
     .form-group input { width: 100%; padding: 10px 14px; border: 1px solid var(--borda); border-radius: 8px; font-size: 0.85rem; background: var(--bege-fundo); }
     .auth-error { color: var(--vermelho); font-size: 0.75rem; margin-top: 8px; }
+    .admin-helper-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: var(--dourado);
+      color: var(--azul);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 1001;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .admin-helper-btn:hover { opacity: 1; }
 
     /* SITE PRINCIPAL */
-    .site-page {
-      display: none;
-      min-height: 100vh;
-    }
-    .site-page.active {
-      display: block;
-    }
+    .site-page { display: none; min-height: 100vh; }
+    .site-page.active { display: block; }
     header { background: var(--azul); position: sticky; top: 0; z-index: 900; }
     .navbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; flex-wrap: wrap; gap: 10px; }
     .navbar-logo { display: flex; align-items: center; gap: 10px; }
@@ -160,14 +171,8 @@
     footer ul li a { color: #a0b0bc; font-size: 0.8rem; }
 
     /* ÁREA DO SÍNDICO */
-    .sindico-page {
-      display: none;
-      min-height: 100vh;
-      background: #f5f7fa;
-    }
-    .sindico-page.active {
-      display: block;
-    }
+    .sindico-page { display: none; min-height: 100vh; background: #f5f7fa; }
+    .sindico-page.active { display: block; }
     .sindico-header { background: var(--azul); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
     .sindico-container { display: flex; }
     .sindico-sidebar { width: 280px; background: var(--azul-escuro); color: white; min-height: calc(100vh - 56px); }
@@ -253,6 +258,10 @@
       <button class="btn btn-primary btn-full" onclick="fazerCadastro()">Criar conta</button>
       <p class="auth-error" id="regError"></p>
     </div>
+  </div>
+  <!-- Botão auxiliar para tornar admin (aparece apenas após login) -->
+  <div id="adminHelperBtn" class="admin-helper-btn" style="display: none;" onclick="tornarAdmin()">
+    🔧 Tornar Admin (clique após login)
   </div>
 </div>
 
@@ -359,6 +368,30 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
+  // Função para tornar o usuário atual admin
+  async function tornarAdmin() {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("❌ Faça login primeiro!");
+      return;
+    }
+    
+    try {
+      await db.collection('users').doc(user.uid).set({
+        nome: document.getElementById('userName').textContent || "Síndico",
+        email: user.email,
+        isAdmin: true,
+        casa: 0
+      }, { merge: true });
+      
+      alert("✅ Agora você é ADMINISTRADOR!\nRecarregue a página para ver o botão do síndico.");
+      location.reload();
+    } catch (erro) {
+      alert("❌ Erro: " + erro.message);
+      console.error(erro);
+    }
+  }
+
   function switchTab(tab) {
     const tabs = document.querySelectorAll('.login-tab');
     const formEntrar = document.getElementById('formEntrar');
@@ -390,7 +423,6 @@
       const result = await auth.signInWithEmailAndPassword(email, senha);
       console.log("Login realizado:", result.user.email);
       mostrarToast('Login realizado com sucesso!');
-      // O redirecionamento será feito pelo onAuthStateChanged
     } catch(e) {
       console.error("Erro no login:", e);
       document.getElementById('loginError').textContent = e.message;
@@ -417,7 +449,7 @@
         isAdmin: false,
         createdAt: new Date()
       });
-      mostrarToast('Cadastro realizado!');
+      mostrarToast('Cadastro realizado! Faça login.');
       switchTab('entrar');
       document.getElementById('regError').textContent = '';
       // Limpar campos
@@ -473,9 +505,14 @@
   auth.onAuthStateChanged(async (user) => {
     console.log("Auth state changed - Usuário:", user ? user.email : "Nenhum");
     
+    const adminHelperBtn = document.getElementById('adminHelperBtn');
+    
     if (user) {
       // Usuário logado
       usuarioAtual = user;
+      
+      // Mostrar botão de ajuda para tornar admin (apenas durante desenvolvimento)
+      if (adminHelperBtn) adminHelperBtn.style.display = 'block';
       
       try {
         const doc = await db.collection('users').doc(user.uid).get();
@@ -512,6 +549,9 @@
       // Usuário deslogado
       usuarioAtual = null;
       isAdmin = false;
+      
+      // Esconder botão admin helper
+      if (adminHelperBtn) adminHelperBtn.style.display = 'none';
       
       // Mostrar login e esconder outras páginas
       const loginPage = document.getElementById('loginPage');
@@ -645,12 +685,12 @@
       document.getElementById('adminStats').innerHTML = `<div class="grid2"><div class="stat-card"><div class="stat-number">${usersSnap.size}</div><div>Moradores</div></div><div class="stat-card"><div class="stat-number">${projSnap.size}</div><div>Projetos</div></div><div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div></div>`;
 
       const histSnap = await db.collection('finances').orderBy('mes', 'desc').get();
-      let histHtml = ' 要  <tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr>';
+      let histHtml = '<table><thead><tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr></thead><tbody>';
       histSnap.forEach(doc => {
         const d = doc.data();
         histHtml += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
       });
-      histHtml += '</table>';
+      histHtml += '</tbody></table>';
       document.getElementById('historicoFinanceiro').innerHTML = histHtml;
 
       const projListSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
@@ -678,7 +718,7 @@
       document.getElementById('listaDocumentos').innerHTML = docsList;
 
       const moradoresSnap = await db.collection('users').orderBy('casa').get();
-      let moradoresList = '耒 <thead><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr></thead><tbody>';
+      let moradoresList = '<table><thead><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr></thead><tbody>';
       moradoresSnap.forEach(doc => {
         const u = doc.data();
         moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
@@ -777,6 +817,7 @@
   window.comentar = comentar;
   window.mudarTab = mudarTab;
   window.enviarContato = enviarContato;
+  window.tornarAdmin = tornarAdmin;
 </script>
 </body>
 </html>
