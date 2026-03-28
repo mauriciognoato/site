@@ -383,9 +383,12 @@
     }
     
     try {
-      await auth.signInWithEmailAndPassword(email, senha);
+      const result = await auth.signInWithEmailAndPassword(email, senha);
+      console.log("Login bem-sucedido:", result.user.email);
       mostrarToast('Login realizado!');
+      // O redirecionamento será feito pelo onAuthStateChanged
     } catch(e) {
+      console.error("Erro no login:", e);
       document.getElementById('loginError').textContent = e.message;
     }
   }
@@ -454,33 +457,38 @@
     if (el) el.classList.add('active');
   }
 
-  // Monitorar autenticação e verificar se é o admin específico
+  // FUNÇÃO PRINCIPAL - Monitora autenticação e REDIRECIONA
   auth.onAuthStateChanged(async (user) => {
-    console.log("Auth state changed:", user ? user.email : "Nenhum usuário");
+    console.log("onAuthStateChanged executado. User:", user ? user.email : "null");
     
     if (user) {
+      // USUÁRIO LOGADO
       usuarioAtual = user;
       
-      // VERIFICA SE O E-MAIL É O ADMIN ESPECÍFICO
+      // Verifica se é o admin específico
       const EMAIL_ADMIN = "sindico@condominio.com";
       isAdmin = (user.email === EMAIL_ADMIN);
       
-      // Se for admin, salvar no Firestore para referência futura
+      console.log("isAdmin:", isAdmin);
+      
+      // Atualiza interface
       if (isAdmin) {
+        document.getElementById('userName').textContent = "Síndico";
+        document.getElementById('userAvatar').textContent = "S";
+        document.getElementById('sindicoName').textContent = "Síndico";
+        document.getElementById('btnSindico').style.display = 'block';
+        
+        // Salva no Firestore se necessário
         try {
           await db.collection('users').doc(user.uid).set({
             nome: "Síndico",
             email: user.email,
             isAdmin: true,
-            casa: 0,
-            createdAt: new Date()
+            casa: 0
           }, { merge: true });
-          console.log("Admin verificado e salvo no Firestore");
-        } catch(e) {
-          console.error("Erro ao salvar admin:", e);
-        }
+        } catch(e) { console.error(e); }
       } else {
-        // Para usuários comuns, tentar buscar dados do Firestore
+        document.getElementById('btnSindico').style.display = 'none';
         try {
           const doc = await db.collection('users').doc(user.uid).get();
           if (doc.exists) {
@@ -497,28 +505,19 @@
         }
       }
       
-      // Atualizar interface do admin
-      if (isAdmin) {
-        document.getElementById('userName').textContent = "Síndico";
-        document.getElementById('userAvatar').textContent = "S";
-        document.getElementById('sindicoName').textContent = "Síndico";
-        document.getElementById('btnSindico').style.display = 'block';
-        console.log("✅ Admin detectado! Botão do síndico visível.");
-      } else {
-        document.getElementById('btnSindico').style.display = 'none';
-        console.log("Usuário comum, sem acesso ao painel do síndico.");
-      }
-      
-      // Redirecionar para o site
+      // REDIRECIONAR: Esconder login e mostrar site
       document.getElementById('loginPage').style.display = 'none';
       document.getElementById('cadastroPage').style.display = 'none';
       document.getElementById('sitePage').classList.add('active');
+      
+      console.log("Site exibido. loginPage ocultado.");
       
       // Carregar dados
       carregarDadosPublicos();
       
     } else {
-      // Usuário deslogado
+      // USUÁRIO DESLOGADO
+      console.log("Usuário deslogado. Exibindo página de login.");
       usuarioAtual = null;
       isAdmin = false;
       
@@ -649,12 +648,12 @@
       document.getElementById('adminStats').innerHTML = `<div class="grid2"><div class="stat-card"><div class="stat-number">${usersSnap.size}</div><div>Moradores</div></div><div class="stat-card"><div class="stat-number">${projSnap.size}</div><div>Projetos</div></div><div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div></div>`;
 
       const histSnap = await db.collection('finances').orderBy('mes', 'desc').get();
-      let histHtml = '<table><thead><tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr></thead><tbody>';
+      let histHtml = '耒<thead> <th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th> </thead><tbody>';
       histSnap.forEach(doc => {
         const d = doc.data();
-        histHtml += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
+        histHtml += `  <td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td> `;
       });
-      histHtml += '</tbody></table>';
+      histHtml += '</tbody> </table>';
       document.getElementById('historicoFinanceiro').innerHTML = histHtml;
 
       const projListSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
@@ -682,12 +681,12 @@
       document.getElementById('listaDocumentos').innerHTML = docsList;
 
       const moradoresSnap = await db.collection('users').orderBy('casa').get();
-      let moradoresList = '<table><thead><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr></thead><tbody>';
+      let moradoresList = '耒<thead> <th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th> </thead><tbody>';
       moradoresSnap.forEach(doc => {
         const u = doc.data();
-        moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
+        moradoresList += ` <td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td> `;
       });
-      moradoresList += '</tbody></table>';
+      moradoresList += '</tbody> </table>';
       document.getElementById('listaMoradores').innerHTML = moradoresList;
     } catch(e) { console.error(e); }
   }
