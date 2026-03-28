@@ -447,7 +447,7 @@
       line-height: 1.7;
     }
 
-    /* STATS BAR */
+    /* ===================== STATS BAR — FONTES EM AZUL ===================== */
     .stats-bar { background: var(--branco); border-bottom: 3px solid var(--dourado); }
     .stats-inner {
       max-width: 1200px;
@@ -466,14 +466,15 @@
       font-family: 'Roboto', sans-serif;
       font-size: 2rem;
       font-weight: 700;
-      color: var(--azul);
+      color: var(--azul);        /* ← azul */
     }
-    .stat-number.empty { color: #ccc; font-size: 1rem; font-family: 'Montserrat', sans-serif; font-weight: 400; }
+    .stat-number span.empty { color: #ccc; font-size: 1rem; font-family: 'Montserrat', sans-serif; font-weight: 400; }
     .stat-label {
       font-size: 0.72rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #888;
+      color: var(--azul);        /* ← azul */
+      font-weight: 600;
       margin-top: 4px;
     }
 
@@ -983,7 +984,7 @@
 <div id="auth-overlay">
   <div class="auth-box">
     <div class="auth-header">
-      <div class="auth-logo-fallback">MG</div>
+      <img src="logo.png" alt="Logo" style="width:90px;height:90px;border-radius:50%;border:3px solid var(--dourado);object-fit:cover;display:block;margin:0 auto 16px;"/>
       <h1>Condomínio<br>Maurício Gnoato</h1>
       <p>Portal do Condômino</p>
     </div>
@@ -1023,7 +1024,7 @@
           <label>Senha</label>
           <input type="password" id="reg-pwd" placeholder="Mínimo 6 caracteres"/>
         </div>
-        <button class="btn-primary" onclick="doRegister()">Criar Conta</button>
+        <button class="btn-primary" id="btn-register" onclick="doRegister()">Criar Conta</button>
         <div class="auth-msg" id="register-msg"></div>
       </div>
     </div>
@@ -1036,7 +1037,7 @@
   <header>
     <div class="header-inner">
       <a href="#" class="brand">
-        <div class="brand-logo-fb">MG</div>
+        <img src="logo.png" alt="Logo" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--dourado);object-fit:cover;"/>
         <div class="brand-text">
           <span class="brand-name">Maurício Gnoato</span>
           <span class="brand-sub">Condomínio Residencial</span>
@@ -1533,10 +1534,19 @@
       document.getElementById('auth-overlay').style.display = 'none';
       document.getElementById('main-site').style.display = 'block';
 
-      const name = user.displayName || user.email.split('@')[0];
-      const initials = name.charAt(0).toUpperCase();
-      document.getElementById('user-avatar').textContent = initials;
-      document.getElementById('user-name-header').textContent = name;
+      // Recarrega o perfil para pegar o displayName mais atualizado
+      user.reload().then(() => {
+        const currentUser = auth.currentUser;
+        const name = currentUser.displayName || currentUser.email.split('@')[0];
+        const initials = name.charAt(0).toUpperCase();
+        document.getElementById('user-avatar').textContent = initials;
+        document.getElementById('user-name-header').textContent = name;
+      }).catch(() => {
+        const name = user.displayName || user.email.split('@')[0];
+        const initials = name.charAt(0).toUpperCase();
+        document.getElementById('user-avatar').textContent = initials;
+        document.getElementById('user-name-header').textContent = name;
+      });
 
       const btnSindico = document.getElementById('btn-sindico-nav');
       const emailLower = (user.email || '').toLowerCase().trim();
@@ -1653,14 +1663,12 @@
       const timeline = document.getElementById('projects-timeline');
       const sList = document.getElementById('s-pr-list');
       let count = 0;
-      // Remover itens dinâmicos anteriores
       timeline.querySelectorAll('.dynamic-project').forEach(el => el.remove());
 
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items);
         count = keys.length;
-        // Remover estado vazio
         const empty = document.getElementById('projects-empty');
         if (empty) empty.remove();
 
@@ -1842,6 +1850,9 @@
     });
     document.getElementById('panel-login').classList.toggle('active', tab === 'login');
     document.getElementById('panel-register').classList.toggle('active', tab === 'register');
+    // Limpar mensagens ao trocar aba
+    document.getElementById('login-msg').className = 'auth-msg';
+    document.getElementById('register-msg').className = 'auth-msg';
   }
 
   function showMsg(id, msg, type) {
@@ -1873,30 +1884,61 @@
     }
   }
 
+  // ===== CADASTRO CORRIGIDO =====
   async function doRegister() {
-    const name = document.getElementById('reg-name').value.trim();
-    const unit = document.getElementById('reg-unit').value.trim();
-    const email = document.getElementById('reg-email').value.trim();
-    const pwd = document.getElementById('reg-pwd').value;
-    if (!name || !unit || !email || !pwd) return showMsg('register-msg', 'Preencha todos os campos.', 'error');
-    if (pwd.length < 6) return showMsg('register-msg', 'A senha deve ter ao menos 6 caracteres.', 'error');
+    const name    = document.getElementById('reg-name').value.trim();
+    const unit    = document.getElementById('reg-unit').value.trim();
+    const email   = document.getElementById('reg-email').value.trim();
+    const pwd     = document.getElementById('reg-pwd').value;
+
+    // Validações
+    if (!name || !unit || !email || !pwd) {
+      return showMsg('register-msg', 'Preencha todos os campos.', 'error');
+    }
+    if (pwd.length < 6) {
+      return showMsg('register-msg', 'A senha deve ter ao menos 6 caracteres.', 'error');
+    }
+
+    // Desabilitar botão durante o processo
+    const btn = document.getElementById('btn-register');
+    btn.disabled = true;
+    btn.textContent = 'Cadastrando...';
+
     try {
+      // 1. Criar usuário no Firebase Auth
       const cred = await window._createUser(window._auth, email, pwd);
+
+      // 2. Atualizar o displayName ANTES de qualquer outra coisa
       await window._updateProfile(cred.user, { displayName: name });
-      await window._set(window._ref(window._db, 'condominios/' + cred.user.uid), {
-        name, unit, email, createdAt: new Date().toISOString()
+
+      // 3. Salvar dados extras no Realtime Database
+      await window._set(
+        window._ref(window._db, 'condominios/' + cred.user.uid),
+        { name, unit, email, createdAt: new Date().toISOString() }
+      );
+
+      // 4. Mostrar sucesso — o onAuthStateChanged vai detectar o login automaticamente
+      showMsg('register-msg', '✅ Cadastro realizado com sucesso! Entrando...', 'success');
+
+      // Limpar campos
+      ['reg-name', 'reg-unit', 'reg-email', 'reg-pwd'].forEach(id => {
+        document.getElementById(id).value = '';
       });
-      showMsg('register-msg', 'Cadastro realizado com sucesso!', 'success');
+
     } catch(e) {
-      let msg = 'Erro ao cadastrar.';
-      if (e.code === 'auth/email-already-in-use') msg = 'E-mail já cadastrado.';
-      if (e.code === 'auth/invalid-email') msg = 'E-mail inválido.';
-      if (e.code === 'auth/weak-password') msg = 'Senha muito fraca.';
+      let msg = 'Erro ao cadastrar. Tente novamente.';
+      if (e.code === 'auth/email-already-in-use') msg = 'Este e-mail já está cadastrado.';
+      if (e.code === 'auth/invalid-email')        msg = 'E-mail inválido.';
+      if (e.code === 'auth/weak-password')        msg = 'Senha muito fraca. Use ao menos 6 caracteres.';
+      if (e.code === 'auth/network-request-failed') msg = 'Erro de conexão. Verifique sua internet.';
       showMsg('register-msg', msg, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Criar Conta';
     }
   }
 
-  // ===== LOGOUT — corrigido =====
+  // ===== LOGOUT =====
   document.getElementById('btn-logout').addEventListener('click', async function() {
     try {
       closeSindico();
@@ -1962,7 +2004,6 @@
     if (!data.titulo) return showSMsg('msg-hero', 'Preencha ao menos o título.', 'error');
     try {
       await window._set(window._ref(window._db, 'config/hero'), data);
-      // Atualizar preview
       document.getElementById('prev-titulo').textContent = data.titulo;
       document.getElementById('prev-subtitulo').textContent = data.subtitulo;
       document.getElementById('hero-preview-box').style.display = 'block';
