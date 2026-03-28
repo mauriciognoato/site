@@ -18,12 +18,16 @@
       --branco: #FFFFFF;
       --borda: #E0D4C0;
       --texto: #17232F;
+      --verde: #27ae60;
+      --vermelho: #c0392b;
+      --amarelo: #f39c12;
+      --azul-info: #1976d2;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Montserrat', Roboto;
       background: var(--fundo);
       color: var(--texto);
       min-height: 100vh;
@@ -61,16 +65,6 @@
       padding: 36px 40px 28px;
       text-align: center;
       border-bottom: 3px solid var(--dourado);
-    }
-
-    .auth-logo {
-      width: 90px;
-      height: 90px;
-      object-fit: contain;
-      margin-bottom: 16px;
-      border-radius: 50%;
-      background: var(--fundo);
-      padding: 8px;
     }
 
     .auth-logo-fallback {
@@ -245,16 +239,6 @@
       text-decoration: none;
     }
 
-    .brand-logo {
-      width: 44px;
-      height: 44px;
-      object-fit: contain;
-      background: var(--fundo);
-      border-radius: 50%;
-      padding: 4px;
-      border: 2px solid var(--dourado);
-    }
-
     .brand-logo-fb {
       width: 44px;
       height: 44px;
@@ -270,11 +254,7 @@
       color: var(--azul);
     }
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-    }
-
+    .brand-text { display: flex; flex-direction: column; }
     .brand-name {
       font-family: 'Cormorant Garamond', serif;
       color: var(--branco);
@@ -283,7 +263,6 @@
       letter-spacing: 0.03em;
       line-height: 1.2;
     }
-
     .brand-sub {
       color: var(--dourado);
       font-size: 0.62rem;
@@ -292,7 +271,6 @@
     }
 
     nav { display: flex; align-items: center; gap: 4px; }
-
     nav a {
       color: rgba(255,255,255,0.8);
       text-decoration: none;
@@ -305,6 +283,24 @@
       transition: all 0.2s;
     }
     nav a:hover { color: var(--dourado); background: rgba(255,255,255,0.05); }
+
+    .btn-sindico-nav {
+      margin-left: 4px;
+      padding: 8px 14px;
+      background: var(--dourado);
+      color: var(--azul-escuro);
+      border: none;
+      border-radius: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sindico-nav:hover { background: var(--dourado-hover); }
+    .btn-sindico-nav.hidden { display: none; }
 
     .btn-logout {
       margin-left: 8px;
@@ -341,6 +337,26 @@
       transition: all 0.3s;
     }
 
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.78rem;
+    }
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      background: var(--dourado);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--azul);
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
     /* HERO */
     .hero {
       background: linear-gradient(160deg, var(--azul) 0%, var(--azul-escuro) 100%);
@@ -349,16 +365,13 @@
       position: relative;
       overflow: hidden;
     }
-
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
       background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4A776' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
-
     .hero-content { position: relative; max-width: 700px; margin: 0 auto; }
-
     .hero-badge {
       display: inline-block;
       background: rgba(196,167,118,0.2);
@@ -371,7 +384,6 @@
       border-radius: 100px;
       margin-bottom: 24px;
     }
-
     .hero h1 {
       font-family: 'Cormorant Garamond', serif;
       color: var(--branco);
@@ -380,18 +392,14 @@
       line-height: 1.2;
       margin-bottom: 16px;
     }
-
     .hero h1 em { color: var(--dourado); font-style: italic; }
-
     .hero p {
       color: rgba(255,255,255,0.7);
       font-size: 1rem;
       line-height: 1.8;
       margin-bottom: 32px;
     }
-
     .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
     .btn-gold {
       padding: 14px 28px;
       background: var(--dourado);
@@ -406,9 +414,9 @@
       cursor: pointer;
       text-decoration: none;
       transition: all 0.2s;
+      display: inline-block;
     }
     .btn-gold:hover { background: var(--dourado-hover); transform: translateY(-2px); }
-
     .btn-outline-white {
       padding: 14px 28px;
       background: transparent;
@@ -423,15 +431,12 @@
       cursor: pointer;
       text-decoration: none;
       transition: all 0.2s;
+      display: inline-block;
     }
     .btn-outline-white:hover { border-color: var(--branco); background: rgba(255,255,255,0.08); }
 
     /* STATS BAR */
-    .stats-bar {
-      background: var(--branco);
-      border-bottom: 3px solid var(--dourado);
-    }
-
+    .stats-bar { background: var(--branco); border-bottom: 3px solid var(--dourado); }
     .stats-inner {
       max-width: 1200px;
       margin: 0 auto;
@@ -439,21 +444,18 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
     }
-
     .stat-item {
       padding: 24px 20px;
       text-align: center;
       border-right: 1px solid var(--borda);
     }
     .stat-item:last-child { border-right: none; }
-
     .stat-number {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2rem;
       font-weight: 700;
       color: var(--azul);
     }
-
     .stat-label {
       font-size: 0.72rem;
       letter-spacing: 0.1em;
@@ -464,11 +466,8 @@
 
     /* SECTIONS */
     section { padding: 72px 24px; }
-
     .section-inner { max-width: 1200px; margin: 0 auto; }
-
     .section-header { text-align: center; margin-bottom: 52px; }
-
     .section-tag {
       display: inline-block;
       color: var(--dourado);
@@ -478,7 +477,6 @@
       font-weight: 600;
       margin-bottom: 12px;
     }
-
     .section-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -487,7 +485,6 @@
       line-height: 1.2;
       margin-bottom: 16px;
     }
-
     .section-divider {
       width: 60px;
       height: 3px;
@@ -495,7 +492,6 @@
       margin: 16px auto 0;
       border-radius: 2px;
     }
-
     .section-subtitle {
       color: #666;
       font-size: 0.92rem;
@@ -503,18 +499,15 @@
       max-width: 580px;
       margin: 16px auto 0;
     }
-
-    /* BG alternado */
     section:nth-child(even) { background: var(--branco); }
 
-    /* FINANCEIRO */
+    /* FINANCE */
     .finance-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
       margin-bottom: 40px;
     }
-
     .finance-card {
       background: var(--fundo);
       border: 1px solid var(--borda);
@@ -522,9 +515,7 @@
       padding: 28px;
       transition: transform 0.2s, box-shadow 0.2s;
     }
-
     .finance-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(31,49,64,0.12); }
-
     .finance-card-icon {
       width: 48px;
       height: 48px;
@@ -536,446 +527,405 @@
       margin-bottom: 18px;
       font-size: 1.4rem;
     }
+    .finance-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--azul); margin-bottom: 6px; }
+    .finance-card .amount { font-size: 1.8rem; font-weight: 700; color: var(--azul); font-family: 'Cormorant Garamond', serif; }
+    .finance-card .amount.positive { color: var(--verde); }
+    .finance-card .amount.negative { color: var(--vermelho); }
+    .finance-card p { font-size: 0.82rem; color: #888; margin-top: 4px; }
+    .progress-bar { margin-top: 12px; background: var(--borda); border-radius: 100px; height: 6px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 100px; background: var(--dourado); transition: width 1s ease; }
 
-    .finance-card h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
-      color: var(--azul);
-      margin-bottom: 6px;
+    /* TABLE */
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--borda); }
+    table { width: 100%; border-collapse: collapse; background: var(--branco); }
+    thead { background: var(--azul); color: var(--branco); }
+    th { padding: 14px 18px; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: left; font-weight: 600; }
+    td { padding: 14px 18px; font-size: 0.88rem; border-bottom: 1px solid var(--borda); color: var(--texto); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: var(--fundo); }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 100px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; }
+    .badge-green { background: #e8f5e9; color: var(--verde); }
+    .badge-yellow { background: #fff8e1; color: var(--amarelo); }
+    .badge-red { background: #fde8e8; color: var(--vermelho); }
+    .badge-blue { background: #e3f2fd; color: var(--azul-info); }
+
+    /* POLLS */
+    .polls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .poll-card { background: var(--fundo); border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; }
+    .poll-header { background: var(--azul); padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; }
+    .poll-header h3 { color: var(--branco); font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; }
+    .poll-header .poll-status { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dourado); font-weight: 600; }
+    .poll-body { padding: 22px; }
+    .poll-question { font-size: 0.88rem; color: var(--texto); margin-bottom: 18px; line-height: 1.6; font-weight: 500; }
+    .poll-option { margin-bottom: 10px; }
+    .poll-option label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.85rem; }
+    .poll-option input[type="radio"] { accent-color: var(--azul); }
+    .poll-bar-wrap { margin-top: 6px; background: var(--borda); border-radius: 100px; height: 5px; overflow: hidden; }
+    .poll-bar-fill { height: 100%; background: var(--dourado); border-radius: 100px; }
+    .poll-pct { font-size: 0.72rem; color: #888; text-align: right; margin-top: 2px; }
+    .poll-footer { padding: 14px 22px; border-top: 1px solid var(--borda); display: flex; align-items: center; justify-content: space-between; }
+    .poll-votes { font-size: 0.78rem; color: #888; }
+    .btn-sm { padding: 8px 18px; background: var(--azul); color: var(--branco); border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+    .btn-sm:hover { background: #254057; }
+
+    /* PROJECTS */
+    .projects-timeline { position: relative; padding-left: 40px; }
+    .projects-timeline::before { content: ''; position: absolute; left: 14px; top: 0; bottom: 0; width: 2px; background: var(--borda); }
+    .project-item { position: relative; padding: 0 0 36px 28px; }
+    .project-dot { position: absolute; left: -32px; top: 4px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid var(--branco); box-shadow: 0 0 0 2px var(--dourado); }
+    .project-dot.done { background: var(--verde); }
+    .project-dot.progress { background: var(--dourado); }
+    .project-dot.planned { background: var(--borda); }
+    .project-date { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dourado); font-weight: 600; margin-bottom: 6px; }
+    .project-item h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--azul); margin-bottom: 6px; }
+    .project-item p { font-size: 0.85rem; color: #666; line-height: 1.6; }
+    .project-item .badge { margin-top: 8px; }
+
+    /* NOTICES */
+    .notices-list { display: flex; flex-direction: column; gap: 16px; }
+    .notice-card { background: var(--branco); border: 1px solid var(--borda); border-left: 4px solid var(--dourado); border-radius: 0 12px 12px 0; padding: 20px 24px; display: flex; align-items: flex-start; gap: 18px; transition: transform 0.2s; }
+    .notice-card:hover { transform: translateX(4px); }
+    .notice-icon { width: 42px; height: 42px; background: var(--fundo); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; border: 1px solid var(--borda); }
+    .notice-content h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--azul); margin-bottom: 4px; }
+    .notice-content p { font-size: 0.83rem; color: #666; line-height: 1.6; }
+    .notice-content .notice-date { font-size: 0.72rem; color: #aaa; margin-top: 6px; letter-spacing: 0.06em; }
+
+    /* CONTACT */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .contact-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--azul); margin-bottom: 20px; }
+    .contact-detail { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+    .contact-detail-icon { width: 40px; height: 40px; background: var(--azul); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .contact-detail-text strong { display: block; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--azul); margin-bottom: 3px; }
+    .contact-detail-text span { font-size: 0.88rem; color: #555; }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .contact-form input, .contact-form textarea {
+      padding: 13px 16px; border: 1.5px solid var(--borda); border-radius: 8px; background: var(--branco);
+      font-family: 'Montserrat', sans-serif; font-size: 0.88rem; color: var(--texto); outline: none; transition: border-color 0.2s; resize: vertical;
+    }
+    .contact-form input:focus, .contact-form textarea:focus { border-color: var(--dourado); }
+
+    /* FOOTER */
+    footer { background: var(--azul-escuro); color: rgba(255,255,255,0.6); padding: 48px 24px 24px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 28px; }
+    .footer-brand h2 { font-family: 'Cormorant Garamond', serif; color: var(--branco); font-size: 1.3rem; margin-bottom: 8px; }
+    .footer-brand p { font-size: 0.83rem; line-height: 1.7; }
+    .footer-col h4 { color: var(--dourado); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 16px; }
+    .footer-col a { display: block; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.83rem; margin-bottom: 9px; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--dourado); }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom p { font-size: 0.78rem; }
+    .footer-bottom span { color: var(--dourado); }
+
+    /* ===================== PAINEL DO SÍNDICO ===================== */
+    #sindico-panel {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      background: rgba(23,35,47,0.96);
+      backdrop-filter: blur(4px);
+      overflow-y: auto;
     }
 
-    .finance-card .amount {
-      font-size: 1.8rem;
+    .sindico-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+    }
+
+    .sindico-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid rgba(196,167,118,0.3);
+    }
+
+    .sindico-topbar-left h2 {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--branco);
+      font-size: 2rem;
       font-weight: 700;
-      color: var(--azul);
-      font-family: 'Cormorant Garamond', serif;
     }
 
-    .finance-card .amount.positive { color: #27ae60; }
-    .finance-card .amount.negative { color: #c0392b; }
-
-    .finance-card p {
-      font-size: 0.82rem;
-      color: #888;
+    .sindico-topbar-left p {
+      color: var(--dourado);
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       margin-top: 4px;
     }
 
-    .progress-bar {
-      margin-top: 12px;
-      background: var(--borda);
-      border-radius: 100px;
-      height: 6px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      border-radius: 100px;
-      background: var(--dourado);
-      transition: width 1s ease;
-    }
-
-    /* DESPESAS TABLE */
-    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--borda); }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--branco);
-    }
-
-    thead {
-      background: var(--azul);
-      color: var(--branco);
-    }
-
-    th {
-      padding: 14px 18px;
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
+    .btn-fechar-sindico {
+      padding: 10px 20px;
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.7);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-fechar-sindico:hover { border-color: var(--dourado); color: var(--dourado); }
+
+    /* Tabs do síndico */
+    .sindico-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 32px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 6px;
+      flex-wrap: wrap;
+    }
+
+    .sindico-tab {
+      flex: 1;
+      min-width: 120px;
+      padding: 10px 14px;
+      background: transparent;
+      border: none;
+      border-radius: 7px;
+      color: rgba(255,255,255,0.5);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
       font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .sindico-tab:hover { color: rgba(255,255,255,0.8); }
+    .sindico-tab.active { background: var(--azul); color: var(--dourado); }
+
+    .sindico-section { display: none; }
+    .sindico-section.active { display: block; }
+
+    /* Cards do painel */
+    .s-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 28px;
+      margin-bottom: 20px;
     }
 
-    td {
-      padding: 14px 18px;
-      font-size: 0.88rem;
-      border-bottom: 1px solid var(--borda);
-      color: var(--texto);
-    }
-
-    tr:last-child td { border-bottom: none; }
-    tr:nth-child(even) td { background: var(--fundo); }
-
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 100px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-    }
-
-    .badge-green { background: #e8f5e9; color: #27ae60; }
-    .badge-yellow { background: #fff8e1; color: #f39c12; }
-    .badge-red { background: #fde8e8; color: #c0392b; }
-    .badge-blue { background: #e3f2fd; color: #1976d2; }
-
-    /* ENQUETES */
-    .polls-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-    }
-
-    .poll-card {
-      background: var(--fundo);
-      border: 1px solid var(--borda);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .poll-header {
-      background: var(--azul);
-      padding: 18px 22px;
+    .s-card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
-    .poll-header h3 {
-      color: var(--branco);
+    .s-card-header h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
+      color: var(--branco);
+      font-size: 1.3rem;
     }
 
-    .poll-header .poll-status {
-      font-size: 0.68rem;
+    .s-card-header p {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      margin-top: 3px;
+    }
+
+    /* Form síndico */
+    .s-form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .s-form-group { margin-bottom: 4px; }
+
+    .s-form-group label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--dourado);
+      margin-bottom: 8px;
+    }
+
+    .s-form-group input,
+    .s-form-group textarea,
+    .s-form-group select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      color: var(--branco);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+    }
+    .s-form-group input::placeholder,
+    .s-form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+    .s-form-group input:focus,
+    .s-form-group textarea:focus,
+    .s-form-group select:focus { border-color: var(--dourado); }
+    .s-form-group select option { background: var(--azul-escuro); color: var(--branco); }
+
+    .s-form-full { grid-column: 1 / -1; }
+
+    .btn-save {
+      padding: 12px 28px;
+      background: var(--dourado);
+      color: var(--azul-escuro);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 12px;
+    }
+    .btn-save:hover { background: var(--dourado-hover); transform: translateY(-1px); }
+    .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .btn-danger {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid rgba(192,57,43,0.5);
+      color: #e74c3c;
+      border-radius: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
       font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-danger:hover { background: rgba(192,57,43,0.15); }
+
+    .s-msg {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      display: none;
+    }
+    .s-msg.success { background: rgba(39,174,96,0.2); color: #2ecc71; border: 1px solid rgba(39,174,96,0.3); display: block; }
+    .s-msg.error { background: rgba(192,57,43,0.2); color: #e74c3c; border: 1px solid rgba(192,57,43,0.3); display: block; }
+
+    /* Lista de itens existentes no painel */
+    .s-list { margin-top: 20px; }
+    .s-list-item {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      transition: background 0.2s;
+    }
+    .s-list-item:hover { background: rgba(255,255,255,0.06); }
+    .s-list-item-info { flex: 1; }
+    .s-list-item-info strong { color: var(--branco); font-size: 0.88rem; display: block; margin-bottom: 3px; }
+    .s-list-item-info span { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
+    .s-list-item-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+    /* Stats síndico */
+    .s-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .s-stat-card {
+      background: rgba(196,167,118,0.08);
+      border: 1px solid rgba(196,167,118,0.2);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    .s-stat-card .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--dourado);
+    }
+    .s-stat-card .lbl {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
     }
 
-    .poll-body { padding: 22px; }
-
-    .poll-question {
-      font-size: 0.88rem;
-      color: var(--texto);
-      margin-bottom: 18px;
-      line-height: 1.6;
-      font-weight: 500;
+    /* Contatos recebidos */
+    .s-contact-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin-bottom: 12px;
     }
+    .s-contact-item .s-contact-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .s-contact-item .s-contact-meta strong { color: var(--dourado); font-size: 0.88rem; }
+    .s-contact-item .s-contact-meta span { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
+    .s-contact-item .s-contact-subject { color: var(--branco); font-weight: 600; font-size: 0.88rem; margin-bottom: 6px; }
+    .s-contact-item .s-contact-msg { color: rgba(255,255,255,0.6); font-size: 0.82rem; line-height: 1.6; }
 
-    .poll-option {
+    /* Enquete no painel */
+    .poll-option-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
       margin-bottom: 10px;
     }
-
-    .poll-option label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      font-size: 0.85rem;
+    .poll-option-row input {
+      flex: 1;
     }
-
-    .poll-option input[type="radio"] { accent-color: var(--azul); }
-
-    .poll-bar-wrap {
-      margin-top: 6px;
-      background: var(--borda);
-      border-radius: 100px;
-      height: 5px;
-      overflow: hidden;
-    }
-
-    .poll-bar-fill {
-      height: 100%;
-      background: var(--dourado);
-      border-radius: 100px;
-    }
-
-    .poll-pct {
-      font-size: 0.72rem;
-      color: #888;
-      text-align: right;
-      margin-top: 2px;
-    }
-
-    .poll-footer {
-      padding: 14px 22px;
-      border-top: 1px solid var(--borda);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .poll-votes { font-size: 0.78rem; color: #888; }
-
-    .btn-sm {
-      padding: 8px 18px;
-      background: var(--azul);
-      color: var(--branco);
-      border: none;
+    .btn-add-opt {
+      padding: 8px 14px;
+      background: rgba(196,167,118,0.15);
+      border: 1px dashed rgba(196,167,118,0.4);
+      color: var(--dourado);
       border-radius: 6px;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.06em;
-      text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s;
+      margin-top: 4px;
     }
-    .btn-sm:hover { background: #254057; }
-
-    /* PROJETOS */
-    .projects-timeline { position: relative; padding-left: 40px; }
-    .projects-timeline::before {
-      content: '';
-      position: absolute;
-      left: 14px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: var(--borda);
-    }
-
-    .project-item {
-      position: relative;
-      padding: 0 0 36px 28px;
-    }
-
-    .project-dot {
-      position: absolute;
-      left: -32px;
-      top: 4px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 3px solid var(--branco);
-      box-shadow: 0 0 0 2px var(--dourado);
-    }
-
-    .project-dot.done { background: #27ae60; }
-    .project-dot.progress { background: var(--dourado); }
-    .project-dot.planned { background: var(--borda); }
-
-    .project-date {
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--dourado);
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .project-item h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      color: var(--azul);
-      margin-bottom: 6px;
-    }
-
-    .project-item p {
-      font-size: 0.85rem;
-      color: #666;
-      line-height: 1.6;
-    }
-
-    .project-item .badge { margin-top: 8px; }
-
-    /* COMUNICADOS */
-    .notices-list { display: flex; flex-direction: column; gap: 16px; }
-
-    .notice-card {
-      background: var(--branco);
-      border: 1px solid var(--borda);
-      border-left: 4px solid var(--dourado);
-      border-radius: 0 12px 12px 0;
-      padding: 20px 24px;
-      display: flex;
-      align-items: flex-start;
-      gap: 18px;
-      transition: transform 0.2s;
-    }
-
-    .notice-card:hover { transform: translateX(4px); }
-
-    .notice-icon {
-      width: 42px;
-      height: 42px;
-      background: var(--fundo);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-      border: 1px solid var(--borda);
-    }
-
-    .notice-content h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
-      color: var(--azul);
-      margin-bottom: 4px;
-    }
-
-    .notice-content p {
-      font-size: 0.83rem;
-      color: #666;
-      line-height: 1.6;
-    }
-
-    .notice-content .notice-date {
-      font-size: 0.72rem;
-      color: #aaa;
-      margin-top: 6px;
-      letter-spacing: 0.06em;
-    }
-
-    /* CONTATO */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: start;
-    }
-
-    .contact-info h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
-      color: var(--azul);
-      margin-bottom: 20px;
-    }
-
-    .contact-detail {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .contact-detail-icon {
-      width: 40px;
-      height: 40px;
-      background: var(--azul);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-
-    .contact-detail-text strong {
-      display: block;
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--azul);
-      margin-bottom: 3px;
-    }
-
-    .contact-detail-text span {
-      font-size: 0.88rem;
-      color: #555;
-    }
-
-    .contact-form { display: flex; flex-direction: column; gap: 16px; }
-
-    .contact-form input,
-    .contact-form textarea {
-      padding: 13px 16px;
-      border: 1.5px solid var(--borda);
-      border-radius: 8px;
-      background: var(--branco);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.88rem;
-      color: var(--texto);
-      outline: none;
-      transition: border-color 0.2s;
-      resize: vertical;
-    }
-
-    .contact-form input:focus,
-    .contact-form textarea:focus { border-color: var(--dourado); }
-
-    /* FOOTER */
-    footer {
-      background: var(--azul-escuro);
-      color: rgba(255,255,255,0.6);
-      padding: 48px 24px 24px;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .footer-top {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 48px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      margin-bottom: 28px;
-    }
-
-    .footer-brand h2 {
-      font-family: 'Cormorant Garamond', serif;
-      color: var(--branco);
-      font-size: 1.3rem;
-      margin-bottom: 8px;
-    }
-
-    .footer-brand p {
-      font-size: 0.83rem;
-      line-height: 1.7;
-    }
-
-    .footer-col h4 {
-      color: var(--dourado);
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
-
-    .footer-col a {
-      display: block;
-      color: rgba(255,255,255,0.6);
-      text-decoration: none;
-      font-size: 0.83rem;
-      margin-bottom: 9px;
-      transition: color 0.2s;
-    }
-    .footer-col a:hover { color: var(--dourado); }
-
-    .footer-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .footer-bottom p { font-size: 0.78rem; }
-
-    .footer-bottom span { color: var(--dourado); }
+    .btn-add-opt:hover { background: rgba(196,167,118,0.25); }
 
     /* MOBILE */
     @media (max-width: 768px) {
       .hamburger { display: flex; }
-
       nav {
         display: none;
         position: absolute;
-        top: 70px;
-        left: 0;
-        right: 0;
+        top: 70px; left: 0; right: 0;
         background: var(--azul-escuro);
         flex-direction: column;
         padding: 16px 24px;
@@ -984,48 +934,19 @@
       }
       nav.open { display: flex; }
       nav a { padding: 10px 12px; }
-
       .stats-inner { grid-template-columns: repeat(2, 1fr); }
       .stat-item { border-right: none; border-bottom: 1px solid var(--borda); }
       .stat-item:nth-child(odd) { border-right: 1px solid var(--borda); }
       .stat-item:last-child { border-bottom: none; }
-
       .contact-grid { grid-template-columns: 1fr; gap: 32px; }
-
       .footer-top { grid-template-columns: 1fr; gap: 28px; }
-
       .auth-body { padding: 24px; }
       .auth-header { padding: 28px 24px 22px; }
+      .sindico-topbar { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .s-form-grid { grid-template-columns: 1fr; }
     }
 
-    @media (max-width: 480px) {
-      .stats-inner { grid-template-columns: 1fr 1fr; }
-    }
-
-    /* SCROLL suave */
     html { scroll-behavior: smooth; }
-
-    /* Usuário logado info */
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: rgba(255,255,255,0.7);
-      font-size: 0.78rem;
-    }
-
-    .user-avatar {
-      width: 32px;
-      height: 32px;
-      background: var(--dourado);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--azul);
-      font-weight: 700;
-      font-size: 0.8rem;
-    }
   </style>
 </head>
 <body>
@@ -1043,7 +964,6 @@
       <button class="auth-tab" onclick="switchTab('register')">Cadastrar</button>
     </div>
     <div class="auth-body">
-      <!-- LOGIN -->
       <div class="auth-panel active" id="panel-login">
         <div class="form-group">
           <label>E-mail</label>
@@ -1058,7 +978,6 @@
         <button class="btn-primary" style="background:var(--dourado);color:var(--azul);" onclick="switchTab('register')">Criar Conta</button>
         <div class="auth-msg" id="login-msg"></div>
       </div>
-      <!-- REGISTER -->
       <div class="auth-panel" id="panel-register">
         <div class="form-group">
           <label>Nome Completo</label>
@@ -1086,7 +1005,6 @@
 <!-- ===================== SITE PRINCIPAL ===================== -->
 <div id="main-site">
 
-  <!-- HEADER -->
   <header>
     <div class="header-inner">
       <a href="#" class="brand">
@@ -1096,7 +1014,6 @@
           <span class="brand-sub">Condomínio Residencial</span>
         </div>
       </a>
-
       <nav id="main-nav">
         <a href="#financeiro">Financeiro</a>
         <a href="#projetos">Projetos</a>
@@ -1107,9 +1024,9 @@
           <div class="user-avatar" id="user-avatar">?</div>
           <span id="user-name-header">Condômino</span>
         </div>
+        <button class="btn-sindico-nav hidden" id="btn-sindico-nav" onclick="openSindico()">⚙ Síndico</button>
         <button class="btn-logout" onclick="doLogout()">Sair</button>
       </nav>
-
       <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -1133,25 +1050,25 @@
   <div class="stats-bar">
     <div class="stats-inner">
       <div class="stat-item">
-        <div class="stat-number">142</div>
+        <div class="stat-number" id="stat-unidades">142</div>
         <div class="stat-label">Unidades</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">R$ 284k</div>
+        <div class="stat-number" id="stat-fundo">R$ 284k</div>
         <div class="stat-label">Fundo de Reserva</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">98%</div>
+        <div class="stat-number" id="stat-adimplencia">98%</div>
         <div class="stat-label">Adimplência</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">12</div>
+        <div class="stat-number" id="stat-projetos">12</div>
         <div class="stat-label">Projetos em 2025</div>
       </div>
     </div>
   </div>
 
-  <!-- ====== FINANCEIRO ====== -->
+  <!-- FINANCEIRO -->
   <section id="financeiro">
     <div class="section-inner">
       <div class="section-header">
@@ -1160,113 +1077,57 @@
         <div class="section-divider"></div>
         <p class="section-subtitle">Todas as receitas e despesas do condomínio com total clareza. Atualizado mensalmente pela administração.</p>
       </div>
-
-      <div class="finance-grid">
+      <div class="finance-grid" id="finance-cards">
         <div class="finance-card">
           <div class="finance-card-icon">💰</div>
           <h3>Receitas do Mês</h3>
-          <div class="amount positive">R$ 48.320,00</div>
-          <p>Março / 2025</p>
+          <div class="amount positive" id="fc-receitas">R$ 48.320,00</div>
+          <p id="fc-mes">Março / 2025</p>
           <div class="progress-bar"><div class="progress-fill" style="width:94%"></div></div>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">📊</div>
           <h3>Despesas do Mês</h3>
-          <div class="amount negative">R$ 41.750,00</div>
+          <div class="amount negative" id="fc-despesas">R$ 41.750,00</div>
           <p>Março / 2025</p>
           <div class="progress-bar"><div class="progress-fill" style="width:86%"></div></div>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">📈</div>
           <h3>Saldo Positivo</h3>
-          <div class="amount">R$ 6.570,00</div>
+          <div class="amount" id="fc-saldo">R$ 6.570,00</div>
           <p>Superávit do período</p>
-          <div class="progress-bar"><div class="progress-fill" style="width:60%; background:#27ae60"></div></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:60%; background:var(--verde)"></div></div>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">🏦</div>
           <h3>Fundo de Reserva</h3>
-          <div class="amount">R$ 284.900,00</div>
+          <div class="amount" id="fc-fundo">R$ 284.900,00</div>
           <p>Saldo acumulado</p>
-          <div class="progress-bar"><div class="progress-fill" style="width:75%; background:#1976d2"></div></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:75%; background:var(--azul-info)"></div></div>
         </div>
       </div>
-
       <div class="table-wrap">
         <table>
           <thead>
-            <tr>
-              <th>Descrição</th>
-              <th>Categoria</th>
-              <th>Data</th>
-              <th>Valor</th>
-              <th>Status</th>
-            </tr>
+            <tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Taxa de Condomínio — Março</td>
-              <td>Receita</td>
-              <td>05/03/2025</td>
-              <td style="color:#27ae60;font-weight:600">+ R$ 45.000,00</td>
-              <td><span class="badge badge-green">Recebido</span></td>
-            </tr>
-            <tr>
-              <td>Energia Elétrica — Áreas Comuns</td>
-              <td>Despesa</td>
-              <td>12/03/2025</td>
-              <td style="color:#c0392b;font-weight:600">- R$ 8.430,00</td>
-              <td><span class="badge badge-green">Pago</span></td>
-            </tr>
-            <tr>
-              <td>Empresa de Limpeza — Março</td>
-              <td>Despesa</td>
-              <td>15/03/2025</td>
-              <td style="color:#c0392b;font-weight:600">- R$ 12.500,00</td>
-              <td><span class="badge badge-green">Pago</span></td>
-            </tr>
-            <tr>
-              <td>Manutenção Elevadores</td>
-              <td>Despesa</td>
-              <td>18/03/2025</td>
-              <td style="color:#c0392b;font-weight:600">- R$ 4.200,00</td>
-              <td><span class="badge badge-green">Pago</span></td>
-            </tr>
-            <tr>
-              <td>Segurança / Portaria</td>
-              <td>Despesa</td>
-              <td>20/03/2025</td>
-              <td style="color:#c0392b;font-weight:600">- R$ 14.600,00</td>
-              <td><span class="badge badge-green">Pago</span></td>
-            </tr>
-            <tr>
-              <td>Internet e TV — Condomínio</td>
-              <td>Despesa</td>
-              <td>22/03/2025</td>
-              <td style="color:#c0392b;font-weight:600">- R$ 890,00</td>
-              <td><span class="badge badge-green">Pago</span></td>
-            </tr>
-            <tr>
-              <td>Reforma Piscina — Parcela 2/6</td>
-              <td>Obra</td>
-              <td>25/03/2025</td>
-              <td style="color:#c0392b;font-weight:600">- R$ 5.200,00</td>
-              <td><span class="badge badge-yellow">Pendente</span></td>
-            </tr>
-            <tr>
-              <td>Receita — Aluguel Salão de Festas</td>
-              <td>Receita</td>
-              <td>28/03/2025</td>
-              <td style="color:#27ae60;font-weight:600">+ R$ 3.320,00</td>
-              <td><span class="badge badge-green">Recebido</span></td>
-            </tr>
+          <tbody id="finance-tbody">
+            <tr><td>Taxa de Condomínio — Março</td><td>Receita</td><td>05/03/2025</td><td style="color:var(--verde);font-weight:600">+ R$ 45.000,00</td><td><span class="badge badge-green">Recebido</span></td></tr>
+            <tr><td>Energia Elétrica — Áreas Comuns</td><td>Despesa</td><td>12/03/2025</td><td style="color:var(--vermelho);font-weight:600">- R$ 8.430,00</td><td><span class="badge badge-green">Pago</span></td></tr>
+            <tr><td>Empresa de Limpeza — Março</td><td>Despesa</td><td>15/03/2025</td><td style="color:var(--vermelho);font-weight:600">- R$ 12.500,00</td><td><span class="badge badge-green">Pago</span></td></tr>
+            <tr><td>Manutenção Elevadores</td><td>Despesa</td><td>18/03/2025</td><td style="color:var(--vermelho);font-weight:600">- R$ 4.200,00</td><td><span class="badge badge-green">Pago</span></td></tr>
+            <tr><td>Segurança / Portaria</td><td>Despesa</td><td>20/03/2025</td><td style="color:var(--vermelho);font-weight:600">- R$ 14.600,00</td><td><span class="badge badge-green">Pago</span></td></tr>
+            <tr><td>Internet e TV — Condomínio</td><td>Despesa</td><td>22/03/2025</td><td style="color:var(--vermelho);font-weight:600">- R$ 890,00</td><td><span class="badge badge-green">Pago</span></td></tr>
+            <tr><td>Reforma Piscina — Parcela 2/6</td><td>Obra</td><td>25/03/2025</td><td style="color:var(--vermelho);font-weight:600">- R$ 5.200,00</td><td><span class="badge badge-yellow">Pendente</span></td></tr>
+            <tr><td>Receita — Aluguel Salão de Festas</td><td>Receita</td><td>28/03/2025</td><td style="color:var(--verde);font-weight:600">+ R$ 3.320,00</td><td><span class="badge badge-green">Recebido</span></td></tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
 
-  <!-- ====== PROJETOS ====== -->
+  <!-- PROJETOS -->
   <section id="projetos">
     <div class="section-inner">
       <div class="section-header">
@@ -1275,8 +1136,8 @@
         <div class="section-divider"></div>
         <p class="section-subtitle">Acompanhe o progresso de todas as obras e iniciativas do condomínio.</p>
       </div>
-
-      <div class="projects-timeline">
+      <div class="projects-timeline" id="projects-timeline">
+        <!-- carregado dinamicamente -->
         <div class="project-item">
           <div class="project-dot done"></div>
           <div class="project-date">Janeiro 2025 — Concluído</div>
@@ -1284,7 +1145,6 @@
           <p>Renovação completa da pintura externa dos blocos A e B, com impermeabilização de fissuras e aplicação de tinta texturizada de alta durabilidade.</p>
           <span class="badge badge-green">✓ Concluído</span>
         </div>
-
         <div class="project-item">
           <div class="project-dot done"></div>
           <div class="project-date">Fevereiro 2025 — Concluído</div>
@@ -1292,175 +1152,60 @@
           <p>Substituição de todas as luminárias dos jardins por LED de alta eficiência, gerando economia de 40% no consumo energético das áreas externas.</p>
           <span class="badge badge-green">✓ Concluído</span>
         </div>
-
         <div class="project-item">
           <div class="project-dot progress"></div>
           <div class="project-date">Março – Junho 2025 — Em andamento</div>
           <h3>Reforma da Piscina e Área de Lazer</h3>
-          <p>Revitalização completa da piscina adulto e infantil, incluindo novo revestimento, sistema de filtragem, deck de madeira e mobiliário. Investimento total: R$ 31.200,00.</p>
+          <p>Revitalização completa da piscina adulto e infantil, incluindo novo revestimento, sistema de filtragem, deck de madeira e mobiliário.</p>
           <span class="badge badge-yellow">⏳ Em andamento — 35%</span>
         </div>
-
-        <div class="project-item">
-          <div class="project-dot progress"></div>
-          <div class="project-date">Abril 2025 — Em andamento</div>
-          <h3>Câmeras de Segurança — Sistema CFTV</h3>
-          <p>Atualização para câmeras de alta resolução 4K com armazenamento em nuvem criptografado. Cobertura de 100% das áreas comuns e garagens.</p>
-          <span class="badge badge-blue">📡 Instalação em progresso</span>
-        </div>
-
         <div class="project-item">
           <div class="project-dot planned"></div>
           <div class="project-date">Julho 2025 — Planejado</div>
           <h3>Espaço Coworking e Academia</h3>
-          <p>Conversão do salão multiuso em um espaço moderno com área de coworking, academia equipada e sala de jogos para todos os condôminos.</p>
+          <p>Conversão do salão multiuso em um espaço moderno com área de coworking, academia equipada e sala de jogos.</p>
           <span class="badge badge-blue">📋 Em planejamento</span>
-        </div>
-
-        <div class="project-item">
-          <div class="project-dot planned"></div>
-          <div class="project-date">Setembro 2025 — Planejado</div>
-          <h3>Impermeabilização das Coberturas</h3>
-          <p>Manutenção preventiva das lajes de cobertura de todos os blocos, evitando infiltrações e prolongando a vida útil da estrutura.</p>
-          <span class="badge badge-blue">📋 Em orçamento</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ====== ENQUETES ====== -->
+  <!-- ENQUETES -->
   <section id="enquetes">
     <div class="section-inner">
       <div class="section-header">
         <span class="section-tag">✦ Participação dos Condôminos</span>
         <h2 class="section-title">Enquetes Ativas</h2>
         <div class="section-divider"></div>
-        <p class="section-subtitle">Vote e opine sobre os temas mais relevantes para a comunidade. Sua participação faz a diferença.</p>
+        <p class="section-subtitle">Vote e opine sobre os temas mais relevantes para a comunidade.</p>
       </div>
-
-      <div class="polls-grid">
-
+      <div class="polls-grid" id="polls-grid">
+        <!-- enquetes dinâmicas + estáticas -->
         <div class="poll-card">
-          <div class="poll-header">
-            <h3>🏋️ Área de Lazer</h3>
-            <span class="poll-status">● Ativa</span>
-          </div>
+          <div class="poll-header"><h3>🏋️ Área de Lazer</h3><span class="poll-status">● Ativa</span></div>
           <div class="poll-body">
             <p class="poll-question">Qual área de lazer você considera prioridade para a reforma de julho?</p>
-            <div class="poll-option">
-              <label><input type="radio" name="p1"> Academia equipada</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:48%"></div></div>
-              <div class="poll-pct">48% — 68 votos</div>
-            </div>
-            <div class="poll-option">
-              <label><input type="radio" name="p1"> Coworking / Sala de estudos</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:31%"></div></div>
-              <div class="poll-pct">31% — 44 votos</div>
-            </div>
-            <div class="poll-option">
-              <label><input type="radio" name="p1"> Salão de jogos</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:21%"></div></div>
-              <div class="poll-pct">21% — 30 votos</div>
-            </div>
+            <div class="poll-option"><label><input type="radio" name="p1"> Academia equipada</label><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:48%"></div></div><div class="poll-pct">48% — 68 votos</div></div>
+            <div class="poll-option"><label><input type="radio" name="p1"> Coworking / Sala de estudos</label><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:31%"></div></div><div class="poll-pct">31% — 44 votos</div></div>
+            <div class="poll-option"><label><input type="radio" name="p1"> Salão de jogos</label><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:21%"></div></div><div class="poll-pct">21% — 30 votos</div></div>
           </div>
-          <div class="poll-footer">
-            <span class="poll-votes">142 participantes</span>
-            <button class="btn-sm" onclick="votePoll(this)">Votar</button>
-          </div>
+          <div class="poll-footer"><span class="poll-votes">142 participantes</span><button class="btn-sm" onclick="votePoll(this)">Votar</button></div>
         </div>
-
         <div class="poll-card">
-          <div class="poll-header">
-            <h3>🐾 Animais de Estimação</h3>
-            <span class="poll-status">● Ativa</span>
-          </div>
-          <div class="poll-body">
-            <p class="poll-question">Você é favorável à criação de um espaço pet exclusivo no condomínio?</p>
-            <div class="poll-option">
-              <label><input type="radio" name="p2"> Sim, com toda a estrutura</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:67%"></div></div>
-              <div class="poll-pct">67% — 95 votos</div>
-            </div>
-            <div class="poll-option">
-              <label><input type="radio" name="p2"> Sim, mas somente banho seco</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:22%"></div></div>
-              <div class="poll-pct">22% — 31 votos</div>
-            </div>
-            <div class="poll-option">
-              <label><input type="radio" name="p2"> Não concordo</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:11%"></div></div>
-              <div class="poll-pct">11% — 16 votos</div>
-            </div>
-          </div>
-          <div class="poll-footer">
-            <span class="poll-votes">142 participantes</span>
-            <button class="btn-sm" onclick="votePoll(this)">Votar</button>
-          </div>
-        </div>
-
-        <div class="poll-card">
-          <div class="poll-header">
-            <h3>🔒 Segurança</h3>
-            <span class="poll-status">● Ativa</span>
-          </div>
-          <div class="poll-body">
-            <p class="poll-question">Como avalia o atual sistema de segurança do condomínio?</p>
-            <div class="poll-option">
-              <label><input type="radio" name="p3"> Ótimo — não precisa melhorar</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:18%"></div></div>
-              <div class="poll-pct">18% — 26 votos</div>
-            </div>
-            <div class="poll-option">
-              <label><input type="radio" name="p3"> Bom, mas pode melhorar</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:55%"></div></div>
-              <div class="poll-pct">55% — 78 votos</div>
-            </div>
-            <div class="poll-option">
-              <label><input type="radio" name="p3"> Precisa de mudanças urgentes</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:27%"></div></div>
-              <div class="poll-pct">27% — 38 votos</div>
-            </div>
-          </div>
-          <div class="poll-footer">
-            <span class="poll-votes">142 participantes</span>
-            <button class="btn-sm" onclick="votePoll(this)">Votar</button>
-          </div>
-        </div>
-
-        <div class="poll-card">
-          <div class="poll-header">
-            <h3>♻️ Sustentabilidade</h3>
-            <span class="poll-status">● Ativa</span>
-          </div>
+          <div class="poll-header"><h3>♻️ Sustentabilidade</h3><span class="poll-status">● Ativa</span></div>
           <div class="poll-body">
             <p class="poll-question">Qual iniciativa sustentável você gostaria de ver no condomínio?</p>
-            <div class="poll-option">
-              <label><input type="radio" name="p4"> Energia solar nas áreas comuns</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:52%"></div></div>
-              <div class="poll-pct">52% — 74 votos</div>
-            </div>
-            <div class="poll-option">
-              <label><input type="radio" name="p4"> Coleta seletiva estruturada</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:30%"></div></div>
-              <div class="poll-pct">30% — 43 votos</div>
-            </div>
-            <div class="poll-option">
-              <label><input type="radio" name="p4"> Carregadores para carros elétricos</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:18%"></div></div>
-              <div class="poll-pct">18% — 25 votos</div>
-            </div>
+            <div class="poll-option"><label><input type="radio" name="p4"> Energia solar nas áreas comuns</label><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:52%"></div></div><div class="poll-pct">52% — 74 votos</div></div>
+            <div class="poll-option"><label><input type="radio" name="p4"> Coleta seletiva estruturada</label><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:30%"></div></div><div class="poll-pct">30% — 43 votos</div></div>
+            <div class="poll-option"><label><input type="radio" name="p4"> Carregadores para carros elétricos</label><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:18%"></div></div><div class="poll-pct">18% — 25 votos</div></div>
           </div>
-          <div class="poll-footer">
-            <span class="poll-votes">142 participantes</span>
-            <button class="btn-sm" onclick="votePoll(this)">Votar</button>
-          </div>
+          <div class="poll-footer"><span class="poll-votes">142 participantes</span><button class="btn-sm" onclick="votePoll(this)">Votar</button></div>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- ====== COMUNICADOS ====== -->
+  <!-- COMUNICADOS -->
   <section id="comunicados">
     <div class="section-inner">
       <div class="section-header">
@@ -1468,57 +1213,15 @@
         <h2 class="section-title">Comunicados Recentes</h2>
         <div class="section-divider"></div>
       </div>
-
-      <div class="notices-list">
-        <div class="notice-card">
-          <div class="notice-icon">📢</div>
-          <div class="notice-content">
-            <h4>Manutenção dos Elevadores — Bloco C</h4>
-            <p>O elevador do Bloco C passará por manutenção preventiva programada nos dias 15 e 16 de abril, das 08h às 17h. Pedimos a compreensão de todos e orientamos o uso das escadas durante este período.</p>
-            <div class="notice-date">📅 08 de Abril de 2025</div>
-          </div>
-        </div>
-
-        <div class="notice-card">
-          <div class="notice-icon">🏊</div>
-          <div class="notice-content">
-            <h4>Piscina Fechada Para Reforma — Previsão de Reabertura</h4>
-            <p>A piscina adulto e infantil permanecerá fechada durante as obras de revitalização. A previsão de reabertura é para o dia 20 de junho de 2025, com novo espaço ampliado e modernizado.</p>
-            <div class="notice-date">📅 25 de Março de 2025</div>
-          </div>
-        </div>
-
-        <div class="notice-card">
-          <div class="notice-icon">📋</div>
-          <div class="notice-content">
-            <h4>Ata da Assembleia Geral Ordinária — Março 2025</h4>
-            <p>A ata da AGO realizada em 20/03/2025 já está disponível para consulta na administração e no mural do condomínio. Entre os assuntos deliberados estão a aprovação do orçamento 2025 e eleição do conselho fiscal.</p>
-            <div class="notice-date">📅 22 de Março de 2025</div>
-          </div>
-        </div>
-
-        <div class="notice-card">
-          <div class="notice-icon">🔧</div>
-          <div class="notice-content">
-            <h4>Novo Sistema de Câmeras em Instalação</h4>
-            <p>Iniciamos nesta semana a instalação do novo sistema CFTV com câmeras 4K em todas as áreas comuns. O processo será concluído até o dia 30 de abril. Agradecemos a colaboração dos moradores durante os trabalhos.</p>
-            <div class="notice-date">📅 14 de Março de 2025</div>
-          </div>
-        </div>
-
-        <div class="notice-card">
-          <div class="notice-icon">🌿</div>
-          <div class="notice-content">
-            <h4>Mutirão de Limpeza e Jardinagem</h4>
-            <p>Convidamos todos os moradores para o mutirão voluntário de limpeza e jardinagem das áreas externas, marcado para o próximo sábado, 19 de abril, a partir das 09h. Traga luvas e boa vontade!</p>
-            <div class="notice-date">📅 10 de Março de 2025</div>
-          </div>
-        </div>
+      <div class="notices-list" id="notices-list">
+        <div class="notice-card"><div class="notice-icon">📢</div><div class="notice-content"><h4>Manutenção dos Elevadores — Bloco C</h4><p>O elevador do Bloco C passará por manutenção preventiva programada nos dias 15 e 16 de abril, das 08h às 17h.</p><div class="notice-date">📅 08 de Abril de 2025</div></div></div>
+        <div class="notice-card"><div class="notice-icon">🏊</div><div class="notice-content"><h4>Piscina Fechada Para Reforma</h4><p>A piscina adulto e infantil permanecerá fechada durante as obras de revitalização. Previsão de reabertura: 20 de junho de 2025.</p><div class="notice-date">📅 25 de Março de 2025</div></div></div>
+        <div class="notice-card"><div class="notice-icon">📋</div><div class="notice-content"><h4>Ata da Assembleia Geral Ordinária — Março 2025</h4><p>A ata da AGO realizada em 20/03/2025 já está disponível para consulta na administração e no mural do condomínio.</p><div class="notice-date">📅 22 de Março de 2025</div></div></div>
       </div>
     </div>
   </section>
 
-  <!-- ====== CONTATO ====== -->
+  <!-- CONTATO -->
   <section id="contato">
     <div class="section-inner">
       <div class="section-header">
@@ -1526,45 +1229,15 @@
         <h2 class="section-title">Contato & Sugestões</h2>
         <div class="section-divider"></div>
       </div>
-
       <div class="contact-grid">
         <div class="contact-info">
           <h3>Fale com a Administração</h3>
-          <p style="font-size:0.88rem;color:#666;line-height:1.8;margin-bottom:24px;">Tem dúvidas, sugestões ou precisa reportar algo? Entre em contato com a nossa administração. Respondemos em até 2 dias úteis.</p>
-
-          <div class="contact-detail">
-            <div class="contact-detail-icon">📍</div>
-            <div class="contact-detail-text">
-              <strong>Endereço</strong>
-              <span>Rua do Condomínio, 500 — Curitiba, PR</span>
-            </div>
-          </div>
-
-          <div class="contact-detail">
-            <div class="contact-detail-icon">📞</div>
-            <div class="contact-detail-text">
-              <strong>Telefone</strong>
-              <span>(41) 3000-0000 / (41) 99000-0000</span>
-            </div>
-          </div>
-
-          <div class="contact-detail">
-            <div class="contact-detail-icon">✉️</div>
-            <div class="contact-detail-text">
-              <strong>E-mail</strong>
-              <span>sindico@condmauriciogoato.com.br</span>
-            </div>
-          </div>
-
-          <div class="contact-detail">
-            <div class="contact-detail-icon">🕐</div>
-            <div class="contact-detail-text">
-              <strong>Horário da Portaria</strong>
-              <span>24 horas por dia, 7 dias por semana</span>
-            </div>
-          </div>
+          <p style="font-size:0.88rem;color:#666;line-height:1.8;margin-bottom:24px;">Tem dúvidas, sugestões ou precisa reportar algo? Respondemos em até 2 dias úteis.</p>
+          <div class="contact-detail"><div class="contact-detail-icon">📍</div><div class="contact-detail-text"><strong>Endereço</strong><span id="info-endereco">Rua do Condomínio, 500 — Curitiba, PR</span></div></div>
+          <div class="contact-detail"><div class="contact-detail-icon">📞</div><div class="contact-detail-text"><strong>Telefone</strong><span id="info-telefone">(41) 3000-0000 / (41) 99000-0000</span></div></div>
+          <div class="contact-detail"><div class="contact-detail-icon">✉️</div><div class="contact-detail-text"><strong>E-mail</strong><span id="info-email">sindico@condmauriciognoato.com.br</span></div></div>
+          <div class="contact-detail"><div class="contact-detail-icon">🕐</div><div class="contact-detail-text"><strong>Horário da Portaria</strong><span id="info-horario">24 horas por dia, 7 dias por semana</span></div></div>
         </div>
-
         <div>
           <div class="contact-form">
             <input type="text" placeholder="Seu nome completo" id="contact-name"/>
@@ -1579,7 +1252,6 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
       <div class="footer-top">
@@ -1608,14 +1280,229 @@
       </div>
     </div>
   </footer>
+</div>
 
-</div><!-- /#main-site -->
+<!-- ===================== PAINEL DO SÍNDICO ===================== -->
+<div id="sindico-panel">
+  <div class="sindico-container">
+    <div class="sindico-topbar">
+      <div class="sindico-topbar-left">
+        <h2>⚙ Painel do Síndico</h2>
+        <p>Área administrativa — gerencie todo o conteúdo do portal</p>
+      </div>
+      <button class="btn-fechar-sindico" onclick="closeSindico()">✕ Fechar Painel</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="sindico-tabs">
+      <button class="sindico-tab active" onclick="sindicoTab('dashboard')">📊 Dashboard</button>
+      <button class="sindico-tab" onclick="sindicoTab('financeiro')">💰 Financeiro</button>
+      <button class="sindico-tab" onclick="sindicoTab('projetos')">🏗 Projetos</button>
+      <button class="sindico-tab" onclick="sindicoTab('comunicados')">📢 Comunicados</button>
+      <button class="sindico-tab" onclick="sindicoTab('enquetes')">🗳 Enquetes</button>
+      <button class="sindico-tab" onclick="sindicoTab('stats')">🏢 Estatísticas</button>
+      <button class="sindico-tab" onclick="sindicoTab('contatos')">✉️ Mensagens</button>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="sindico-section active" id="s-dashboard">
+      <div class="s-stats-grid" id="s-dash-stats">
+        <div class="s-stat-card"><div class="num" id="d-comunicados">—</div><div class="lbl">Comunicados</div></div>
+        <div class="s-stat-card"><div class="num" id="d-projetos">—</div><div class="lbl">Projetos</div></div>
+        <div class="s-stat-card"><div class="num" id="d-enquetes">—</div><div class="lbl">Enquetes</div></div>
+        <div class="s-stat-card"><div class="num" id="d-transacoes">—</div><div class="lbl">Transações</div></div>
+        <div class="s-stat-card"><div class="num" id="d-mensagens">—</div><div class="lbl">Mensagens</div></div>
+      </div>
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Bem-vindo ao Painel</h3><p>Use as abas acima para gerenciar cada seção do portal</p></div></div>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.85rem;line-height:1.8;">
+          Neste painel você pode: adicionar e remover <strong style="color:var(--dourado)">comunicados</strong>, gerenciar 
+          <strong style="color:var(--dourado)">projetos</strong> e sua linha do tempo, criar 
+          <strong style="color:var(--dourado)">enquetes</strong> interativas, lançar 
+          <strong style="color:var(--dourado)">transações financeiras</strong>, atualizar os 
+          <strong style="color:var(--dourado)">números e estatísticas</strong> do condomínio, e ler as 
+          <strong style="color:var(--dourado)">mensagens</strong> enviadas pelos moradores.
+          <br><br>Todas as alterações são salvas em tempo real no Firebase e refletem imediatamente no portal.
+        </p>
+      </div>
+    </div>
+
+    <!-- FINANCEIRO -->
+    <div class="sindico-section" id="s-financeiro">
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Resumo Financeiro</h3><p>Atualize os valores exibidos nos cards do site</p></div></div>
+        <div class="s-form-grid">
+          <div class="s-form-group"><label>Receitas do Mês</label><input type="text" id="s-fc-receitas" placeholder="R$ 48.320,00"/></div>
+          <div class="s-form-group"><label>Despesas do Mês</label><input type="text" id="s-fc-despesas" placeholder="R$ 41.750,00"/></div>
+          <div class="s-form-group"><label>Saldo / Superávit</label><input type="text" id="s-fc-saldo" placeholder="R$ 6.570,00"/></div>
+          <div class="s-form-group"><label>Fundo de Reserva</label><input type="text" id="s-fc-fundo" placeholder="R$ 284.900,00"/></div>
+          <div class="s-form-group"><label>Mês de Referência</label><input type="text" id="s-fc-mes" placeholder="Março / 2025"/></div>
+        </div>
+        <button class="btn-save" onclick="saveFinanceCards()">💾 Salvar Resumo</button>
+        <div class="s-msg" id="msg-finance-cards"></div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Nova Transação</h3><p>Adicione uma linha na tabela de despesas/receitas</p></div></div>
+        <div class="s-form-grid">
+          <div class="s-form-group s-form-full"><label>Descrição</label><input type="text" id="s-tx-desc" placeholder="Ex: Manutenção Elevadores"/></div>
+          <div class="s-form-group"><label>Categoria</label>
+            <select id="s-tx-cat">
+              <option value="Receita">Receita</option>
+              <option value="Despesa">Despesa</option>
+              <option value="Obra">Obra</option>
+              <option value="Fundo">Fundo de Reserva</option>
+            </select>
+          </div>
+          <div class="s-form-group"><label>Data</label><input type="date" id="s-tx-date"/></div>
+          <div class="s-form-group"><label>Valor (ex: 4.200,00)</label><input type="text" id="s-tx-valor" placeholder="4.200,00"/></div>
+          <div class="s-form-group"><label>Status</label>
+            <select id="s-tx-status">
+              <option value="Pago">Pago</option>
+              <option value="Recebido">Recebido</option>
+              <option value="Pendente">Pendente</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-save" onclick="saveTransaction()">➕ Adicionar Transação</button>
+        <div class="s-msg" id="msg-transaction"></div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Transações Cadastradas</h3><p>Clique em remover para excluir do Firebase</p></div></div>
+        <div class="s-list" id="s-tx-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
+      </div>
+    </div>
+
+    <!-- PROJETOS -->
+    <div class="sindico-section" id="s-projetos">
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Novo Projeto</h3><p>Adicione um projeto à linha do tempo</p></div></div>
+        <div class="s-form-grid">
+          <div class="s-form-group s-form-full"><label>Título do Projeto</label><input type="text" id="s-pr-titulo" placeholder="Ex: Reforma da Piscina"/></div>
+          <div class="s-form-group s-form-full"><label>Descrição</label><textarea id="s-pr-desc" rows="3" placeholder="Descreva o projeto..."></textarea></div>
+          <div class="s-form-group"><label>Data / Período</label><input type="text" id="s-pr-data" placeholder="Ex: Março – Junho 2025"/></div>
+          <div class="s-form-group"><label>Status</label>
+            <select id="s-pr-status">
+              <option value="done">Concluído</option>
+              <option value="progress">Em andamento</option>
+              <option value="planned">Planejado</option>
+            </select>
+          </div>
+          <div class="s-form-group"><label>Badge / Rótulo</label><input type="text" id="s-pr-badge" placeholder="Ex: ⏳ Em andamento — 35%"/></div>
+        </div>
+        <button class="btn-save" onclick="saveProject()">➕ Adicionar Projeto</button>
+        <div class="s-msg" id="msg-project"></div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Projetos no Firebase</h3></div></div>
+        <div class="s-list" id="s-pr-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
+      </div>
+    </div>
+
+    <!-- COMUNICADOS -->
+    <div class="sindico-section" id="s-comunicados">
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Novo Comunicado</h3><p>Publique um aviso para todos os moradores</p></div></div>
+        <div class="s-form-grid">
+          <div class="s-form-group"><label>Ícone (emoji)</label><input type="text" id="s-nc-icon" placeholder="📢" maxlength="4"/></div>
+          <div class="s-form-group"><label>Data de Publicação</label><input type="text" id="s-nc-data" placeholder="Ex: 08 de Abril de 2025"/></div>
+          <div class="s-form-group s-form-full"><label>Título do Comunicado</label><input type="text" id="s-nc-titulo" placeholder="Ex: Manutenção dos Elevadores — Bloco C"/></div>
+          <div class="s-form-group s-form-full"><label>Texto / Conteúdo</label><textarea id="s-nc-texto" rows="4" placeholder="Descreva o comunicado com detalhes..."></textarea></div>
+        </div>
+        <button class="btn-save" onclick="saveNotice()">📢 Publicar Comunicado</button>
+        <div class="s-msg" id="msg-notice"></div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Comunicados Publicados</h3></div></div>
+        <div class="s-list" id="s-nc-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
+      </div>
+    </div>
+
+    <!-- ENQUETES -->
+    <div class="sindico-section" id="s-enquetes">
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Nova Enquete</h3><p>Crie uma enquete para os moradores votarem</p></div></div>
+        <div class="s-form-grid">
+          <div class="s-form-group"><label>Título (com emoji)</label><input type="text" id="s-eq-titulo" placeholder="🐾 Animais de Estimação"/></div>
+          <div class="s-form-group"><label>Status</label>
+            <select id="s-eq-status">
+              <option value="Ativa">● Ativa</option>
+              <option value="Encerrada">Encerrada</option>
+            </select>
+          </div>
+          <div class="s-form-group s-form-full"><label>Pergunta da Enquete</label><textarea id="s-eq-pergunta" rows="2" placeholder="Qual é a pergunta que os moradores vão responder?"></textarea></div>
+          <div class="s-form-group s-form-full">
+            <label>Opções de Resposta</label>
+            <div id="s-eq-opcoes">
+              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 1"/></div>
+              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 2"/></div>
+              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 3"/></div>
+            </div>
+            <button class="btn-add-opt" onclick="addPollOption()">+ Adicionar opção</button>
+          </div>
+        </div>
+        <button class="btn-save" onclick="savePoll()">🗳 Publicar Enquete</button>
+        <div class="s-msg" id="msg-poll"></div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Enquetes no Firebase</h3></div></div>
+        <div class="s-list" id="s-eq-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
+      </div>
+    </div>
+
+    <!-- ESTATÍSTICAS -->
+    <div class="sindico-section" id="s-stats">
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Números do Condomínio</h3><p>Atualize as estatísticas exibidas na barra de destaques</p></div></div>
+        <div class="s-form-grid">
+          <div class="s-form-group"><label>Total de Unidades</label><input type="text" id="s-st-unidades" placeholder="142"/></div>
+          <div class="s-form-group"><label>Fundo de Reserva</label><input type="text" id="s-st-fundo" placeholder="R$ 284k"/></div>
+          <div class="s-form-group"><label>Taxa de Adimplência</label><input type="text" id="s-st-adimplencia" placeholder="98%"/></div>
+          <div class="s-form-group"><label>Projetos no Ano</label><input type="text" id="s-st-projetos" placeholder="12"/></div>
+        </div>
+        <button class="btn-save" onclick="saveStats()">💾 Atualizar Estatísticas</button>
+        <div class="s-msg" id="msg-stats"></div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Informações de Contato</h3><p>Atualize os dados exibidos na seção Fale Conosco</p></div></div>
+        <div class="s-form-grid">
+          <div class="s-form-group s-form-full"><label>Endereço</label><input type="text" id="s-ct-endereco" placeholder="Rua do Condomínio, 500 — Curitiba, PR"/></div>
+          <div class="s-form-group"><label>Telefone</label><input type="text" id="s-ct-telefone" placeholder="(41) 3000-0000 / (41) 99000-0000"/></div>
+          <div class="s-form-group"><label>E-mail</label><input type="email" id="s-ct-email" placeholder="sindico@condominio.com.br"/></div>
+          <div class="s-form-group s-form-full"><label>Horário da Portaria</label><input type="text" id="s-ct-horario" placeholder="24 horas por dia, 7 dias por semana"/></div>
+        </div>
+        <button class="btn-save" onclick="saveContactInfo()">💾 Atualizar Contato</button>
+        <div class="s-msg" id="msg-contact-info"></div>
+      </div>
+    </div>
+
+    <!-- MENSAGENS -->
+    <div class="sindico-section" id="s-contatos">
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>Mensagens Recebidas</h3><p>Formulários enviados pelos moradores</p></div></div>
+        <div id="s-contatos-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando mensagens...</p></div>
+      </div>
+    </div>
+
+  </div><!-- /.sindico-container -->
+</div><!-- /#sindico-panel -->
 
 <!-- ===================== FIREBASE ===================== -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import {
+    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    signOut, onAuthStateChanged, updateProfile
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import {
+    getDatabase, ref, set, push, get, remove, onValue, update
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCwXXGdSZmtlhaOTt5QyjQUWMukTURbSRU",
@@ -1624,45 +1511,314 @@
     projectId: "condominio-mg",
     storageBucket: "condominio-mg.firebasestorage.app",
     messagingSenderId: "827098014353",
-    appId: "1:827098014353:web:cc36db91f7216ef7a59530",
-    measurementId: "G-BPWN7F8HL0"
+    appId: "1:827098014353:web:cc36db91f7216ef7a59530"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getDatabase(app);
 
-  // Expose globals
+  // UID do síndico — altere para o UID real após criar a conta no Firebase Console
+  const SINDICO_UID = "COLOQUE_AQUI_O_UID_DO_SINDICO";
+
+  // Expor globais
   window._auth = auth;
   window._db = db;
   window._ref = ref;
   window._set = set;
   window._push = push;
+  window._get = get;
+  window._remove = remove;
+  window._onValue = onValue;
+  window._update = update;
   window._createUser = createUserWithEmailAndPassword;
   window._signIn = signInWithEmailAndPassword;
   window._signOut = signOut;
   window._updateProfile = updateProfile;
+  window.SINDICO_UID = SINDICO_UID;
 
   // Auth state
   onAuthStateChanged(auth, (user) => {
     if (user) {
       document.getElementById('auth-overlay').style.display = 'none';
       document.getElementById('main-site').style.display = 'block';
-
       const name = user.displayName || user.email.split('@')[0];
       const initials = name.charAt(0).toUpperCase();
-
       document.getElementById('user-avatar').textContent = initials;
       document.getElementById('user-name-header').textContent = name;
+
+      // Mostrar botão síndico se for o síndico
+      const btnSindico = document.getElementById('btn-sindico-nav');
+      if (user.uid === SINDICO_UID || user.email === 'sindico@condmauriciognoato.com.br') {
+        btnSindico.classList.remove('hidden');
+      } else {
+        btnSindico.classList.add('hidden');
+      }
+
+      // Carregar dados dinâmicos do Firebase
+      loadDynamicData();
     } else {
       document.getElementById('auth-overlay').style.display = 'flex';
       document.getElementById('main-site').style.display = 'none';
+      document.getElementById('sindico-panel').style.display = 'none';
     }
   });
+
+  // ===== CARREGAR DADOS DINÂMICOS DO FIREBASE =====
+  window.loadDynamicData = function() {
+    // Stats
+    onValue(ref(db, 'config/stats'), (snap) => {
+      if (snap.exists()) {
+        const d = snap.val();
+        if (d.unidades) document.getElementById('stat-unidades').textContent = d.unidades;
+        if (d.fundo) document.getElementById('stat-fundo').textContent = d.fundo;
+        if (d.adimplencia) document.getElementById('stat-adimplencia').textContent = d.adimplencia;
+        if (d.projetos) document.getElementById('stat-projetos').textContent = d.projetos;
+        // preencher campos do painel
+        if (d.unidades) document.getElementById('s-st-unidades').value = d.unidades;
+        if (d.fundo) document.getElementById('s-st-fundo').value = d.fundo;
+        if (d.adimplencia) document.getElementById('s-st-adimplencia').value = d.adimplencia;
+        if (d.projetos) document.getElementById('s-st-projetos').value = d.projetos;
+      }
+    });
+
+    // Finance cards
+    onValue(ref(db, 'config/financeCards'), (snap) => {
+      if (snap.exists()) {
+        const d = snap.val();
+        if (d.receitas) { document.getElementById('fc-receitas').textContent = d.receitas; document.getElementById('s-fc-receitas').value = d.receitas; }
+        if (d.despesas) { document.getElementById('fc-despesas').textContent = d.despesas; document.getElementById('s-fc-despesas').value = d.despesas; }
+        if (d.saldo) { document.getElementById('fc-saldo').textContent = d.saldo; document.getElementById('s-fc-saldo').value = d.saldo; }
+        if (d.fundo) { document.getElementById('fc-fundo').textContent = d.fundo; document.getElementById('s-fc-fundo').value = d.fundo; }
+        if (d.mes) { document.getElementById('fc-mes').textContent = d.mes; document.getElementById('s-fc-mes').value = d.mes; }
+      }
+    });
+
+    // Contact info
+    onValue(ref(db, 'config/contactInfo'), (snap) => {
+      if (snap.exists()) {
+        const d = snap.val();
+        if (d.endereco) { document.getElementById('info-endereco').textContent = d.endereco; document.getElementById('s-ct-endereco').value = d.endereco; }
+        if (d.telefone) { document.getElementById('info-telefone').textContent = d.telefone; document.getElementById('s-ct-telefone').value = d.telefone; }
+        if (d.email) { document.getElementById('info-email').textContent = d.email; document.getElementById('s-ct-email').value = d.email; }
+        if (d.horario) { document.getElementById('info-horario').textContent = d.horario; document.getElementById('s-ct-horario').value = d.horario; }
+      }
+    });
+
+    // Comunicados
+    onValue(ref(db, 'comunicados'), (snap) => {
+      const noticesList = document.getElementById('notices-list');
+      const sList = document.getElementById('s-nc-list');
+      let html = '';
+      let shtml = '';
+      let count = 0;
+      if (snap.exists()) {
+        const items = snap.val();
+        const keys = Object.keys(items).reverse();
+        count = keys.length;
+        keys.forEach(key => {
+          const d = items[key];
+          html += `<div class="notice-card">
+            <div class="notice-icon">${d.icon || '📢'}</div>
+            <div class="notice-content">
+              <h4>${d.titulo}</h4>
+              <p>${d.texto}</p>
+              <div class="notice-date">📅 ${d.data}</div>
+            </div>
+          </div>`;
+          shtml += `<div class="s-list-item">
+            <div class="s-list-item-info">
+              <strong>${d.icon || '📢'} ${d.titulo}</strong>
+              <span>${d.data}</span>
+            </div>
+            <div class="s-list-item-actions">
+              <button class="btn-danger" onclick="deleteItem('comunicados','${key}')">Remover</button>
+            </div>
+          </div>`;
+        });
+        // Manter os 3 estáticos originais só se não houver nenhum no Firebase
+        // Como temos Firebase, usamos só o Firebase
+        noticesList.innerHTML = html || noticesList.innerHTML;
+      }
+      if (shtml) sList.innerHTML = shtml;
+      else sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum comunicado cadastrado no Firebase ainda.</p>';
+      document.getElementById('d-comunicados').textContent = count;
+    });
+
+    // Projetos
+    onValue(ref(db, 'projetos'), (snap) => {
+      const sList = document.getElementById('s-pr-list');
+      let shtml = '';
+      let count = 0;
+      if (snap.exists()) {
+        const items = snap.val();
+        const keys = Object.keys(items);
+        count = keys.length;
+
+        // Adicionar ao timeline
+        const timeline = document.getElementById('projects-timeline');
+        const dynamic = timeline.querySelectorAll('.dynamic-project');
+        dynamic.forEach(el => el.remove());
+
+        keys.forEach(key => {
+          const d = items[key];
+          const dotClass = d.status || 'planned';
+          const newItem = document.createElement('div');
+          newItem.className = 'project-item dynamic-project';
+          newItem.innerHTML = `
+            <div class="project-dot ${dotClass}"></div>
+            <div class="project-date">${d.data}</div>
+            <h3>${d.titulo}</h3>
+            <p>${d.desc}</p>
+            <span class="badge ${dotClass === 'done' ? 'badge-green' : dotClass === 'progress' ? 'badge-yellow' : 'badge-blue'}">${d.badge}</span>
+          `;
+          timeline.appendChild(newItem);
+
+          shtml += `<div class="s-list-item">
+            <div class="s-list-item-info">
+              <strong>${d.titulo}</strong>
+              <span>${d.data} — ${d.status}</span>
+            </div>
+            <div class="s-list-item-actions">
+              <button class="btn-danger" onclick="deleteItem('projetos','${key}')">Remover</button>
+            </div>
+          </div>`;
+        });
+      }
+      if (shtml) sList.innerHTML = shtml;
+      else sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum projeto cadastrado no Firebase ainda.</p>';
+      document.getElementById('d-projetos').textContent = count;
+    });
+
+    // Transações
+    onValue(ref(db, 'transacoes'), (snap) => {
+      const tbody = document.getElementById('finance-tbody');
+      const sList = document.getElementById('s-tx-list');
+      let shtml = '';
+      let count = 0;
+      if (snap.exists()) {
+        const items = snap.val();
+        const keys = Object.keys(items).reverse();
+        count = keys.length;
+        let rows = '';
+        keys.forEach(key => {
+          const d = items[key];
+          const isPositive = d.categoria === 'Receita';
+          const cor = isPositive ? 'var(--verde)' : 'var(--vermelho)';
+          const sinal = isPositive ? '+' : '-';
+          const badgeClass = d.status === 'Pago' || d.status === 'Recebido' ? 'badge-green' : d.status === 'Pendente' ? 'badge-yellow' : 'badge-red';
+          rows += `<tr>
+            <td>${d.descricao}</td>
+            <td>${d.categoria}</td>
+            <td>${d.data}</td>
+            <td style="color:${cor};font-weight:600">${sinal} R$ ${d.valor}</td>
+            <td><span class="badge ${badgeClass}">${d.status}</span></td>
+          </tr>`;
+          shtml += `<div class="s-list-item">
+            <div class="s-list-item-info">
+              <strong>${d.descricao}</strong>
+              <span>${d.categoria} — ${d.data} — R$ ${d.valor} — ${d.status}</span>
+            </div>
+            <div class="s-list-item-actions">
+              <button class="btn-danger" onclick="deleteItem('transacoes','${key}')">Remover</button>
+            </div>
+          </div>`;
+        });
+        if (rows) tbody.innerHTML = rows + tbody.innerHTML;
+      }
+      if (shtml) sList.innerHTML = shtml;
+      else sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma transação cadastrada no Firebase ainda.</p>';
+      document.getElementById('d-transacoes').textContent = count;
+    });
+
+    // Enquetes
+    onValue(ref(db, 'enquetes'), (snap) => {
+      const grid = document.getElementById('polls-grid');
+      const sList = document.getElementById('s-eq-list');
+      let shtml = '';
+      let count = 0;
+      if (snap.exists()) {
+        const items = snap.val();
+        const keys = Object.keys(items).reverse();
+        count = keys.length;
+        // Remover enquetes dinâmicas antigas
+        grid.querySelectorAll('.dynamic-poll').forEach(el => el.remove());
+
+        keys.forEach(key => {
+          const d = items[key];
+          const opts = d.opcoes || [];
+          let optsHtml = opts.map((op, i) => `
+            <div class="poll-option">
+              <label><input type="radio" name="dyn_${key}"> ${op}</label>
+              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:0%"></div></div>
+              <div class="poll-pct">0 votos</div>
+            </div>`).join('');
+
+          const card = document.createElement('div');
+          card.className = 'poll-card dynamic-poll';
+          card.innerHTML = `
+            <div class="poll-header">
+              <h3>${d.titulo}</h3>
+              <span class="poll-status">● ${d.status || 'Ativa'}</span>
+            </div>
+            <div class="poll-body">
+              <p class="poll-question">${d.pergunta}</p>
+              ${optsHtml}
+            </div>
+            <div class="poll-footer">
+              <span class="poll-votes">0 votos</span>
+              <button class="btn-sm" onclick="votePoll(this)">Votar</button>
+            </div>`;
+          grid.appendChild(card);
+
+          shtml += `<div class="s-list-item">
+            <div class="s-list-item-info">
+              <strong>${d.titulo}</strong>
+              <span>${d.pergunta.substring(0,60)}...</span>
+            </div>
+            <div class="s-list-item-actions">
+              <button class="btn-danger" onclick="deleteItem('enquetes','${key}')">Remover</button>
+            </div>
+          </div>`;
+        });
+      }
+      if (shtml) sList.innerHTML = shtml;
+      else sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma enquete cadastrada no Firebase ainda.</p>';
+      document.getElementById('d-enquetes').textContent = count;
+    });
+
+    // Mensagens / Contatos
+    onValue(ref(db, 'contatos'), (snap) => {
+      const list = document.getElementById('s-contatos-list');
+      let count = 0;
+      if (snap.exists()) {
+        const items = snap.val();
+        const keys = Object.keys(items).reverse();
+        count = keys.length;
+        list.innerHTML = keys.map(key => {
+          const d = items[key];
+          const dt = d.createdAt ? new Date(d.createdAt).toLocaleString('pt-BR') : '';
+          return `<div class="s-contact-item">
+            <div class="s-contact-meta">
+              <strong>${d.name}</strong>
+              <span>${d.email}</span>
+              <span>${dt}</span>
+              <button class="btn-danger" onclick="deleteItem('contatos','${key}')" style="margin-left:auto">Apagar</button>
+            </div>
+            <div class="s-contact-subject">${d.subject}</div>
+            <div class="s-contact-msg">${d.message}</div>
+          </div>`;
+        }).join('');
+      } else {
+        list.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma mensagem recebida ainda.</p>';
+      }
+      document.getElementById('d-mensagens').textContent = count;
+    });
+  };
 </script>
 
 <script>
-  // Tab switching
+  // ===== AUTH =====
   function switchTab(tab) {
     document.querySelectorAll('.auth-tab').forEach((t, i) => {
       t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
@@ -1677,7 +1833,13 @@
     el.className = 'auth-msg ' + type;
   }
 
-  // Login
+  function showSMsg(id, msg, type) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = 's-msg ' + type;
+    setTimeout(() => { el.className = 's-msg'; }, 4000);
+  }
+
   async function doLogin() {
     const email = document.getElementById('login-email').value.trim();
     const pwd = document.getElementById('login-pwd').value;
@@ -1694,7 +1856,6 @@
     }
   }
 
-  // Register
   async function doRegister() {
     const name = document.getElementById('reg-name').value.trim();
     const unit = document.getElementById('reg-unit').value.trim();
@@ -1705,7 +1866,6 @@
     try {
       const cred = await window._createUser(window._auth, email, pwd);
       await window._updateProfile(cred.user, { displayName: name });
-      // Salvar no Realtime DB
       await window._set(window._ref(window._db, 'condominios/' + cred.user.uid), {
         name, unit, email, createdAt: new Date().toISOString()
       });
@@ -1719,75 +1879,214 @@
     }
   }
 
-  // Logout
   async function doLogout() {
+    closeSindico();
     await window._signOut(window._auth);
   }
 
-  // Hamburger
+  // ===== MENU =====
   function toggleMenu() {
     document.getElementById('main-nav').classList.toggle('open');
   }
 
-  // Poll vote mock
+  // ===== POLL VOTE =====
   function votePoll(btn) {
     btn.textContent = 'Votado ✓';
     btn.disabled = true;
     btn.style.background = '#27ae60';
   }
 
-  // Contact form
+  // ===== CONTATO =====
   async function sendContact() {
     const name = document.getElementById('contact-name').value.trim();
     const email = document.getElementById('contact-email').value.trim();
     const subject = document.getElementById('contact-subject').value.trim();
     const message = document.getElementById('contact-message').value.trim();
-    if (!name || !email || !subject || !message) {
-      return showMsg('contact-msg', 'Preencha todos os campos.', 'error');
-    }
+    if (!name || !email || !subject || !message) return showMsg('contact-msg', 'Preencha todos os campos.', 'error');
     try {
-      await window._push(window._ref(window._db, 'contatos'), {
-        name, email, subject, message, createdAt: new Date().toISOString()
-      });
-      showMsg('contact-msg', 'Mensagem enviada com sucesso! Responderemos em breve.', 'success');
-      ['contact-name','contact-email','contact-subject','contact-message'].forEach(id => {
-        document.getElementById(id).value = '';
-      });
+      await window._push(window._ref(window._db, 'contatos'), { name, email, subject, message, createdAt: new Date().toISOString() });
+      showMsg('contact-msg', 'Mensagem enviada com sucesso!', 'success');
+      ['contact-name','contact-email','contact-subject','contact-message'].forEach(id => { document.getElementById(id).value = ''; });
     } catch(e) {
-      showMsg('contact-msg', 'Erro ao enviar mensagem. Tente novamente.', 'error');
+      showMsg('contact-msg', 'Erro ao enviar mensagem.', 'error');
     }
   }
 
-  // Enter key nos inputs de login
+  // ===== PAINEL SÍNDICO =====
+  function openSindico() {
+    document.getElementById('sindico-panel').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSindico() {
+    document.getElementById('sindico-panel').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function sindicoTab(tab) {
+    document.querySelectorAll('.sindico-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.sindico-section').forEach(s => s.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('s-' + tab).classList.add('active');
+  }
+
+  // ===== SALVAR FINANCE CARDS =====
+  async function saveFinanceCards() {
+    const data = {
+      receitas: document.getElementById('s-fc-receitas').value.trim(),
+      despesas: document.getElementById('s-fc-despesas').value.trim(),
+      saldo: document.getElementById('s-fc-saldo').value.trim(),
+      fundo: document.getElementById('s-fc-fundo').value.trim(),
+      mes: document.getElementById('s-fc-mes').value.trim()
+    };
+    try {
+      await window._set(window._ref(window._db, 'config/financeCards'), data);
+      showSMsg('msg-finance-cards', '✓ Resumo financeiro atualizado com sucesso!', 'success');
+    } catch(e) {
+      showSMsg('msg-finance-cards', 'Erro ao salvar. Verifique as permissões do Firebase.', 'error');
+    }
+  }
+
+  // ===== SALVAR TRANSAÇÃO =====
+  async function saveTransaction() {
+    const data = {
+      descricao: document.getElementById('s-tx-desc').value.trim(),
+      categoria: document.getElementById('s-tx-cat').value,
+      data: document.getElementById('s-tx-date').value,
+      valor: document.getElementById('s-tx-valor').value.trim(),
+      status: document.getElementById('s-tx-status').value,
+      createdAt: new Date().toISOString()
+    };
+    if (!data.descricao || !data.valor || !data.data) return showSMsg('msg-transaction', 'Preencha todos os campos.', 'error');
+    try {
+      await window._push(window._ref(window._db, 'transacoes'), data);
+      showSMsg('msg-transaction', '✓ Transação adicionada com sucesso!', 'success');
+      ['s-tx-desc','s-tx-date','s-tx-valor'].forEach(id => { document.getElementById(id).value = ''; });
+    } catch(e) {
+      showSMsg('msg-transaction', 'Erro ao salvar.', 'error');
+    }
+  }
+
+  // ===== SALVAR PROJETO =====
+  async function saveProject() {
+    const data = {
+      titulo: document.getElementById('s-pr-titulo').value.trim(),
+      desc: document.getElementById('s-pr-desc').value.trim(),
+      data: document.getElementById('s-pr-data').value.trim(),
+      status: document.getElementById('s-pr-status').value,
+      badge: document.getElementById('s-pr-badge').value.trim(),
+      createdAt: new Date().toISOString()
+    };
+    if (!data.titulo || !data.desc) return showSMsg('msg-project', 'Preencha título e descrição.', 'error');
+    try {
+      await window._push(window._ref(window._db, 'projetos'), data);
+      showSMsg('msg-project', '✓ Projeto adicionado com sucesso!', 'success');
+      ['s-pr-titulo','s-pr-desc','s-pr-data','s-pr-badge'].forEach(id => { document.getElementById(id).value = ''; });
+    } catch(e) {
+      showSMsg('msg-project', 'Erro ao salvar.', 'error');
+    }
+  }
+
+  // ===== SALVAR COMUNICADO =====
+  async function saveNotice() {
+    const data = {
+      icon: document.getElementById('s-nc-icon').value.trim() || '📢',
+      data: document.getElementById('s-nc-data').value.trim(),
+      titulo: document.getElementById('s-nc-titulo').value.trim(),
+      texto: document.getElementById('s-nc-texto').value.trim(),
+      createdAt: new Date().toISOString()
+    };
+    if (!data.titulo || !data.texto) return showSMsg('msg-notice', 'Preencha título e texto.', 'error');
+    try {
+      await window._push(window._ref(window._db, 'comunicados'), data);
+      showSMsg('msg-notice', '✓ Comunicado publicado com sucesso!', 'success');
+      ['s-nc-icon','s-nc-data','s-nc-titulo','s-nc-texto'].forEach(id => { document.getElementById(id).value = ''; });
+    } catch(e) {
+      showSMsg('msg-notice', 'Erro ao publicar.', 'error');
+    }
+  }
+
+  // ===== SALVAR ENQUETE =====
+  function addPollOption() {
+    const container = document.getElementById('s-eq-opcoes');
+    const count = container.querySelectorAll('.eq-opt').length + 1;
+    const row = document.createElement('div');
+    row.className = 'poll-option-row';
+    row.innerHTML = `<input type="text" class="eq-opt" placeholder="Opção ${count}" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);font-family:Montserrat,sans-serif;font-size:0.85rem;color:#fff;outline:none;"/>`;
+    container.appendChild(row);
+  }
+
+  async function savePoll() {
+    const titulo = document.getElementById('s-eq-titulo').value.trim();
+    const status = document.getElementById('s-eq-status').value;
+    const pergunta = document.getElementById('s-eq-pergunta').value.trim();
+    const opcoes = Array.from(document.querySelectorAll('.eq-opt')).map(i => i.value.trim()).filter(v => v);
+    if (!titulo || !pergunta || opcoes.length < 2) return showSMsg('msg-poll', 'Preencha título, pergunta e ao menos 2 opções.', 'error');
+    try {
+      await window._push(window._ref(window._db, 'enquetes'), {
+        titulo, status, pergunta, opcoes, votos: {}, createdAt: new Date().toISOString()
+      });
+      showSMsg('msg-poll', '✓ Enquete publicada com sucesso!', 'success');
+      document.getElementById('s-eq-titulo').value = '';
+      document.getElementById('s-eq-pergunta').value = '';
+      document.querySelectorAll('.eq-opt').forEach(i => { i.value = ''; });
+    } catch(e) {
+      showSMsg('msg-poll', 'Erro ao publicar.', 'error');
+    }
+  }
+
+  // ===== SALVAR STATS =====
+  async function saveStats() {
+    const data = {
+      unidades: document.getElementById('s-st-unidades').value.trim(),
+      fundo: document.getElementById('s-st-fundo').value.trim(),
+      adimplencia: document.getElementById('s-st-adimplencia').value.trim(),
+      projetos: document.getElementById('s-st-projetos').value.trim()
+    };
+    try {
+      await window._set(window._ref(window._db, 'config/stats'), data);
+      showSMsg('msg-stats', '✓ Estatísticas atualizadas com sucesso!', 'success');
+    } catch(e) {
+      showSMsg('msg-stats', 'Erro ao salvar.', 'error');
+    }
+  }
+
+  // ===== SALVAR CONTATO INFO =====
+  async function saveContactInfo() {
+    const data = {
+      endereco: document.getElementById('s-ct-endereco').value.trim(),
+      telefone: document.getElementById('s-ct-telefone').value.trim(),
+      email: document.getElementById('s-ct-email').value.trim(),
+      horario: document.getElementById('s-ct-horario').value.trim()
+    };
+    try {
+      await window._set(window._ref(window._db, 'config/contactInfo'), data);
+      showSMsg('msg-contact-info', '✓ Informações de contato atualizadas!', 'success');
+    } catch(e) {
+      showSMsg('msg-contact-info', 'Erro ao salvar.', 'error');
+    }
+  }
+
+  // ===== DELETAR ITEM =====
+  async function deleteItem(collection, key) {
+    if (!confirm('Confirma a remoção deste item?')) return;
+    try {
+      await window._remove(window._ref(window._db, collection + '/' + key));
+    } catch(e) {
+      alert('Erro ao remover item.');
+    }
+  }
+
+  // Enter key login/register
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-      const loginPanel = document.getElementById('panel-login');
-      const regPanel = document.getElementById('panel-register');
-      if (loginPanel.classList.contains('active')) doLogin();
-      else if (regPanel.classList.contains('active')) doRegister();
+      if (document.getElementById('panel-login').classList.contains('active')) doLogin();
+      else if (document.getElementById('panel-register').classList.contains('active')) doRegister();
+    }
+    if (e.key === 'Escape' && document.getElementById('sindico-panel').style.display === 'block') {
+      closeSindico();
     }
   });
-
-  // Tenta carregar logo
-  window.addEventListener('load', () => {
-    const img = new Image();
-    img.onload = () => {
-      const authWrap = document.getElementById('auth-logo-wrap');
-      const headerWrap = document.getElementById('header-logo');
-
-      const authImg = document.createElement('img');
-      authImg.src = 'logo.png';
-      authImg.className = 'auth-logo';
-      authWrap.replaceWith(authImg);
-
-      const headerImg = document.createElement('img');
-      headerImg.src = 'logo.png';
-      headerImg.className = 'brand-logo';
-      headerWrap.replaceWith(headerImg);
-    };
-    img.src = 'logo.png';
-  });
 </script>
-
 </body>
 </html>
