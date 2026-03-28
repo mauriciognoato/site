@@ -383,8 +383,9 @@
     }
     
     try {
-      const result = await auth.signInWithEmailAndPassword(email, senha);
+      await auth.signInWithEmailAndPassword(email, senha);
       mostrarToast('Login realizado!');
+      // O redirecionamento será feito pelo onAuthStateChanged
     } catch(e) {
       document.getElementById('loginError').textContent = e.message;
     }
@@ -454,8 +455,12 @@
     if (el) el.classList.add('active');
   }
 
+  // Monitorar autenticação e redirecionar automaticamente
   auth.onAuthStateChanged(async (user) => {
+    console.log("Auth state changed:", user ? user.email : "Nenhum usuário");
+    
     if (user) {
+      // Usuário logado
       usuarioAtual = user;
       
       try {
@@ -463,6 +468,7 @@
         const dados = doc.exists ? doc.data() : { nome: user.email.split('@')[0], isAdmin: false };
         isAdmin = dados.isAdmin || false;
         
+        // Atualizar interface do site público
         document.getElementById('userName').textContent = dados.nome || user.email.split('@')[0];
         document.getElementById('userAvatar').textContent = (dados.nome || 'U')[0].toUpperCase();
         document.getElementById('sindicoName').textContent = dados.nome || 'Síndico';
@@ -472,19 +478,26 @@
           btnSindico.style.display = isAdmin ? 'block' : 'none';
         }
         
+        // REDIRECIONAR: Esconder login e mostrar site
         document.getElementById('loginPage').style.display = 'none';
         document.getElementById('cadastroPage').style.display = 'none';
         document.getElementById('sitePage').classList.add('active');
         
+        // Carregar dados
         carregarDadosPublicos();
         
       } catch (err) {
-        console.error(err);
+        console.error("Erro ao carregar dados do usuário:", err);
+        // Mesmo com erro, mostra o site
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('sitePage').classList.add('active');
       }
     } else {
+      // Usuário deslogado
       usuarioAtual = null;
       isAdmin = false;
       
+      // Redirecionar para login
       document.getElementById('sitePage').classList.remove('active');
       document.getElementById('sindicoPage').classList.remove('active');
       document.getElementById('loginPage').style.display = 'flex';
@@ -615,7 +628,7 @@
       let histHtml = '耒<thead> <th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th> </thead><tbody>';
       histSnap.forEach(doc => {
         const d = doc.data();
-        histHtml += ` <td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td> `;
+        histHtml += `  <td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td> `;
       });
       histHtml += '</tbody> </table>';
       document.getElementById('historicoFinanceiro').innerHTML = histHtml;
@@ -648,7 +661,7 @@
       let moradoresList = '耒<thead> <th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th> </thead><tbody>';
       moradoresSnap.forEach(doc => {
         const u = doc.data();
-        moradoresList += ` <td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td> `;
+        moradoresList += `  <td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td> `;
       });
       moradoresList += '</tbody> </table>';
       document.getElementById('listaMoradores').innerHTML = moradoresList;
