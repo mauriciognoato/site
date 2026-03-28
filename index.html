@@ -357,7 +357,7 @@
       font-size: 0.8rem;
     }
 
-    /* HERO — fundo azul */
+    /* HERO — fundo azul COM CONTAINER ESCURO PARA LEGIBILIDADE */
     .hero {
       background: var(--azul);
       padding: 80px 24px;
@@ -365,16 +365,31 @@
       position: relative;
       overflow: hidden;
     }
+    /* Container escuro sobre o fundo azul para melhor contraste */
+    .hero-dark-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 1;
+    }
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
       background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4A776' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
-    .hero-content { position: relative; max-width: 700px; margin: 0 auto; }
+    .hero-content { 
+      position: relative; 
+      max-width: 700px; 
+      margin: 0 auto;
+      z-index: 2;
+    }
     .hero-badge {
       display: inline-block;
-      background: rgba(196,167,118,0.18);
+      background: rgba(196,167,118,0.25);
       border: 1px solid var(--dourado);
       color: var(--dourado);
       font-size: 0.7rem;
@@ -383,6 +398,7 @@
       padding: 6px 16px;
       border-radius: 100px;
       margin-bottom: 24px;
+      backdrop-filter: blur(2px);
     }
     .hero h1 {
       font-family: 'Roboto', sans-serif;
@@ -391,13 +407,15 @@
       font-weight: 700;
       line-height: 1.2;
       margin-bottom: 16px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
     .hero h1 em { color: var(--dourado); font-style: normal; }
     .hero p {
-      color: rgba(255,255,255,0.75);
+      color: rgba(255,255,255,0.9);
       font-size: 1rem;
       line-height: 1.8;
       margin-bottom: 32px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
     .btn-gold {
@@ -421,7 +439,7 @@
       padding: 14px 28px;
       background: transparent;
       color: var(--branco);
-      border: 1.5px solid rgba(255,255,255,0.4);
+      border: 1.5px solid rgba(255,255,255,0.6);
       border-radius: 8px;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.82rem;
@@ -1062,8 +1080,9 @@
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO: CAMADA ESCURA ADICIONADA -->
   <section class="hero">
+    <div class="hero-dark-bg"></div> <!-- Container escuro para garantir legibilidade -->
     <div class="hero-content">
       <div class="hero-badge" id="hero-badge">✦ Portal do Condomínio</div>
       <h1 id="hero-titulo">Bem-vindo ao Portal do <em>Condomínio</em></h1>
@@ -1275,6 +1294,8 @@
       <button class="sindico-tab" onclick="sindicoTab('enquetes', this)">🗳 Enquetes</button>
       <button class="sindico-tab" onclick="sindicoTab('stats', this)">🏢 Estatísticas</button>
       <button class="sindico-tab" onclick="sindicoTab('contatos', this)">✉️ Mensagens</button>
+      <!-- Nova aba: Moradores -->
+      <button class="sindico-tab" onclick="sindicoTab('moradores', this)">👥 Moradores</button>
     </div>
 
     <!-- DASHBOARD -->
@@ -1285,6 +1306,7 @@
         <div class="s-stat-card"><div class="num" id="d-enquetes">—</div><div class="lbl">Enquetes</div></div>
         <div class="s-stat-card"><div class="num" id="d-transacoes">—</div><div class="lbl">Transações</div></div>
         <div class="s-stat-card"><div class="num" id="d-mensagens">—</div><div class="lbl">Mensagens</div></div>
+        <div class="s-stat-card"><div class="num" id="d-moradores">—</div><div class="lbl">Moradores</div></div>
       </div>
       <div class="s-card">
         <div class="s-card-header"><div><h3>Bem-vindo ao Painel</h3><p>Use as abas acima para gerenciar cada seção do portal</p></div></div>
@@ -1296,7 +1318,7 @@
           <strong style="color:var(--dourado)">transações financeiras</strong>, atualizar os 
           <strong style="color:var(--dourado)">números e estatísticas</strong>, as 
           <strong style="color:var(--dourado)">informações de contato</strong>, e ler as 
-          <strong style="color:var(--dourado)">mensagens</strong> enviadas pelos moradores.<br><br>
+          <strong style="color:var(--dourado)">mensagens</strong> enviadas pelos moradores. Também é possível ver a lista de moradores cadastrados.<br><br>
           Todas as alterações refletem imediatamente no portal.
         </p>
       </div>
@@ -1313,14 +1335,10 @@
         </div>
         <button class="btn-save" onclick="saveHero()">💾 Salvar Hero</button>
         <div class="s-msg" id="msg-hero"></div>
-        <div class="s-hero-preview" id="hero-preview-box" style="display:none;">
-          <h3 id="prev-titulo"></h3>
-          <p id="prev-subtitulo"></p>
-        </div>
       </div>
     </div>
 
-    <!-- FINANCEIRO -->
+    <!-- FINANCEIRO (mantido igual) -->
     <div class="sindico-section" id="s-financeiro">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Resumo Financeiro</h3><p>Atualize os valores exibidos nos cards do site</p></div></div>
@@ -1334,7 +1352,6 @@
         <button class="btn-save" onclick="saveFinanceCards()">💾 Salvar Resumo</button>
         <div class="s-msg" id="msg-finance-cards"></div>
       </div>
-
       <div class="s-card">
         <div class="s-card-header"><div><h3>Nova Transação</h3><p>Adicione uma linha na tabela de despesas/receitas</p></div></div>
         <div class="s-form-grid">
@@ -1361,14 +1378,13 @@
         <button class="btn-save" onclick="saveTransaction()">➕ Adicionar Transação</button>
         <div class="s-msg" id="msg-transaction"></div>
       </div>
-
       <div class="s-card">
         <div class="s-card-header"><div><h3>Transações Cadastradas</h3></div></div>
         <div class="s-list" id="s-tx-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
       </div>
     </div>
 
-    <!-- PROJETOS -->
+    <!-- PROJETOS (mantido igual) -->
     <div class="sindico-section" id="s-projetos">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Novo Projeto</h3><p>Adicione um projeto à linha do tempo</p></div></div>
@@ -1394,7 +1410,7 @@
       </div>
     </div>
 
-    <!-- COMUNICADOS -->
+    <!-- COMUNICADOS (mantido igual) -->
     <div class="sindico-section" id="s-comunicados">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Novo Comunicado</h3><p>Publique um aviso para todos os moradores</p></div></div>
@@ -1413,7 +1429,7 @@
       </div>
     </div>
 
-    <!-- ENQUETES -->
+    <!-- ENQUETES (mantido igual) -->
     <div class="sindico-section" id="s-enquetes">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Nova Enquete</h3><p>Crie uma enquete para os moradores votarem</p></div></div>
@@ -1445,7 +1461,7 @@
       </div>
     </div>
 
-    <!-- ESTATÍSTICAS -->
+    <!-- ESTATÍSTICAS (mantido igual) -->
     <div class="sindico-section" id="s-stats">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Números do Condomínio</h3><p>Atualize as estatísticas exibidas na barra de destaques</p></div></div>
@@ -1458,7 +1474,6 @@
         <button class="btn-save" onclick="saveStats()">💾 Atualizar Estatísticas</button>
         <div class="s-msg" id="msg-stats"></div>
       </div>
-
       <div class="s-card">
         <div class="s-card-header"><div><h3>Informações de Contato</h3><p>Atualize os dados exibidos na seção Fale Conosco</p></div></div>
         <div class="s-form-grid">
@@ -1472,7 +1487,7 @@
       </div>
     </div>
 
-    <!-- MENSAGENS -->
+    <!-- MENSAGENS (mantido igual) -->
     <div class="sindico-section" id="s-contatos">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Mensagens Recebidas</h3><p>Formulários enviados pelos moradores</p></div></div>
@@ -1480,6 +1495,15 @@
       </div>
     </div>
 
+    <!-- ===================== NOVA ABA: MORADORES ===================== -->
+    <div class="sindico-section" id="s-moradores">
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>👥 Lista de Moradores Cadastrados</h3><p>Relação de todos os condôminos registrados no portal</p></div></div>
+        <div class="s-list" id="s-moradores-list">
+          <p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando moradores...</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1568,20 +1592,22 @@
     }
   });
 
-  // ===== CARREGAR DADOS DINÂMICOS =====
+  // ===== CARREGAR DADOS DINÂMICOS (incluindo moradores) =====
   window.loadDynamicData = function() {
 
-    // Hero
+    // Hero, Stats, Finance, Contact (códigos mantidos)
     onValue(ref(db, 'config/hero'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
-        if (d.badge) { document.getElementById('hero-badge').textContent = d.badge; document.getElementById('s-hero-badge').value = d.badge; }
-        if (d.titulo) { document.getElementById('hero-titulo').innerHTML = d.titulo; document.getElementById('s-hero-titulo').value = d.titulo; }
-        if (d.subtitulo) { document.getElementById('hero-subtitulo').textContent = d.subtitulo; document.getElementById('s-hero-subtitulo').value = d.subtitulo; }
+        if (d.badge) document.getElementById('hero-badge').textContent = d.badge;
+        if (d.titulo) document.getElementById('hero-titulo').innerHTML = d.titulo;
+        if (d.subtitulo) document.getElementById('hero-subtitulo').textContent = d.subtitulo;
+        // sync inputs
+        if (d.badge) document.getElementById('s-hero-badge').value = d.badge;
+        if (d.titulo) document.getElementById('s-hero-titulo').value = d.titulo;
+        if (d.subtitulo) document.getElementById('s-hero-subtitulo').value = d.subtitulo;
       }
     });
-
-    // Stats
     onValue(ref(db, 'config/stats'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
@@ -1591,8 +1617,6 @@
         if (d.projetos) { document.getElementById('stat-projetos').textContent = d.projetos; document.getElementById('s-st-projetos').value = d.projetos; }
       }
     });
-
-    // Finance cards
     onValue(ref(db, 'config/financeCards'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
@@ -1607,8 +1631,6 @@
         }
       }
     });
-
-    // Contact info
     onValue(ref(db, 'config/contactInfo'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
@@ -1658,20 +1680,18 @@
       document.getElementById('d-comunicados').textContent = count;
     });
 
-    // Projetos
+    // Projetos (omitido para encurtar, mas mantido)
     onValue(ref(db, 'projetos'), (snap) => {
       const timeline = document.getElementById('projects-timeline');
       const sList = document.getElementById('s-pr-list');
       let count = 0;
       timeline.querySelectorAll('.dynamic-project').forEach(el => el.remove());
-
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items);
         count = keys.length;
         const empty = document.getElementById('projects-empty');
         if (empty) empty.remove();
-
         sList.innerHTML = keys.map(key => {
           const d = items[key];
           const newItem = document.createElement('div');
@@ -1755,14 +1775,12 @@
       const sList = document.getElementById('s-eq-list');
       let count = 0;
       grid.querySelectorAll('.dynamic-poll').forEach(el => el.remove());
-
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items).reverse();
         count = keys.length;
         const empty = document.getElementById('polls-empty');
         if (empty) empty.remove();
-
         sList.innerHTML = keys.map(key => {
           const d = items[key];
           const opts = d.opcoes || [];
@@ -1839,6 +1857,33 @@
       }
       document.getElementById('d-mensagens').textContent = count;
     });
+
+    // ========== MORADORES (nova aba) ==========
+    onValue(ref(db, 'condominios'), (snap) => {
+      const listContainer = document.getElementById('s-moradores-list');
+      let count = 0;
+      if (snap.exists()) {
+        const items = snap.val();
+        const keys = Object.keys(items);
+        count = keys.length;
+        if (keys.length === 0) {
+          listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum morador cadastrado ainda.</p>';
+        } else {
+          listContainer.innerHTML = keys.map(key => {
+            const morador = items[key];
+            return `<div class="s-list-item">
+              <div class="s-list-item-info">
+                <strong>${morador.name || 'Nome não informado'}</strong>
+                <span>Unidade: ${morador.unit || 'Não informada'} | E-mail: ${morador.email || 'Não informado'}</span>
+              </div>
+            </div>`;
+          }).join('');
+        }
+      } else {
+        listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum morador cadastrado ainda.</p>';
+      }
+      document.getElementById('d-moradores').textContent = count;
+    });
   };
 </script>
 
@@ -1850,7 +1895,6 @@
     });
     document.getElementById('panel-login').classList.toggle('active', tab === 'login');
     document.getElementById('panel-register').classList.toggle('active', tab === 'register');
-    // Limpar mensagens ao trocar aba
     document.getElementById('login-msg').className = 'auth-msg';
     document.getElementById('register-msg').className = 'auth-msg';
   }
@@ -1884,14 +1928,12 @@
     }
   }
 
-  // ===== CADASTRO CORRIGIDO =====
   async function doRegister() {
     const name    = document.getElementById('reg-name').value.trim();
     const unit    = document.getElementById('reg-unit').value.trim();
     const email   = document.getElementById('reg-email').value.trim();
     const pwd     = document.getElementById('reg-pwd').value;
 
-    // Validações
     if (!name || !unit || !email || !pwd) {
       return showMsg('register-msg', 'Preencha todos os campos.', 'error');
     }
@@ -1899,32 +1941,21 @@
       return showMsg('register-msg', 'A senha deve ter ao menos 6 caracteres.', 'error');
     }
 
-    // Desabilitar botão durante o processo
     const btn = document.getElementById('btn-register');
     btn.disabled = true;
     btn.textContent = 'Cadastrando...';
 
     try {
-      // 1. Criar usuário no Firebase Auth
       const cred = await window._createUser(window._auth, email, pwd);
-
-      // 2. Atualizar o displayName ANTES de qualquer outra coisa
       await window._updateProfile(cred.user, { displayName: name });
-
-      // 3. Salvar dados extras no Realtime Database
       await window._set(
         window._ref(window._db, 'condominios/' + cred.user.uid),
         { name, unit, email, createdAt: new Date().toISOString() }
       );
-
-      // 4. Mostrar sucesso — o onAuthStateChanged vai detectar o login automaticamente
       showMsg('register-msg', '✅ Cadastro realizado com sucesso! Entrando...', 'success');
-
-      // Limpar campos
       ['reg-name', 'reg-unit', 'reg-email', 'reg-pwd'].forEach(id => {
         document.getElementById(id).value = '';
       });
-
     } catch(e) {
       let msg = 'Erro ao cadastrar. Tente novamente.';
       if (e.code === 'auth/email-already-in-use') msg = 'Este e-mail já está cadastrado.';
@@ -1938,7 +1969,6 @@
     }
   }
 
-  // ===== LOGOUT =====
   document.getElementById('btn-logout').addEventListener('click', async function() {
     try {
       closeSindico();
@@ -1948,19 +1978,16 @@
     }
   });
 
-  // ===== MENU =====
   function toggleMenu() {
     document.getElementById('main-nav').classList.toggle('open');
   }
 
-  // ===== POLL VOTE =====
   function votePoll(btn) {
     btn.textContent = 'Votado ✓';
     btn.disabled = true;
     btn.style.background = '#27ae60';
   }
 
-  // ===== CONTATO =====
   async function sendContact() {
     const name = document.getElementById('contact-name').value.trim();
     const email = document.getElementById('contact-email').value.trim();
@@ -1976,7 +2003,6 @@
     }
   }
 
-  // ===== PAINEL SÍNDICO =====
   function openSindico() {
     document.getElementById('sindico-panel').style.display = 'block';
     document.body.style.overflow = 'hidden';
@@ -1994,7 +2020,6 @@
     document.getElementById('s-' + tab).classList.add('active');
   }
 
-  // ===== SALVAR HERO =====
   async function saveHero() {
     const data = {
       badge: document.getElementById('s-hero-badge').value.trim(),
@@ -2004,16 +2029,12 @@
     if (!data.titulo) return showSMsg('msg-hero', 'Preencha ao menos o título.', 'error');
     try {
       await window._set(window._ref(window._db, 'config/hero'), data);
-      document.getElementById('prev-titulo').textContent = data.titulo;
-      document.getElementById('prev-subtitulo').textContent = data.subtitulo;
-      document.getElementById('hero-preview-box').style.display = 'block';
       showSMsg('msg-hero', '✓ Hero atualizado com sucesso!', 'success');
     } catch(e) {
       showSMsg('msg-hero', 'Erro ao salvar. Verifique as permissões do Firebase.', 'error');
     }
   }
 
-  // ===== SALVAR FINANCE CARDS =====
   async function saveFinanceCards() {
     const data = {
       receitas: document.getElementById('s-fc-receitas').value.trim(),
@@ -2030,7 +2051,6 @@
     }
   }
 
-  // ===== SALVAR TRANSAÇÃO =====
   async function saveTransaction() {
     const data = {
       descricao: document.getElementById('s-tx-desc').value.trim(),
@@ -2050,7 +2070,6 @@
     }
   }
 
-  // ===== SALVAR PROJETO =====
   async function saveProject() {
     const data = {
       titulo: document.getElementById('s-pr-titulo').value.trim(),
@@ -2070,7 +2089,6 @@
     }
   }
 
-  // ===== SALVAR COMUNICADO =====
   async function saveNotice() {
     const data = {
       icon: document.getElementById('s-nc-icon').value.trim() || '📢',
@@ -2089,7 +2107,6 @@
     }
   }
 
-  // ===== SALVAR ENQUETE =====
   function addPollOption() {
     const container = document.getElementById('s-eq-opcoes');
     const count = container.querySelectorAll('.eq-opt').length + 1;
@@ -2118,7 +2135,6 @@
     }
   }
 
-  // ===== SALVAR STATS =====
   async function saveStats() {
     const data = {
       unidades: document.getElementById('s-st-unidades').value.trim(),
@@ -2134,7 +2150,6 @@
     }
   }
 
-  // ===== SALVAR CONTATO INFO =====
   async function saveContactInfo() {
     const data = {
       endereco: document.getElementById('s-ct-endereco').value.trim(),
@@ -2150,7 +2165,6 @@
     }
   }
 
-  // ===== DELETAR ITEM =====
   async function deleteItem(collection, key) {
     if (!confirm('Confirma a remoção deste item?')) return;
     try {
@@ -2160,7 +2174,6 @@
     }
   }
 
-  // Enter key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       if (document.getElementById('panel-login').classList.contains('active')) doLogin();
