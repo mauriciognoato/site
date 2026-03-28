@@ -120,6 +120,12 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
     }
     .login-card {
       background: var(--branco);
@@ -209,6 +215,7 @@
     /* ========== SITE PÚBLICO ========== */
     #page-site {
       display: none;
+      min-height: 100vh;
     }
     #page-site.active {
       display: block;
@@ -800,15 +807,6 @@
     .sindico-section.active {
       display: block;
     }
-    .morador-card {
-      padding: 12px;
-      border-bottom: 1px solid var(--borda);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
 
     /* Responsivo */
     @media (max-width: 768px) {
@@ -1243,9 +1241,14 @@
   async function login() {
     const email = document.getElementById('login-email').value;
     const pass = document.getElementById('login-password').value;
+    if (!email || !pass) {
+      document.getElementById('login-error').textContent = 'Preencha e-mail e senha';
+      return;
+    }
     try {
       await auth.signInWithEmailAndPassword(email, pass);
-      showToast('Login realizado!');
+      showToast('Login realizado com sucesso!');
+      // O redirecionamento será feito pelo onAuthStateChanged
     } catch(e) {
       document.getElementById('login-error').textContent = e.message;
     }
@@ -1271,6 +1274,13 @@
       });
       showToast('Cadastro realizado!');
       document.getElementById('register-error').textContent = '';
+      // Limpar campos
+      document.getElementById('reg-nome').value = '';
+      document.getElementById('reg-casa').value = '';
+      document.getElementById('reg-email').value = '';
+      document.getElementById('reg-password').value = '';
+      // Mudar para aba de login
+      document.querySelectorAll('.login-tab')[0].click();
     } catch(e) {
       document.getElementById('register-error').textContent = e.message;
     }
@@ -1279,7 +1289,7 @@
   async function logout() {
     await auth.signOut();
     showToast('Logout realizado');
-    window.location.reload();
+    // O onAuthStateChanged vai mostrar a tela de login
   }
 
   function toggleMenu() {
@@ -1308,20 +1318,32 @@
     if (el) el.classList.add('active');
   }
 
+  // Monitorar estado de autenticação
   auth.onAuthStateChanged(async (user) => {
+    console.log("Auth state changed:", user);
     currentUser = user;
+    
     if (user) {
+      // Usuário está logado
       const doc = await db.collection('users').doc(user.uid).get();
       const userData = doc.exists ? doc.data() : { nome: user.email.split('@')[0], isAdmin: false };
       isAdmin = userData.isAdmin || false;
+      
+      // Atualizar interface
       document.getElementById('user-name').textContent = userData.nome || user.email.split('@')[0];
       document.getElementById('user-avatar').textContent = (userData.nome || 'U')[0].toUpperCase();
       document.getElementById('sindico-name').textContent = userData.nome || 'Síndico';
       document.getElementById('btn-go-sindico').style.display = isAdmin ? 'block' : 'none';
+      
+      // Esconder login e mostrar site
       document.getElementById('page-login').style.display = 'none';
       document.getElementById('page-site').classList.add('active');
+      
+      // Carregar dados
       carregarDadosPublicos();
+      
     } else {
+      // Usuário não está logado
       document.getElementById('page-site').classList.remove('active');
       document.getElementById('page-sindico').classList.remove('active');
       document.getElementById('page-login').style.display = 'flex';
@@ -1329,202 +1351,222 @@
   });
 
   async function carregarDadosPublicos() {
-    // Financeiro
-    const financeiroSnap = await db.collection('finances').orderBy('mes', 'desc').limit(3).get();
-    let html = `<div class="tab-menu">`;
-    let i = 0;
-    financeiroSnap.forEach(doc => {
-      const d = doc.data();
-      html += `<button class="tab-btn ${i === 0 ? 'active' : ''}" onclick="switchTabDinamico('tab-${doc.id}',this)">${d.mes}</button>`;
-      i++;
-    });
-    html += `</div>`;
-    financeiroSnap.forEach((doc, idx) => {
-      const d = doc.data();
-      const saldo = d.receitas - d.despesas;
-      html += `<div id="tab-${doc.id}" class="tab-content ${idx === 0 ? 'active' : ''}">
-        <div class="finance-grid">
-          <div class="finance-box"><div class="finance-box-header receita">📈 Receitas</div><div class="finance-total">R$ ${d.receitas.toFixed(2)}</div></div>
-          <div class="finance-box"><div class="finance-box-header despesa">📉 Despesas</div><div class="finance-total">R$ ${d.despesas.toFixed(2)}</div></div>
-        </div>
-        <div class="saldo-bar"><div>Saldo do período</div><div class="saldo-valor">R$ ${saldo.toFixed(2)}</div></div>
-      </div>`;
-    });
-    if (financeiroSnap.empty) html = '<p>Nenhum dado financeiro disponível.</p>';
-    document.getElementById('public-financeiro').innerHTML = html;
-
-    // Projetos
-    const projetosSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
-    let projHtml = '';
-    projetosSnap.forEach(doc => {
-      const p = doc.data();
-      let statusClass = 'status-andamento';
-      let statusText = 'Em andamento';
-      if (p.status === 'concluido') { statusClass = 'status-concluido'; statusText = 'Concluído'; }
-      if (p.status === 'planejado') { statusClass = 'status-planejado'; statusText = 'Planejado'; }
-      projHtml += `<div class="project-card">
-        <span class="project-status ${statusClass}">${statusText}</span>
-        <h3>${p.titulo}</h3>
-        <p>${p.descricao}</p>
-        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progresso}%"></div></div>
-        <div class="progress-label">${p.progresso}%</div>
-      </div>`;
-    });
-    document.getElementById('public-projetos').innerHTML = projHtml || '<p>Nenhum projeto cadastrado.</p>';
-
-    // Enquetes
-    const enquetesSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
-    let pollHtml = '';
-    for (const doc of enquetesSnap.docs) {
-      const p = doc.data();
-      const totalVotos = p.totalVotos || 0;
-      const jaVotou = currentUser && p.votos && p.votos[currentUser.uid];
-      pollHtml += `<div class="poll-card">
-        <h3>📊 ${p.titulo}</h3>
-        <p>${p.descricao || ''}</p>`;
-      p.opcoes.forEach(opt => {
-        const votos = p.votos?.[opt] || 0;
-        const percent = totalVotos > 0 ? (votos / totalVotos * 100).toFixed(1) : 0;
-        pollHtml += `<div class="poll-option">
-          <span class="poll-option-text">${opt}</span>
-          <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:${percent}%">${percent}%</div></div>
+    try {
+      // Financeiro
+      const financeiroSnap = await db.collection('finances').orderBy('mes', 'desc').limit(3).get();
+      let html = `<div class="tab-menu">`;
+      let i = 0;
+      financeiroSnap.forEach(doc => {
+        const d = doc.data();
+        html += `<button class="tab-btn ${i === 0 ? 'active' : ''}" onclick="switchTabDinamico('tab-${doc.id}',this)">${d.mes}</button>`;
+        i++;
+      });
+      html += `</div>`;
+      financeiroSnap.forEach((doc, idx) => {
+        const d = doc.data();
+        const saldo = d.receitas - d.despesas;
+        html += `<div id="tab-${doc.id}" class="tab-content ${idx === 0 ? 'active' : ''}">
+          <div class="finance-grid">
+            <div class="finance-box"><div class="finance-box-header receita">📈 Receitas</div><div class="finance-total">R$ ${d.receitas.toFixed(2)}</div></div>
+            <div class="finance-box"><div class="finance-box-header despesa">📉 Despesas</div><div class="finance-total">R$ ${d.despesas.toFixed(2)}</div></div>
+          </div>
+          <div class="saldo-bar"><div>Saldo do período</div><div class="saldo-valor">R$ ${saldo.toFixed(2)}</div></div>
         </div>`;
       });
-      pollHtml += `<p style="font-size:0.7rem;color:#888;margin-top:10px">🗳️ ${totalVotos} votos · Encerra em ${new Date(p.endDate).toLocaleDateString()}</p>`;
-      if (currentUser && !jaVotou && new Date(p.endDate) > new Date()) {
-        pollHtml += `<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">${p.opcoes.map(opt => `<button class="btn-secondary btn-sm" onclick="votarEnquete('${doc.id}','${opt}')">${opt}</button>`).join('')}</div>`;
-      } else if (jaVotou) {
-        pollHtml += `<p style="color:var(--verde);font-size:0.75rem">✓ Você já votou nesta enquete</p>`;
-      }
-      pollHtml += `<div class="comments-section"><div id="coments-${doc.id}"></div>`;
-      if (currentUser) {
-        pollHtml += `<div class="comment-form"><input id="coment-${doc.id}" placeholder="Deixe seu comentário..."/><button class="btn-secondary btn-sm" onclick="comentarEnquete('${doc.id}')">Enviar</button></div>`;
-      }
-      pollHtml += `</div></div>`;
-      carregarComentarios(doc.id);
-    }
-    document.getElementById('public-enquetes').innerHTML = pollHtml || '<p>Nenhuma enquete ativa.</p>';
+      if (financeiroSnap.empty) html = '<p>Nenhum dado financeiro disponível.</p>';
+      document.getElementById('public-financeiro').innerHTML = html;
 
-    // Documentos
-    const docsSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
-    let docsHtml = '';
-    docsSnap.forEach(doc => {
-      const d = doc.data();
-      docsHtml += `<div class="doc-card">
-        <div class="doc-icon">📄</div>
-        <div>
-          <h4>${d.titulo}</h4>
-          <p>${d.descricao}</p>
-          <a href="${d.url}" target="_blank">Baixar PDF →</a>
-        </div>
-      </div>`;
-    });
-    document.getElementById('public-documentos').innerHTML = docsHtml || '<p>Nenhum documento disponível.</p>';
+      // Projetos
+      const projetosSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
+      let projHtml = '';
+      projetosSnap.forEach(doc => {
+        const p = doc.data();
+        let statusClass = 'status-andamento';
+        let statusText = 'Em andamento';
+        if (p.status === 'concluido') { statusClass = 'status-concluido'; statusText = 'Concluído'; }
+        if (p.status === 'planejado') { statusClass = 'status-planejado'; statusText = 'Planejado'; }
+        projHtml += `<div class="project-card">
+          <span class="project-status ${statusClass}">${statusText}</span>
+          <h3>${p.titulo}</h3>
+          <p>${p.descricao}</p>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progresso}%"></div></div>
+          <div class="progress-label">${p.progresso}%</div>
+        </div>`;
+      });
+      document.getElementById('public-projetos').innerHTML = projHtml || '<p>Nenhum projeto cadastrado.</p>';
+
+      // Enquetes
+      const enquetesSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
+      let pollHtml = '';
+      for (const doc of enquetesSnap.docs) {
+        const p = doc.data();
+        const totalVotos = p.totalVotos || 0;
+        const jaVotou = currentUser && p.votos && p.votos[currentUser.uid];
+        pollHtml += `<div class="poll-card">
+          <h3>📊 ${p.titulo}</h3>
+          <p>${p.descricao || ''}</p>`;
+        p.opcoes.forEach(opt => {
+          const votos = p.votos?.[opt] || 0;
+          const percent = totalVotos > 0 ? (votos / totalVotos * 100).toFixed(1) : 0;
+          pollHtml += `<div class="poll-option">
+            <span class="poll-option-text">${opt}</span>
+            <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:${percent}%">${percent}%</div></div>
+          </div>`;
+        });
+        pollHtml += `<p style="font-size:0.7rem;color:#888;margin-top:10px">🗳️ ${totalVotos} votos · Encerra em ${new Date(p.endDate).toLocaleDateString()}</p>`;
+        if (currentUser && !jaVotou && new Date(p.endDate) > new Date()) {
+          pollHtml += `<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">${p.opcoes.map(opt => `<button class="btn-secondary btn-sm" onclick="votarEnquete('${doc.id}','${opt}')">${opt}</button>`).join('')}</div>`;
+        } else if (jaVotou) {
+          pollHtml += `<p style="color:var(--verde);font-size:0.75rem">✓ Você já votou nesta enquete</p>`;
+        }
+        pollHtml += `<div class="comments-section"><div id="coments-${doc.id}"></div>`;
+        if (currentUser) {
+          pollHtml += `<div class="comment-form"><input id="coment-${doc.id}" placeholder="Deixe seu comentário..."/><button class="btn-secondary btn-sm" onclick="comentarEnquete('${doc.id}')">Enviar</button></div>`;
+        }
+        pollHtml += `</div></div>`;
+        carregarComentarios(doc.id);
+      }
+      document.getElementById('public-enquetes').innerHTML = pollHtml || '<p>Nenhuma enquete ativa.</p>';
+
+      // Documentos
+      const docsSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
+      let docsHtml = '';
+      docsSnap.forEach(doc => {
+        const d = doc.data();
+        docsHtml += `<div class="doc-card">
+          <div class="doc-icon">📄</div>
+          <div>
+            <h4>${d.titulo}</h4>
+            <p>${d.descricao}</p>
+            <a href="${d.url}" target="_blank">Baixar PDF →</a>
+          </div>
+        </div>`;
+      });
+      document.getElementById('public-documentos').innerHTML = docsHtml || '<p>Nenhum documento disponível.</p>';
+    } catch (error) {
+      console.error("Erro ao carregar dados:", error);
+    }
   }
 
   async function carregarComentarios(pollId) {
-    const snap = await db.collection(`polls/${pollId}/comments`).orderBy('createdAt', 'desc').get();
-    const container = document.getElementById(`coments-${pollId}`);
-    if (!container) return;
-    container.innerHTML = '';
-    snap.forEach(doc => {
-      const c = doc.data();
-      container.innerHTML += `<div class="comment"><strong>${c.userNome}</strong><br>${c.texto}</div>`;
-    });
+    try {
+      const snap = await db.collection(`polls/${pollId}/comments`).orderBy('createdAt', 'desc').get();
+      const container = document.getElementById(`coments-${pollId}`);
+      if (!container) return;
+      container.innerHTML = '';
+      snap.forEach(doc => {
+        const c = doc.data();
+        container.innerHTML += `<div class="comment"><strong>${c.userNome}</strong><br>${c.texto}</div>`;
+      });
+    } catch (error) {
+      console.error("Erro ao carregar comentários:", error);
+    }
   }
 
   async function votarEnquete(pollId, option) {
     if (!currentUser) { showToast('Faça login para votar'); return; }
-    const pollRef = db.collection('polls').doc(pollId);
-    const pollDoc = await pollRef.get();
-    const poll = pollDoc.data();
-    if (poll.votos && poll.votos[currentUser.uid]) { showToast('Você já votou'); return; }
-    const newVotos = { ...poll.votos, [currentUser.uid]: option };
-    newVotos[option] = (newVotos[option] || 0) + 1;
-    await pollRef.update({ votos: newVotos, totalVotos: (poll.totalVotos || 0) + 1 });
-    showToast('Voto registrado!');
-    carregarDadosPublicos();
+    try {
+      const pollRef = db.collection('polls').doc(pollId);
+      const pollDoc = await pollRef.get();
+      const poll = pollDoc.data();
+      if (poll.votos && poll.votos[currentUser.uid]) { showToast('Você já votou'); return; }
+      const newVotos = { ...poll.votos, [currentUser.uid]: option };
+      newVotos[option] = (newVotos[option] || 0) + 1;
+      await pollRef.update({ votos: newVotos, totalVotos: (poll.totalVotos || 0) + 1 });
+      showToast('Voto registrado!');
+      carregarDadosPublicos();
+    } catch (error) {
+      showToast('Erro ao votar: ' + error.message);
+    }
   }
 
   async function comentarEnquete(pollId) {
     const texto = document.getElementById(`coment-${pollId}`).value;
     if (!texto.trim()) return;
-    await db.collection(`polls/${pollId}/comments`).add({
-      texto,
-      userId: currentUser.uid,
-      userNome: currentUser.email.split('@')[0],
-      createdAt: new Date()
-    });
-    document.getElementById(`coment-${pollId}`).value = '';
-    carregarComentarios(pollId);
+    try {
+      await db.collection(`polls/${pollId}/comments`).add({
+        texto,
+        userId: currentUser.uid,
+        userNome: currentUser.email.split('@')[0],
+        createdAt: new Date()
+      });
+      document.getElementById(`coment-${pollId}`).value = '';
+      carregarComentarios(pollId);
+    } catch (error) {
+      showToast('Erro ao enviar comentário');
+    }
   }
 
   async function carregarDadosAdmin() {
-    // Estatísticas
-    const usersSnap = await db.collection('users').get();
-    const totalMoradores = usersSnap.size;
-    const projetosSnap = await db.collection('projects').get();
-    const financeiroSnap = await db.collection('finances').orderBy('mes', 'desc').limit(1).get();
-    let ultimoSaldo = 0;
-    if (!financeiroSnap.empty) {
-      const ultimo = financeiroSnap.docs[0].data();
-      ultimoSaldo = ultimo.receitas - ultimo.despesas;
+    try {
+      // Estatísticas
+      const usersSnap = await db.collection('users').get();
+      const totalMoradores = usersSnap.size;
+      const projetosSnap = await db.collection('projects').get();
+      const financeiroSnap = await db.collection('finances').orderBy('mes', 'desc').limit(1).get();
+      let ultimoSaldo = 0;
+      if (!financeiroSnap.empty) {
+        const ultimo = financeiroSnap.docs[0].data();
+        ultimoSaldo = ultimo.receitas - ultimo.despesas;
+      }
+      document.getElementById('admin-stats').innerHTML = `
+        <div class="grid2">
+          <div class="stat-card"><div class="stat-number">${totalMoradores}</div><div>Moradores Cadastrados</div></div>
+          <div class="stat-card"><div class="stat-number">${projetosSnap.size}</div><div>Projetos</div></div>
+          <div class="stat-card"><div class="stat-number">R$ ${ultimoSaldo.toFixed(0)}</div><div>Último Saldo</div></div>
+          <div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div>
+        </div>
+      `;
+
+      // Histórico Financeiro
+      const histSnap = await db.collection('finances').orderBy('mes', 'desc').get();
+      let histHtml = ' <table> <tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr>';
+      histSnap.forEach(doc => {
+        const d = doc.data();
+        histHtml += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas - d.despesas).toFixed(2)}</td></tr>`;
+      });
+      histHtml += '</table>';
+      document.getElementById('historico-financeiro').innerHTML = histHtml || '<p>Nenhum dado</p>';
+
+      // Projetos
+      const projSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
+      let projList = '';
+      projSnap.forEach(doc => {
+        const p = doc.data();
+        projList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.progresso}% - ${p.status}</span><button class="btn-danger btn-sm" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
+      });
+      document.getElementById('lista-projetos').innerHTML = projList || '<p>Nenhum projeto</p>';
+
+      // Enquetes
+      const pollSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
+      let pollList = '';
+      pollSnap.forEach(doc => {
+        const p = doc.data();
+        pollList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.totalVotos || 0} votos - Encerra: ${new Date(p.endDate).toLocaleDateString()}</span><button class="btn-danger btn-sm" onclick="deletarEnquete('${doc.id}')">Excluir</button></div>`;
+      });
+      document.getElementById('lista-enquetes').innerHTML = pollList || '<p>Nenhuma enquete</p>';
+
+      // Documentos
+      const docsSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
+      let docsList = '';
+      docsSnap.forEach(doc => {
+        const d = doc.data();
+        docsList += `<div class="document-item"><span><strong>${d.titulo}</strong> - ${d.descricao}</span><button class="btn-danger btn-sm" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
+      });
+      document.getElementById('lista-documentos').innerHTML = docsList || '<p>Nenhum documento</p>';
+
+      // Moradores
+      const moradoresSnap = await db.collection('users').orderBy('casa').get();
+      let moradoresList = '<div style="overflow-x:auto"> <table> <tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr>';
+      moradoresSnap.forEach(doc => {
+        const u = doc.data();
+        moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? '✓ Síndico' : 'Condômino'}</td></tr>`;
+      });
+      moradoresList += '</table></div>';
+      document.getElementById('lista-moradores').innerHTML = moradoresList || '<p>Nenhum morador cadastrado</p>';
+    } catch (error) {
+      console.error("Erro ao carregar dados admin:", error);
     }
-    document.getElementById('admin-stats').innerHTML = `
-      <div class="grid2">
-        <div class="stat-card"><div class="stat-number">${totalMoradores}</div><div>Moradores Cadastrados</div></div>
-        <div class="stat-card"><div class="stat-number">${projetosSnap.size}</div><div>Projetos</div></div>
-        <div class="stat-card"><div class="stat-number">R$ ${ultimoSaldo.toFixed(0)}</div><div>Último Saldo</div></div>
-        <div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div>
-      </div>
-    `;
-
-    // Histórico Financeiro
-    const histSnap = await db.collection('finances').orderBy('mes', 'desc').get();
-    let histHtml = '<table><tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr>';
-    histSnap.forEach(doc => {
-      const d = doc.data();
-      histHtml += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas - d.despesas).toFixed(2)}</td></tr>`;
-    });
-    histHtml += '</table>';
-    document.getElementById('historico-financeiro').innerHTML = histHtml || '<p>Nenhum dado</p>';
-
-    // Projetos
-    const projSnap = await db.collection('projects').orderBy('createdAt', 'desc').get();
-    let projList = '';
-    projSnap.forEach(doc => {
-      const p = doc.data();
-      projList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.progresso}% - ${p.status}</span><button class="btn-danger btn-sm" onclick="deletarProjeto('${doc.id}')">Excluir</button></div>`;
-    });
-    document.getElementById('lista-projetos').innerHTML = projList || '<p>Nenhum projeto</p>';
-
-    // Enquetes
-    const pollSnap = await db.collection('polls').orderBy('createdAt', 'desc').get();
-    let pollList = '';
-    pollSnap.forEach(doc => {
-      const p = doc.data();
-      pollList += `<div class="document-item"><span><strong>${p.titulo}</strong> - ${p.totalVotos || 0} votos - Encerra: ${new Date(p.endDate).toLocaleDateString()}</span><button class="btn-danger btn-sm" onclick="deletarEnquete('${doc.id}')">Excluir</button></div>`;
-    });
-    document.getElementById('lista-enquetes').innerHTML = pollList || '<p>Nenhuma enquete</p>';
-
-    // Documentos
-    const docsSnap = await db.collection('documents').orderBy('createdAt', 'desc').get();
-    let docsList = '';
-    docsSnap.forEach(doc => {
-      const d = doc.data();
-      docsList += `<div class="document-item"><span><strong>${d.titulo}</strong> - ${d.descricao}</span><button class="btn-danger btn-sm" onclick="deletarDocumento('${doc.id}')">Excluir</button></div>`;
-    });
-    document.getElementById('lista-documentos').innerHTML = docsList || '<p>Nenhum documento</p>';
-
-    // Moradores
-    const moradoresSnap = await db.collection('users').orderBy('casa').get();
-    let moradoresList = '<div style="overflow-x:auto"><table><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr>';
-    moradoresSnap.forEach(doc => {
-      const u = doc.data();
-      moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? '✓ Síndico' : 'Condômino'}</td></tr>`;
-    });
-    moradoresList += '</table></div>';
-    document.getElementById('lista-moradores').innerHTML = moradoresList || '<p>Nenhum morador cadastrado</p>';
   }
 
   async function salvarFinanceiro() {
@@ -1532,13 +1574,17 @@
     const receitas = parseFloat(document.getElementById('fin-receitas').value);
     const despesas = parseFloat(document.getElementById('fin-despesas').value);
     if (!mes || isNaN(receitas) || isNaN(despesas)) return showToast('Preencha todos os campos');
-    await db.collection('finances').doc(mes).set({ mes, receitas, despesas, detalhes: document.getElementById('fin-detalhes').value, updatedAt: new Date() });
-    showToast('Dados financeiros salvos!');
-    carregarDadosPublicos();
-    carregarDadosAdmin();
-    document.getElementById('fin-mes').value = '';
-    document.getElementById('fin-receitas').value = '';
-    document.getElementById('fin-despesas').value = '';
+    try {
+      await db.collection('finances').doc(mes).set({ mes, receitas, despesas, detalhes: document.getElementById('fin-detalhes').value, updatedAt: new Date() });
+      showToast('Dados financeiros salvos!');
+      carregarDadosPublicos();
+      carregarDadosAdmin();
+      document.getElementById('fin-mes').value = '';
+      document.getElementById('fin-receitas').value = '';
+      document.getElementById('fin-despesas').value = '';
+    } catch (error) {
+      showToast('Erro ao salvar: ' + error.message);
+    }
   }
 
   async function salvarProjeto() {
@@ -1547,20 +1593,28 @@
     const progresso = parseInt(document.getElementById('proj-progresso').value);
     const descricao = document.getElementById('proj-descricao').value;
     if (!titulo) return showToast('Informe o título');
-    await db.collection('projects').add({ titulo, status, progresso, descricao, createdAt: new Date() });
-    showToast('Projeto salvo!');
-    carregarDadosPublicos();
-    carregarDadosAdmin();
-    document.getElementById('proj-titulo').value = '';
-    document.getElementById('proj-progresso').value = '';
-    document.getElementById('proj-descricao').value = '';
+    try {
+      await db.collection('projects').add({ titulo, status, progresso, descricao, createdAt: new Date() });
+      showToast('Projeto salvo!');
+      carregarDadosPublicos();
+      carregarDadosAdmin();
+      document.getElementById('proj-titulo').value = '';
+      document.getElementById('proj-progresso').value = '';
+      document.getElementById('proj-descricao').value = '';
+    } catch (error) {
+      showToast('Erro ao salvar projeto');
+    }
   }
 
   async function deletarProjeto(id) {
-    await db.collection('projects').doc(id).delete();
-    carregarDadosPublicos();
-    carregarDadosAdmin();
-    showToast('Projeto removido');
+    try {
+      await db.collection('projects').doc(id).delete();
+      carregarDadosPublicos();
+      carregarDadosAdmin();
+      showToast('Projeto removido');
+    } catch (error) {
+      showToast('Erro ao deletar');
+    }
   }
 
   async function criarEnquete() {
@@ -1569,20 +1623,28 @@
     const opcoes = document.getElementById('poll-opcoes').value.split(',').map(o => o.trim());
     const endDate = document.getElementById('poll-fim').value;
     if (!titulo || opcoes.length < 2 || !endDate) return showToast('Preencha todos os campos');
-    await db.collection('polls').add({ titulo, descricao: desc, opcoes, endDate: new Date(endDate), votos: {}, totalVotos: 0, createdAt: new Date() });
-    showToast('Enquete criada!');
-    carregarDadosPublicos();
-    carregarDadosAdmin();
-    document.getElementById('poll-titulo').value = '';
-    document.getElementById('poll-desc').value = '';
-    document.getElementById('poll-opcoes').value = '';
+    try {
+      await db.collection('polls').add({ titulo, descricao: desc, opcoes, endDate: new Date(endDate), votos: {}, totalVotos: 0, createdAt: new Date() });
+      showToast('Enquete criada!');
+      carregarDadosPublicos();
+      carregarDadosAdmin();
+      document.getElementById('poll-titulo').value = '';
+      document.getElementById('poll-desc').value = '';
+      document.getElementById('poll-opcoes').value = '';
+    } catch (error) {
+      showToast('Erro ao criar enquete');
+    }
   }
 
   async function deletarEnquete(id) {
-    await db.collection('polls').doc(id).delete();
-    carregarDadosPublicos();
-    carregarDadosAdmin();
-    showToast('Enquete removida');
+    try {
+      await db.collection('polls').doc(id).delete();
+      carregarDadosPublicos();
+      carregarDadosAdmin();
+      showToast('Enquete removida');
+    } catch (error) {
+      showToast('Erro ao deletar');
+    }
   }
 
   async function uploadDocumento() {
@@ -1590,23 +1652,31 @@
     const titulo = document.getElementById('doc-titulo').value;
     const desc = document.getElementById('doc-desc').value;
     if (!file || !titulo) return showToast('Selecione um arquivo e informe o título');
-    const storageRef = storage.ref(`documentos/${Date.now()}_${file.name}`);
-    await storageRef.put(file);
-    const url = await storageRef.getDownloadURL();
-    await db.collection('documents').add({ titulo, descricao: desc, url, createdAt: new Date() });
-    showToast('Documento enviado!');
-    carregarDadosPublicos();
-    carregarDadosAdmin();
-    document.getElementById('doc-titulo').value = '';
-    document.getElementById('doc-desc').value = '';
-    document.getElementById('doc-arquivo').value = '';
+    try {
+      const storageRef = storage.ref(`documentos/${Date.now()}_${file.name}`);
+      await storageRef.put(file);
+      const url = await storageRef.getDownloadURL();
+      await db.collection('documents').add({ titulo, descricao: desc, url, createdAt: new Date() });
+      showToast('Documento enviado!');
+      carregarDadosPublicos();
+      carregarDadosAdmin();
+      document.getElementById('doc-titulo').value = '';
+      document.getElementById('doc-desc').value = '';
+      document.getElementById('doc-arquivo').value = '';
+    } catch (error) {
+      showToast('Erro ao enviar documento');
+    }
   }
 
   async function deletarDocumento(id) {
-    await db.collection('documents').doc(id).delete();
-    carregarDadosPublicos();
-    carregarDadosAdmin();
-    showToast('Documento removido');
+    try {
+      await db.collection('documents').doc(id).delete();
+      carregarDadosPublicos();
+      carregarDadosAdmin();
+      showToast('Documento removido');
+    } catch (error) {
+      showToast('Erro ao deletar');
+    }
   }
 
   function switchTabDinamico(tabId, el) {
