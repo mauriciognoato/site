@@ -40,12 +40,17 @@
 
     /* PÁGINA DE LOGIN */
     .login-page {
-      min-height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+      z-index: 1000;
     }
     .login-card {
       background: var(--branco);
@@ -69,8 +74,13 @@
     .auth-error { color: var(--vermelho); font-size: 0.75rem; margin-top: 8px; }
 
     /* SITE PRINCIPAL */
-    .site-page { display: none; min-height: 100vh; }
-    .site-page.active { display: block; }
+    .site-page {
+      display: none;
+      min-height: 100vh;
+    }
+    .site-page.active {
+      display: block;
+    }
     header { background: var(--azul); position: sticky; top: 0; z-index: 900; }
     .navbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; flex-wrap: wrap; gap: 10px; }
     .navbar-logo { display: flex; align-items: center; gap: 10px; }
@@ -150,8 +160,14 @@
     footer ul li a { color: #a0b0bc; font-size: 0.8rem; }
 
     /* ÁREA DO SÍNDICO */
-    .sindico-page { display: none; min-height: 100vh; background: #f5f7fa; }
-    .sindico-page.active { display: block; }
+    .sindico-page {
+      display: none;
+      min-height: 100vh;
+      background: #f5f7fa;
+    }
+    .sindico-page.active {
+      display: block;
+    }
     .sindico-header { background: var(--azul); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
     .sindico-container { display: flex; }
     .sindico-sidebar { width: 280px; background: var(--azul-escuro); color: white; min-height: calc(100vh - 56px); }
@@ -344,29 +360,39 @@
   }
 
   function switchTab(tab) {
-    document.querySelectorAll('.login-tab').forEach(btn => btn.classList.remove('active'));
+    const tabs = document.querySelectorAll('.login-tab');
+    const formEntrar = document.getElementById('formEntrar');
+    const formCadastrar = document.getElementById('formCadastrar');
+    
     if (tab === 'entrar') {
-      document.querySelectorAll('.login-tab')[0].classList.add('active');
-      document.getElementById('formEntrar').classList.add('active');
-      document.getElementById('formCadastrar').classList.remove('active');
+      tabs[0].classList.add('active');
+      tabs[1].classList.remove('active');
+      formEntrar.classList.add('active');
+      formCadastrar.classList.remove('active');
     } else {
-      document.querySelectorAll('.login-tab')[1].classList.add('active');
-      document.getElementById('formCadastrar').classList.add('active');
-      document.getElementById('formEntrar').classList.remove('active');
+      tabs[1].classList.add('active');
+      tabs[0].classList.remove('active');
+      formCadastrar.classList.add('active');
+      formEntrar.classList.remove('active');
     }
   }
 
   async function fazerLogin() {
     const email = document.getElementById('loginEmail').value;
     const senha = document.getElementById('loginSenha').value;
+    
     if (!email || !senha) {
       document.getElementById('loginError').textContent = 'Preencha e-mail e senha';
       return;
     }
+    
     try {
-      await auth.signInWithEmailAndPassword(email, senha);
-      mostrarToast('Login realizado!');
+      const result = await auth.signInWithEmailAndPassword(email, senha);
+      console.log("Login realizado:", result.user.email);
+      mostrarToast('Login realizado com sucesso!');
+      // O redirecionamento será feito pelo onAuthStateChanged
     } catch(e) {
+      console.error("Erro no login:", e);
       document.getElementById('loginError').textContent = e.message;
     }
   }
@@ -376,18 +402,29 @@
     const casa = document.getElementById('regCasa').value;
     const email = document.getElementById('regEmail').value;
     const senha = document.getElementById('regSenha').value;
+    
     if (!nome || !casa || !email || senha.length < 6) {
       document.getElementById('regError').textContent = 'Preencha todos os campos (senha: mínimo 6)';
       return;
     }
+    
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, senha);
       await db.collection('users').doc(cred.user.uid).set({
-        nome, casa: parseInt(casa), email, isAdmin: false, createdAt: new Date()
+        nome,
+        casa: parseInt(casa),
+        email,
+        isAdmin: false,
+        createdAt: new Date()
       });
       mostrarToast('Cadastro realizado!');
       switchTab('entrar');
       document.getElementById('regError').textContent = '';
+      // Limpar campos
+      document.getElementById('regNome').value = '';
+      document.getElementById('regCasa').value = '';
+      document.getElementById('regEmail').value = '';
+      document.getElementById('regSenha').value = '';
     } catch(e) {
       document.getElementById('regError').textContent = e.message;
     }
@@ -398,50 +435,94 @@
     mostrarToast('Logout realizado');
   }
 
-  function toggleMenu() { document.getElementById('mainNav').classList.toggle('open'); }
-  function toggleSidebar() { document.getElementById('sindicoSidebar').classList.toggle('open'); }
-  function irParaSindico() { 
+  function toggleMenu() {
+    const nav = document.getElementById('mainNav');
+    nav.classList.toggle('open');
+  }
+  
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sindicoSidebar');
+    sidebar.classList.toggle('open');
+  }
+  
+  function irParaSindico() {
     document.getElementById('sitePage').classList.remove('active');
     document.getElementById('sindicoPage').classList.add('active');
     carregarDadosAdmin();
   }
+  
   function irParaSite() {
     document.getElementById('sindicoPage').classList.remove('active');
     document.getElementById('sitePage').classList.add('active');
   }
 
   function mostrarSecao(secao, el) {
-    document.querySelectorAll('.sindico-section').forEach(s => s.classList.remove('active'));
-    document.getElementById('sec' + secao.charAt(0).toUpperCase() + secao.slice(1)).classList.add('active');
+    const secoes = ['painel', 'financeiro', 'projetos', 'enquetes', 'documentos', 'moradores'];
+    secoes.forEach(s => {
+      const sec = document.getElementById('sec' + s.charAt(0).toUpperCase() + s.slice(1));
+      if (sec) sec.classList.remove('active');
+    });
+    const secaoAtiva = document.getElementById('sec' + secao.charAt(0).toUpperCase() + secao.slice(1));
+    if (secaoAtiva) secaoAtiva.classList.add('active');
+    
     document.querySelectorAll('.sidebar-menu li a').forEach(a => a.classList.remove('active'));
     if (el) el.classList.add('active');
   }
 
   // Monitorar autenticação
   auth.onAuthStateChanged(async (user) => {
-    console.log("Auth state changed:", user ? "Logado" : "Deslogado");
-    usuarioAtual = user;
+    console.log("Auth state changed - Usuário:", user ? user.email : "Nenhum");
     
     if (user) {
-      const doc = await db.collection('users').doc(user.uid).get();
-      const dados = doc.exists ? doc.data() : { nome: user.email.split('@')[0], isAdmin: false };
-      isAdmin = dados.isAdmin || false;
+      // Usuário logado
+      usuarioAtual = user;
       
-      document.getElementById('userName').textContent = dados.nome || user.email.split('@')[0];
-      document.getElementById('userAvatar').textContent = (dados.nome || 'U')[0].toUpperCase();
-      document.getElementById('sindicoName').textContent = dados.nome || 'Síndico';
-      document.getElementById('btnSindico').style.display = isAdmin ? 'block' : 'none';
-      
-      // Esconder login e mostrar site
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('sitePage').classList.add('active');
-      
-      carregarDadosPublicos();
+      try {
+        const doc = await db.collection('users').doc(user.uid).get();
+        const dados = doc.exists ? doc.data() : { nome: user.email.split('@')[0], isAdmin: false };
+        isAdmin = dados.isAdmin || false;
+        
+        // Atualizar interface
+        document.getElementById('userName').textContent = dados.nome || user.email.split('@')[0];
+        document.getElementById('userAvatar').textContent = (dados.nome || 'U')[0].toUpperCase();
+        document.getElementById('sindicoName').textContent = dados.nome || 'Síndico';
+        
+        const btnSindico = document.getElementById('btnSindico');
+        if (btnSindico) {
+          btnSindico.style.display = isAdmin ? 'block' : 'none';
+        }
+        
+        // Esconder login e mostrar site
+        const loginPage = document.getElementById('loginPage');
+        const sitePage = document.getElementById('sitePage');
+        
+        if (loginPage) loginPage.style.display = 'none';
+        if (sitePage) {
+          sitePage.classList.add('active');
+          console.log("Site público exibido");
+        }
+        
+        // Carregar dados
+        carregarDadosPublicos();
+        
+      } catch (err) {
+        console.error("Erro ao carregar dados do usuário:", err);
+      }
     } else {
-      // Mostrar login e esconder as outras páginas
-      document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('sitePage').classList.remove('active');
-      document.getElementById('sindicoPage').classList.remove('active');
+      // Usuário deslogado
+      usuarioAtual = null;
+      isAdmin = false;
+      
+      // Mostrar login e esconder outras páginas
+      const loginPage = document.getElementById('loginPage');
+      const sitePage = document.getElementById('sitePage');
+      const sindicoPage = document.getElementById('sindicoPage');
+      
+      if (loginPage) loginPage.style.display = 'flex';
+      if (sitePage) sitePage.classList.remove('active');
+      if (sindicoPage) sindicoPage.classList.remove('active');
+      
+      console.log("Tela de login exibida");
     }
   });
 
@@ -533,24 +614,28 @@
 
   async function votar(pollId, option) {
     if (!usuarioAtual) return mostrarToast('Faça login');
-    const pollRef = db.collection('polls').doc(pollId);
-    const poll = (await pollRef.get()).data();
-    if (poll.votos && poll.votos[usuarioAtual.uid]) return mostrarToast('Você já votou');
-    const newVotos = { ...poll.votos, [usuarioAtual.uid]: option };
-    newVotos[option] = (newVotos[option] || 0) + 1;
-    await pollRef.update({ votos: newVotos, totalVotos: (poll.totalVotos || 0) + 1 });
-    mostrarToast('Voto registrado!');
-    carregarDadosPublicos();
+    try {
+      const pollRef = db.collection('polls').doc(pollId);
+      const poll = (await pollRef.get()).data();
+      if (poll.votos && poll.votos[usuarioAtual.uid]) return mostrarToast('Você já votou');
+      const newVotos = { ...poll.votos, [usuarioAtual.uid]: option };
+      newVotos[option] = (newVotos[option] || 0) + 1;
+      await pollRef.update({ votos: newVotos, totalVotos: (poll.totalVotos || 0) + 1 });
+      mostrarToast('Voto registrado!');
+      carregarDadosPublicos();
+    } catch(e) { console.error(e); }
   }
 
   async function comentar(pollId) {
     const texto = document.getElementById(`comentInput-${pollId}`).value;
     if (!texto.trim()) return;
-    await db.collection(`polls/${pollId}/comments`).add({
-      texto, userId: usuarioAtual.uid, userNome: usuarioAtual.email.split('@')[0], createdAt: new Date()
-    });
-    document.getElementById(`comentInput-${pollId}`).value = '';
-    carregarComentarios(pollId);
+    try {
+      await db.collection(`polls/${pollId}/comments`).add({
+        texto, userId: usuarioAtual.uid, userNome: usuarioAtual.email.split('@')[0], createdAt: new Date()
+      });
+      document.getElementById(`comentInput-${pollId}`).value = '';
+      carregarComentarios(pollId);
+    } catch(e) { console.error(e); }
   }
 
   async function carregarDadosAdmin() {
@@ -560,10 +645,10 @@
       document.getElementById('adminStats').innerHTML = `<div class="grid2"><div class="stat-card"><div class="stat-number">${usersSnap.size}</div><div>Moradores</div></div><div class="stat-card"><div class="stat-number">${projSnap.size}</div><div>Projetos</div></div><div class="stat-card"><div class="stat-number">25</div><div>Casas</div></div></div>`;
 
       const histSnap = await db.collection('finances').orderBy('mes', 'desc').get();
-      let histHtml = '<table><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th> </table>';
+      let histHtml = ' 要  <tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th></tr>';
       histSnap.forEach(doc => {
         const d = doc.data();
-        histHtml += ` <td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td> `;
+        histHtml += `<tr><td>${d.mes}</td><td>R$ ${d.receitas.toFixed(2)}</td><td>R$ ${d.despesas.toFixed(2)}</td><td>R$ ${(d.receitas-d.despesas).toFixed(2)}</td></tr>`;
       });
       histHtml += '</table>';
       document.getElementById('historicoFinanceiro').innerHTML = histHtml;
@@ -593,12 +678,12 @@
       document.getElementById('listaDocumentos').innerHTML = docsList;
 
       const moradoresSnap = await db.collection('users').orderBy('casa').get();
-      let moradoresList = '<table><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr>';
+      let moradoresList = '耒 <thead><tr><th>Casa</th><th>Nome</th><th>E-mail</th><th>Tipo</th></tr></thead><tbody>';
       moradoresSnap.forEach(doc => {
         const u = doc.data();
         moradoresList += `<tr><td>${u.casa || '-'}</td><td>${u.nome || '-'}</td><td>${u.email}</td><td>${u.isAdmin ? 'Síndico' : 'Condômino'}</td></tr>`;
       });
-      moradoresList += '</table>';
+      moradoresList += '</tbody></table>';
       document.getElementById('listaMoradores').innerHTML = moradoresList;
     } catch(e) { console.error(e); }
   }
@@ -621,9 +706,13 @@
     mostrarToast('Projeto salvo!');
     carregarDadosPublicos();
     carregarDadosAdmin();
+    document.getElementById('projTitulo').value = '';
+    document.getElementById('projProgresso').value = '';
+    document.getElementById('projDescricao').value = '';
   }
 
   async function deletarProjeto(id) { await db.collection('projects').doc(id).delete(); carregarDadosPublicos(); carregarDadosAdmin(); mostrarToast('Removido'); }
+  
   async function criarEnquete() {
     const titulo = document.getElementById('pollTitulo').value;
     const opcoes = document.getElementById('pollOpcoes').value.split(',').map(o => o.trim());
@@ -633,8 +722,13 @@
     mostrarToast('Enquete criada!');
     carregarDadosPublicos();
     carregarDadosAdmin();
+    document.getElementById('pollTitulo').value = '';
+    document.getElementById('pollDesc').value = '';
+    document.getElementById('pollOpcoes').value = '';
   }
+  
   async function deletarEnquete(id) { await db.collection('polls').doc(id).delete(); carregarDadosPublicos(); carregarDadosAdmin(); mostrarToast('Removida'); }
+  
   async function uploadDocumento() {
     const file = document.getElementById('docArquivo').files[0];
     const titulo = document.getElementById('docTitulo').value;
@@ -646,16 +740,23 @@
     mostrarToast('Documento enviado!');
     carregarDadosPublicos();
     carregarDadosAdmin();
+    document.getElementById('docTitulo').value = '';
+    document.getElementById('docDesc').value = '';
+    document.getElementById('docArquivo').value = '';
   }
+  
   async function deletarDocumento(id) { await db.collection('documents').doc(id).delete(); carregarDadosPublicos(); carregarDadosAdmin(); mostrarToast('Removido'); }
+  
   function mudarTab(tabId, el) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     el.classList.add('active');
   }
+  
   function enviarContato(e) { e.preventDefault(); mostrarToast('Mensagem enviada!'); }
 
+  // Expor funções globalmente
   window.switchTab = switchTab;
   window.fazerLogin = fazerLogin;
   window.fazerCadastro = fazerCadastro;
