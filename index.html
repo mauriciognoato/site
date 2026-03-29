@@ -71,22 +71,6 @@
       border-radius: 12px;
     }
 
-    .auth-logo-fallback {
-      width: 90px;
-      height: 90px;
-      background: var(--fundo);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-      font-family: 'Roboto', sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--azul);
-      border: 3px solid var(--dourado);
-    }
-
     .auth-header h1 {
       font-family: 'Roboto', sans-serif;
       color: var(--branco);
@@ -278,21 +262,6 @@
 
     .brand img {
       border-radius: 12px;
-    }
-
-    .brand-logo-fb {
-      width: 44px;
-      height: 44px;
-      background: var(--fundo);
-      border-radius: 50%;
-      border: 2px solid var(--dourado);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Roboto', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--azul);
     }
 
     .brand-text { display: flex; flex-direction: column; }
@@ -496,35 +465,91 @@
     }
     .btn-outline-white:hover { border-color: var(--dourado); color: var(--dourado); background: rgba(0,0,0,0.2); }
 
-    /* STATS BAR */
-    .stats-bar { background: var(--branco); border-bottom: 3px solid var(--dourado); }
-    .stats-inner {
+    /* ALERT SCROLLER - NOVO COMPONENTE */
+    .alert-scroller {
+      background: linear-gradient(135deg, var(--azul) 0%, var(--azul-escuro) 100%);
+      border-bottom: 3px solid var(--dourado);
+      overflow: hidden;
+      position: relative;
+    }
+    .scroller-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 24px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      padding: 16px 24px;
+      position: relative;
     }
-    .stat-item {
-      padding: 24px 20px;
+    .scroller-track {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+    .scroller-content {
+      display: inline-block;
+      animation: scrollAlerts 25s linear infinite;
+      white-space: nowrap;
+    }
+    .scroller-content:hover {
+      animation-play-state: paused;
+    }
+    .alert-item {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border-left: 3px solid var(--dourado);
+      padding: 10px 24px;
+      margin-right: 32px;
+      border-radius: 0 8px 8px 0;
+      color: var(--branco);
+      font-size: 0.9rem;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+    }
+    .alert-item i {
+      margin-right: 12px;
+      font-style: normal;
+      font-size: 1.1rem;
+    }
+    .alert-item .alert-date {
+      font-size: 0.7rem;
+      color: var(--dourado);
+      margin-left: 12px;
+      letter-spacing: 0.05em;
+    }
+    @keyframes scrollAlerts {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .scroller-controls {
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+    .scroller-btn {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--dourado);
+      color: var(--dourado);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .scroller-btn:hover {
+      background: var(--dourado);
+      color: var(--azul);
+    }
+    .empty-alerts {
       text-align: center;
-      border-right: 1px solid var(--borda);
-    }
-    .stat-item:last-child { border-right: none; }
-    .stat-number {
-      font-family: 'Roboto', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--azul);
-    }
-    .stat-number span.empty { color: #ccc; font-size: 1rem; font-family: 'Montserrat', sans-serif; font-weight: 400; }
-    .stat-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--azul);
-      font-weight: 600;
-      margin-top: 4px;
+      padding: 20px;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
     }
 
     /* SECTIONS */
@@ -555,24 +580,6 @@
       margin: 16px auto 0;
       border-radius: 2px;
     }
-    .section-subtitle {
-      color: #666;
-      font-size: 0.92rem;
-      line-height: 1.8;
-      max-width: 580px;
-      margin: 16px auto 0;
-    }
-    section:nth-child(even) { background: var(--branco); }
-
-    /* EMPTY STATE */
-    .empty-state {
-      text-align: center;
-      padding: 60px 24px;
-      color: #bbb;
-    }
-    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
-    .empty-state p { font-size: 0.88rem; line-height: 1.7; }
-    .empty-state strong { color: var(--dourado); }
 
     /* FINANCE */
     .finance-grid {
@@ -604,10 +611,7 @@
     .finance-card .amount { font-size: 1.6rem; font-weight: 700; color: var(--azul); font-family: 'Roboto', sans-serif; }
     .finance-card .amount.positive { color: var(--verde); }
     .finance-card .amount.negative { color: var(--vermelho); }
-    .finance-card .amount.empty-val { font-size: 0.88rem; color: #ccc; font-weight: 400; }
     .finance-card p { font-size: 0.82rem; color: #888; margin-top: 4px; }
-    .progress-bar { margin-top: 12px; background: var(--borda); border-radius: 100px; height: 6px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 100px; background: var(--dourado); transition: width 1s ease; }
 
     /* TABLE */
     .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--borda); }
@@ -615,19 +619,12 @@
     thead { background: var(--azul); color: var(--branco); }
     th { padding: 14px 18px; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: left; font-weight: 600; }
     td { padding: 14px 18px; font-size: 0.88rem; border-bottom: 1px solid var(--borda); color: var(--texto); }
-    tr:last-child td { border-bottom: none; }
-    tr:nth-child(even) td { background: var(--fundo); }
-    .badge { display: inline-block; padding: 4px 10px; border-radius: 100px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; }
-    .badge-green { background: #e8f5e9; color: var(--verde); }
-    .badge-yellow { background: #fff8e1; color: var(--amarelo); }
-    .badge-red { background: #fde8e8; color: var(--vermelho); }
-    .badge-blue { background: #e3f2fd; color: var(--azul-info); }
 
     /* POLLS */
     .polls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 24px; }
     .poll-card { background: var(--fundo); border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; }
     .poll-header { background: var(--azul); padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; }
-    .poll-header h3 { color: var(--branco); font-family: 'Roboto', sans-serif; font-size: 1rem; font-weight: 700; }
+    .poll-header h3 { color: var(--branco); font-size: 1rem; font-weight: 700; }
     .poll-header .poll-status { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dourado); font-weight: 600; }
     .poll-body { padding: 22px; }
     .poll-question { font-size: 0.88rem; color: var(--texto); margin-bottom: 18px; line-height: 1.6; font-weight: 500; }
@@ -643,9 +640,7 @@
     .poll-voters-list span { display: inline-block; background: var(--creme); padding: 2px 6px; border-radius: 12px; margin: 2px 4px 2px 0; font-size: 0.65rem; }
     .poll-footer { padding: 14px 22px; border-top: 1px solid var(--borda); display: flex; align-items: center; justify-content: space-between; }
     .poll-votes { font-size: 0.78rem; color: #888; }
-    .btn-sm { padding: 8px 18px; background: var(--azul); color: var(--branco); border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
-    .btn-sm:hover { background: #254057; }
-    .btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-sm { padding: 8px 18px; background: var(--azul); color: var(--branco); border: none; border-radius: 6px; cursor: pointer; }
 
     /* PROJECTS */
     .projects-timeline { position: relative; padding-left: 40px; }
@@ -662,12 +657,11 @@
 
     /* NOTICES */
     .notices-list { display: flex; flex-direction: column; gap: 16px; }
-    .notice-card { background: var(--branco); border: 1px solid var(--borda); border-left: 4px solid var(--dourado); border-radius: 0 12px 12px 0; padding: 20px 24px; display: flex; align-items: flex-start; gap: 18px; transition: transform 0.2s; }
-    .notice-card:hover { transform: translateX(4px); }
-    .notice-icon { width: 42px; height: 42px; background: var(--fundo); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; border: 1px solid var(--borda); }
+    .notice-card { background: var(--branco); border: 1px solid var(--borda); border-left: 4px solid var(--dourado); border-radius: 0 12px 12px 0; padding: 20px 24px; display: flex; align-items: flex-start; gap: 18px; }
+    .notice-icon { width: 42px; height: 42px; background: var(--fundo); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
     .notice-content h4 { font-family: 'Roboto', sans-serif; font-size: 1rem; font-weight: 700; color: var(--azul); margin-bottom: 4px; }
     .notice-content p { font-size: 0.83rem; color: #666; line-height: 1.6; }
-    .notice-content .notice-date { font-size: 0.72rem; color: #aaa; margin-top: 6px; letter-spacing: 0.06em; }
+    .notice-content .notice-date { font-size: 0.72rem; color: #aaa; margin-top: 6px; }
 
     /* CONTACT */
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
@@ -679,7 +673,7 @@
     .contact-form { display: flex; flex-direction: column; gap: 16px; }
     .contact-form input, .contact-form textarea {
       padding: 13px 16px; border: 1.5px solid var(--borda); border-radius: 8px; background: var(--branco);
-      font-family: 'Montserrat', sans-serif; font-size: 0.88rem; color: var(--texto); outline: none; transition: border-color 0.2s; resize: vertical;
+      font-family: 'Montserrat', sans-serif; font-size: 0.88rem; color: var(--texto); outline: none;
     }
     .contact-form input:focus, .contact-form textarea:focus { border-color: var(--dourado); }
 
@@ -743,13 +737,7 @@
       border: 1.5px solid rgba(255,255,255,0.3);
       color: rgba(255,255,255,0.7);
       border-radius: 8px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.2s;
     }
     .btn-fechar-sindico:hover { border-color: var(--dourado); color: var(--dourado); }
 
@@ -777,7 +765,6 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.2s;
       text-align: center;
     }
     .sindico-tab:hover { color: rgba(255,255,255,0.8); }
@@ -846,15 +833,11 @@
       font-size: 0.85rem;
       color: var(--branco);
       outline: none;
-      transition: border-color 0.2s;
       resize: vertical;
     }
-    .s-form-group input::placeholder,
-    .s-form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
     .s-form-group input:focus,
     .s-form-group textarea:focus,
     .s-form-group select:focus { border-color: var(--dourado); }
-    .s-form-group select option { background: var(--azul-escuro); color: var(--branco); }
 
     .s-form-full { grid-column: 1 / -1; }
 
@@ -864,17 +847,13 @@
       color: var(--azul-escuro);
       border: none;
       border-radius: 8px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.2s;
       margin-top: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
     .btn-save:hover { background: var(--dourado-hover); transform: translateY(-1px); }
-    .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
     .btn-danger {
       padding: 8px 16px;
@@ -882,25 +861,10 @@
       border: 1px solid rgba(192,57,43,0.5);
       color: #e74c3c;
       border-radius: 6px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.2s;
+      font-size: 0.72rem;
     }
     .btn-danger:hover { background: rgba(192,57,43,0.15); }
-
-    .s-msg {
-      margin-top: 14px;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      display: none;
-    }
-    .s-msg.success { background: rgba(39,174,96,0.2); color: #2ecc71; border: 1px solid rgba(39,174,96,0.3); display: block; }
-    .s-msg.error { background: rgba(192,57,43,0.2); color: #e74c3c; border: 1px solid rgba(192,57,43,0.3); display: block; }
 
     .s-list { margin-top: 20px; }
     .s-list-item {
@@ -913,11 +877,8 @@
       border: 1px solid rgba(255,255,255,0.07);
       border-radius: 8px;
       margin-bottom: 10px;
-      transition: background 0.2s;
     }
-    .s-list-item:hover { background: rgba(255,255,255,0.06); }
-    .s-list-item-info { flex: 1; }
-    .s-list-item-info strong { color: var(--branco); font-size: 0.88rem; display: block; margin-bottom: 3px; }
+    .s-list-item-info strong { color: var(--branco); display: block; }
     .s-list-item-info span { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
     .s-list-item-actions { display: flex; gap: 8px; flex-shrink: 0; }
 
@@ -948,25 +909,6 @@
       margin-top: 4px;
     }
 
-    .s-contact-item {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 18px 22px;
-      margin-bottom: 12px;
-    }
-    .s-contact-item .s-contact-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .s-contact-item .s-contact-meta strong { color: var(--dourado); font-size: 0.88rem; }
-    .s-contact-item .s-contact-meta span { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
-    .s-contact-item .s-contact-subject { color: var(--branco); font-weight: 600; font-size: 0.88rem; margin-bottom: 6px; }
-    .s-contact-item .s-contact-msg { color: rgba(255,255,255,0.6); font-size: 0.82rem; line-height: 1.6; }
-
     .poll-option-row {
       display: flex;
       gap: 10px;
@@ -980,26 +922,9 @@
       border: 1px dashed rgba(196,167,118,0.4);
       color: var(--dourado);
       border-radius: 6px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
       cursor: pointer;
-      transition: all 0.2s;
       margin-top: 4px;
     }
-    .btn-add-opt:hover { background: rgba(196,167,118,0.25); }
-
-    /* HERO TEXT EDITOR (síndico) */
-    .s-hero-preview {
-      background: var(--azul);
-      border-radius: 10px;
-      padding: 24px;
-      margin-top: 16px;
-      text-align: center;
-    }
-    .s-hero-preview h3 { color: var(--branco); font-family: 'Roboto', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
-    .s-hero-preview p { color: rgba(255,255,255,0.6); font-size: 0.83rem; line-height: 1.6; }
 
     @media (max-width: 768px) {
       .hamburger { display: flex; }
@@ -1010,22 +935,14 @@
         background: var(--azul-escuro);
         flex-direction: column;
         padding: 16px 24px;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        gap: 4px;
         z-index: 99;
       }
       nav.open { display: flex; }
-      nav a { padding: 10px 12px; }
-      .stats-inner { grid-template-columns: repeat(2, 1fr); }
-      .stat-item { border-right: none; border-bottom: 1px solid var(--borda); }
-      .stat-item:nth-child(odd) { border-right: 1px solid var(--borda); }
-      .stat-item:last-child { border-bottom: none; }
       .contact-grid { grid-template-columns: 1fr; gap: 32px; }
       .footer-top { grid-template-columns: 1fr; gap: 28px; }
-      .auth-body { padding: 24px; }
-      .auth-header { padding: 28px 24px 22px; }
       .sindico-topbar { flex-direction: column; align-items: flex-start; gap: 16px; }
       .sindico-tab { min-width: 80px; font-size: 0.65rem; padding: 8px 6px; }
+      .scroller-controls { display: none; }
     }
 
     html { scroll-behavior: smooth; }
@@ -1069,8 +986,8 @@
           <input type="text" id="reg-name" placeholder="Seu nome completo"/>
         </div>
         <div class="form-group">
-          <label>Unidade</label>
-          <input type="text" id="reg-unit" placeholder="Ex: Unidade 31"/>
+          <label>Unidade / Apartamento</label>
+          <input type="text" id="reg-unit" placeholder="Ex: Bloco A - Apto 101"/>
         </div>
         <div class="form-group">
           <label>E-mail</label>
@@ -1134,24 +1051,17 @@
     </div>
   </section>
 
-  <!-- STATS BAR -->
-  <div class="stats-bar">
-    <div class="stats-inner">
-      <div class="stat-item">
-        <div class="stat-number" id="stat-unidades"><span class="empty">—</span></div>
-        <div class="stat-label">Unidades</div>
+  <!-- ALERT SCROLLER - NOVO COMPONENTE (substitui as estatísticas) -->
+  <div class="alert-scroller" id="alert-scroller">
+    <div class="scroller-container">
+      <div class="scroller-track" id="scroller-track">
+        <div class="scroller-content" id="scroller-content">
+          <!-- Os alertas serão inseridos dinamicamente aqui -->
+        </div>
       </div>
-      <div class="stat-item">
-        <div class="stat-number" id="stat-fundo"><span class="empty">—</span></div>
-        <div class="stat-label">Fundo de Reserva</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number" id="stat-adimplencia"><span class="empty">—</span></div>
-        <div class="stat-label">Adimplência</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number" id="stat-projetos"><span class="empty">—</span></div>
-        <div class="stat-label">Projetos no Ano</div>
+      <div class="scroller-controls">
+        <button class="scroller-btn" onclick="pauseScroller()">⏸</button>
+        <button class="scroller-btn" onclick="playScroller()">▶</button>
       </div>
     </div>
   </div>
@@ -1163,20 +1073,20 @@
         <span class="section-tag">✦ Transparência Financeira</span>
         <h2 class="section-title">Prestação de Contas</h2>
         <div class="section-divider"></div>
-        <p class="section-subtitle">Receitas e despesas do condomínio com total clareza. Atualizado pela administração.</p>
+        <p class="section-subtitle">Receitas e despesas do condomínio com total clareza.</p>
       </div>
       <div class="finance-grid">
         <div class="finance-card">
           <div class="finance-card-icon">💰</div>
           <h3>Receitas do Mês</h3>
           <div class="amount positive" id="fc-receitas">—</div>
-          <p id="fc-mes">Aguardando dados do síndico</p>
+          <p id="fc-mes">Aguardando dados</p>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">📊</div>
           <h3>Despesas do Mês</h3>
           <div class="amount negative" id="fc-despesas">—</div>
-          <p id="fc-mes-2">Aguardando dados do síndico</p>
+          <p id="fc-mes-2">Aguardando dados</p>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">📈</div>
@@ -1194,7 +1104,7 @@
       <div id="finance-table-wrap">
         <div class="empty-state">
           <div class="empty-icon">🧾</div>
-          <p>Nenhuma transação cadastrada ainda.<br><strong>O síndico pode adicionar transações no painel administrativo.</strong></p>
+          <p>Nenhuma transação cadastrada ainda.</p>
         </div>
       </div>
     </div>
@@ -1207,12 +1117,11 @@
         <span class="section-tag">✦ Obras e Melhorias</span>
         <h2 class="section-title">Projetos em Andamento</h2>
         <div class="section-divider"></div>
-        <p class="section-subtitle">Acompanhe o progresso de todas as obras e iniciativas do condomínio.</p>
       </div>
       <div class="projects-timeline" id="projects-timeline">
         <div class="empty-state" id="projects-empty">
           <div class="empty-icon">🏗️</div>
-          <p>Nenhum projeto cadastrado ainda.<br><strong>O síndico pode adicionar projetos no painel administrativo.</strong></p>
+          <p>Nenhum projeto cadastrado ainda.</p>
         </div>
       </div>
     </div>
@@ -1225,12 +1134,11 @@
         <span class="section-tag">✦ Participação dos Condôminos</span>
         <h2 class="section-title">Enquetes Ativas</h2>
         <div class="section-divider"></div>
-        <p class="section-subtitle">Vote e opine sobre os temas mais relevantes para a comunidade.</p>
       </div>
       <div class="polls-grid" id="polls-grid">
         <div class="empty-state" style="grid-column:1/-1" id="polls-empty">
           <div class="empty-icon">🗳️</div>
-          <p>Nenhuma enquete ativa no momento.<br><strong>O síndico pode criar enquetes no painel administrativo.</strong></p>
+          <p>Nenhuma enquete ativa no momento.</p>
         </div>
       </div>
     </div>
@@ -1247,7 +1155,7 @@
       <div class="notices-list" id="notices-list">
         <div class="empty-state">
           <div class="empty-icon">📢</div>
-          <p>Nenhum comunicado publicado ainda.<br><strong>O síndico pode publicar comunicados no painel administrativo.</strong></p>
+          <p>Nenhum comunicado publicado ainda.</p>
         </div>
       </div>
     </div>
@@ -1263,16 +1171,14 @@
       </div>
       <div class="contact-grid">
         <div class="contact-info">
-          <h3>Fale com o Sindico</h3>
-          <p style="font-size:0.88rem;color:#666;line-height:1.8;margin-bottom:24px;">Tem dúvidas, sugestões ou precisa reportar algo? Respondemos em até 2 dias úteis.</p>
-          <div class="contact-detail"><div class="contact-detail-icon">📍</div><div class="contact-detail-text"><strong>Endereço</strong><span id="info-endereco">Aguardando informação do síndico</span></div></div>
-          <div class="contact-detail"><div class="contact-detail-icon">📞</div><div class="contact-detail-text"><strong>Telefone</strong><span id="info-telefone">Aguardando informação do síndico</span></div></div>
-          <div class="contact-detail"><div class="contact-detail-icon">✉️</div><div class="contact-detail-text"><strong>E-mail</strong><span id="info-email">Aguardando informação do síndico</span></div></div>
-          <div class="contact-detail"><div class="contact-detail-icon">🕐</div><div class="contact-detail-text"><strong>Horário de Recebimento de Encomendas</strong><span id="info-horario">Aguardando informação do síndico</span></div></div>
+          <h3>Fale com a Administração</h3>
+          <div class="contact-detail"><div class="contact-detail-icon">📍</div><div class="contact-detail-text"><strong>Endereço</strong><span id="info-endereco">Aguardando informação</span></div></div>
+          <div class="contact-detail"><div class="contact-detail-icon">📞</div><div class="contact-detail-text"><strong>Telefone</strong><span id="info-telefone">Aguardando informação</span></div></div>
+          <div class="contact-detail"><div class="contact-detail-icon">✉️</div><div class="contact-detail-text"><strong>E-mail</strong><span id="info-email">Aguardando informação</span></div></div>
         </div>
         <div>
           <div class="contact-form">
-            <input type="text" placeholder="Seu nome completo e Unidade" id="contact-name"/>
+            <input type="text" placeholder="Seu nome completo" id="contact-name"/>
             <input type="email" placeholder="Seu e-mail" id="contact-email"/>
             <input type="text" placeholder="Assunto" id="contact-subject"/>
             <textarea rows="5" placeholder="Sua mensagem..." id="contact-message"></textarea>
@@ -1289,26 +1195,21 @@
       <div class="footer-top">
         <div class="footer-brand">
           <h2>Condomínio Maurício Gnoato</h2>
-          <p>Portal oficial para condôminos. Transparência, participação e gestão eficiente para uma comunidade mais harmoniosa e bem administrada.</p>
+          <p>Portal oficial para condôminos.</p>
         </div>
         <div class="footer-col">
           <h4>Portal</h4>
           <a href="#financeiro">Financeiro</a>
           <a href="#projetos">Projetos</a>
           <a href="#enquetes">Enquetes</a>
-          <a href="#comunicados">Comunicados</a>
         </div>
         <div class="footer-col">
           <h4>Suporte</h4>
           <a href="#contato">Fale Conosco</a>
-          <a href="#">Regulamento Interno</a>
-          <a href="#">Convenção</a>
-          <a href="#">Atas de Assembleia</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Condomínio Maurício Gnoato. Todos os direitos reservados.</p>
-        <p>Desenvolvido por Eduardo Linhares</p>
+        <p>© 2025 Condomínio Maurício Gnoato. Todos os direitos reservados.</p>
       </div>
     </div>
   </footer>
@@ -1332,7 +1233,7 @@
       <button class="sindico-tab" onclick="sindicoTab('projetos', this)">🏗 Projetos</button>
       <button class="sindico-tab" onclick="sindicoTab('comunicados', this)">📢 Comunicados</button>
       <button class="sindico-tab" onclick="sindicoTab('enquetes', this)">🗳 Enquetes</button>
-      <button class="sindico-tab" onclick="sindicoTab('stats', this)">🏢 Estatísticas</button>
+      <button class="sindico-tab" onclick="sindicoTab('alertas', this)">⚠️ Alertas</button>
       <button class="sindico-tab" onclick="sindicoTab('contatos', this)">✉️ Mensagens</button>
       <button class="sindico-tab" onclick="sindicoTab('moradores', this)">👥 Moradores</button>
     </div>
@@ -1346,6 +1247,7 @@
         <div class="s-stat-card"><div class="num" id="d-transacoes">—</div><div class="lbl">Transações</div></div>
         <div class="s-stat-card"><div class="num" id="d-mensagens">—</div><div class="lbl">Mensagens</div></div>
         <div class="s-stat-card"><div class="num" id="d-moradores">—</div><div class="lbl">Moradores</div></div>
+        <div class="s-stat-card"><div class="num" id="d-alertas">—</div><div class="lbl">Alertas</div></div>
       </div>
       <div class="s-card">
         <div class="s-card-header"><div><h3>Bem-vindo ao Painel</h3><p>Use as abas acima para gerenciar cada seção do portal</p></div></div>
@@ -1354,8 +1256,8 @@
           <strong style="color:var(--dourado)">comunicados</strong>, gerenciar 
           <strong style="color:var(--dourado)">projetos</strong>, criar 
           <strong style="color:var(--dourado)">enquetes</strong>, lançar 
-          <strong style="color:var(--dourado)">transações financeiras</strong>, atualizar os 
-          <strong style="color:var(--dourado)">números e estatísticas</strong>, as 
+          <strong style="color:var(--dourado)">transações financeiras</strong>, gerenciar 
+          <strong style="color:var(--dourado)">alertas do scroller</strong>, as 
           <strong style="color:var(--dourado)">informações de contato</strong>, ler as 
           <strong style="color:var(--dourado)">mensagens</strong> e visualizar os <strong style="color:var(--dourado)">moradores cadastrados</strong>.
         </p>
@@ -1367,9 +1269,9 @@
       <div class="s-card">
         <div class="s-card-header"><div><h3>Texto do Hero (Banner Principal)</h3><p>Configure o título e subtítulo exibidos no topo do site</p></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group"><label>Badge / Etiqueta</label><input type="text" id="s-hero-badge" placeholder="✦ Transparência & Gestão"/></div>
+          <div class="s-form-group"><label>Badge / Etiqueta</label><input type="text" id="s-hero-badge" placeholder="✦ Portal do Condomínio"/></div>
           <div class="s-form-group s-form-full"><label>Título Principal</label><input type="text" id="s-hero-titulo" placeholder="Bem-vindo ao Portal do Condomínio"/></div>
-          <div class="s-form-group s-form-full"><label>Subtítulo / Descrição</label><textarea id="s-hero-subtitulo" rows="3" placeholder="Acesse todas as informações financeiras, projetos, enquetes e comunicados do seu condomínio em um só lugar..."></textarea></div>
+          <div class="s-form-group s-form-full"><label>Subtítulo / Descrição</label><textarea id="s-hero-subtitulo" rows="3" placeholder="Acesse todas as informações..."></textarea></div>
         </div>
         <button class="btn-save" onclick="saveHero()">💾 Salvar Hero</button>
         <div class="s-msg" id="msg-hero"></div>
@@ -1392,27 +1294,13 @@
       </div>
 
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Nova Transação</h3><p>Adicione uma linha na tabela de despesas/receitas</p></div></div>
+        <div class="s-card-header"><div><h3>Nova Transação</h3><p>Adicione uma linha na tabela</p></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group s-form-full"><label>Descrição</label><input type="text" id="s-tx-desc" placeholder="Ex: Manutenção do Portao"/></div>
-          <div class="s-form-group"><label>Categoria</label>
-            <select id="s-tx-cat">
-              <option value="Receita">Receita</option>
-              <option value="Despesa">Despesa</option>
-              <option value="Obra">Obra</option>
-              <option value="Fundo">Fundo de Reserva</option>
-            </select>
-          </div>
+          <div class="s-form-group s-form-full"><label>Descrição</label><input type="text" id="s-tx-desc" placeholder="Ex: Manutenção Elevadores"/></div>
+          <div class="s-form-group"><label>Categoria</label><select id="s-tx-cat"><option value="Receita">Receita</option><option value="Despesa">Despesa</option></select></div>
           <div class="s-form-group"><label>Data</label><input type="date" id="s-tx-date"/></div>
-          <div class="s-form-group"><label>Valor (ex: 4.200,00)</label><input type="text" id="s-tx-valor" placeholder="4.200,00"/></div>
-          <div class="s-form-group"><label>Status</label>
-            <select id="s-tx-status">
-              <option value="Pago">Pago</option>
-              <option value="Recebido">Recebido</option>
-              <option value="Pendente">Pendente</option>
-              <option value="Cancelado">Cancelado</option>
-            </select>
-          </div>
+          <div class="s-form-group"><label>Valor</label><input type="text" id="s-tx-valor" placeholder="4.200,00"/></div>
+          <div class="s-form-group"><label>Status</label><select id="s-tx-status"><option value="Pago">Pago</option><option value="Pendente">Pendente</option></select></div>
         </div>
         <button class="btn-save" onclick="saveTransaction()">➕ Adicionar Transação</button>
         <div class="s-msg" id="msg-transaction"></div>
@@ -1420,129 +1308,92 @@
 
       <div class="s-card">
         <div class="s-card-header"><div><h3>Transações Cadastradas</h3></div></div>
-        <div class="s-list" id="s-tx-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
+        <div class="s-list" id="s-tx-list"><p style="color:rgba(255,255,255,0.3);">Carregando...</p></div>
       </div>
     </div>
 
     <!-- PROJETOS -->
     <div class="sindico-section" id="s-projetos">
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Novo Projeto</h3><p>Adicione um projeto à linha do tempo</p></div></div>
+        <div class="s-card-header"><div><h3>Novo Projeto</h3></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group s-form-full"><label>Título do Projeto</label><input type="text" id="s-pr-titulo" placeholder="Ex: Reforma do Parquinho"/></div>
-          <div class="s-form-group s-form-full"><label>Descrição</label><textarea id="s-pr-desc" rows="3" placeholder="Descreva o projeto..."></textarea></div>
-          <div class="s-form-group"><label>Data / Período</label><input type="text" id="s-pr-data" placeholder="Ex: Março – Junho 2025"/></div>
-          <div class="s-form-group"><label>Status</label>
-            <select id="s-pr-status">
-              <option value="done">Concluído</option>
-              <option value="progress">Em andamento</option>
-              <option value="planned">Planejado</option>
-            </select>
-          </div>
-          <div class="s-form-group"><label>Badge / Rótulo</label><input type="text" id="s-pr-badge" placeholder="Ex: ⏳ Em andamento — 35%"/></div>
+          <div class="s-form-group s-form-full"><label>Título</label><input type="text" id="s-pr-titulo"/></div>
+          <div class="s-form-group s-form-full"><label>Descrição</label><textarea id="s-pr-desc" rows="3"></textarea></div>
+          <div class="s-form-group"><label>Data</label><input type="text" id="s-pr-data"/></div>
+          <div class="s-form-group"><label>Status</label><select id="s-pr-status"><option value="done">Concluído</option><option value="progress">Em andamento</option><option value="planned">Planejado</option></select></div>
         </div>
         <button class="btn-save" onclick="saveProject()">➕ Adicionar Projeto</button>
-        <div class="s-msg" id="msg-project"></div>
       </div>
-      <div class="s-card">
-        <div class="s-card-header"><div><h3>Projetos Cadastrados</h3></div></div>
-        <div class="s-list" id="s-pr-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
-      </div>
+      <div class="s-card"><div class="s-card-header"><div><h3>Projetos Cadastrados</h3></div></div><div class="s-list" id="s-pr-list"></div></div>
     </div>
 
     <!-- COMUNICADOS -->
     <div class="sindico-section" id="s-comunicados">
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Novo Comunicado</h3><p>Publique um aviso para todos os moradores</p></div></div>
+        <div class="s-card-header"><div><h3>Novo Comunicado</h3></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group"><label>Ícone (emoji)</label><input type="text" id="s-nc-icon" placeholder="📢" maxlength="4"/></div>
-          <div class="s-form-group"><label>Data de Publicação</label><input type="text" id="s-nc-data" placeholder="Ex: 08 de Abril de 2025"/></div>
-          <div class="s-form-group s-form-full"><label>Título do Comunicado</label><input type="text" id="s-nc-titulo" placeholder="Ex: Manutenção do Jardim"/></div>
-          <div class="s-form-group s-form-full"><label>Texto / Conteúdo</label><textarea id="s-nc-texto" rows="4" placeholder="Descreva o comunicado com detalhes..."></textarea></div>
+          <div class="s-form-group"><label>Ícone</label><input type="text" id="s-nc-icon" placeholder="📢"/></div>
+          <div class="s-form-group"><label>Data</label><input type="text" id="s-nc-data"/></div>
+          <div class="s-form-group s-form-full"><label>Título</label><input type="text" id="s-nc-titulo"/></div>
+          <div class="s-form-group s-form-full"><label>Texto</label><textarea id="s-nc-texto" rows="4"></textarea></div>
         </div>
-        <button class="btn-save" onclick="saveNotice()">📢 Publicar Comunicado</button>
-        <div class="s-msg" id="msg-notice"></div>
+        <button class="btn-save" onclick="saveNotice()">📢 Publicar</button>
       </div>
-      <div class="s-card">
-        <div class="s-card-header"><div><h3>Comunicados Publicados</h3></div></div>
-        <div class="s-list" id="s-nc-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
-      </div>
+      <div class="s-card"><div class="s-card-header"><div><h3>Comunicados Publicados</h3></div></div><div class="s-list" id="s-nc-list"></div></div>
     </div>
 
     <!-- ENQUETES -->
     <div class="sindico-section" id="s-enquetes">
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Nova Enquete</h3><p>Crie uma enquete para os moradores votarem</p></div></div>
+        <div class="s-card-header"><div><h3>Nova Enquete</h3></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group"><label>Título (com emoji)</label><input type="text" id="s-eq-titulo" placeholder="🏋️ Área de Lazer"/></div>
-          <div class="s-form-group"><label>Status</label>
-            <select id="s-eq-status">
-              <option value="Ativa">● Ativa</option>
-              <option value="Encerrada">Encerrada</option>
-            </select>
-          </div>
-          <div class="s-form-group s-form-full"><label>Pergunta da Enquete</label><textarea id="s-eq-pergunta" rows="2" placeholder="Qual é a pergunta que os moradores vão responder?"></textarea></div>
+          <div class="s-form-group"><label>Título</label><input type="text" id="s-eq-titulo"/></div>
+          <div class="s-form-group"><label>Status</label><select id="s-eq-status"><option value="Ativa">Ativa</option><option value="Encerrada">Encerrada</option></select></div>
+          <div class="s-form-group s-form-full"><label>Pergunta</label><textarea id="s-eq-pergunta" rows="2"></textarea></div>
           <div class="s-form-group s-form-full">
-            <label>Opções de Resposta</label>
+            <label>Opções</label>
             <div id="s-eq-opcoes">
-              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 1" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);font-family:Montserrat,sans-serif;font-size:0.85rem;color:#fff;outline:none;"/></div>
-              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 2" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);font-family:Montserrat,sans-serif;font-size:0.85rem;color:#fff;outline:none;"/></div>
-              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 3" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);font-family:Montserrat,sans-serif;font-size:0.85rem;color:#fff;outline:none;"/></div>
+              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 1"/></div>
+              <div class="poll-option-row"><input type="text" class="eq-opt" placeholder="Opção 2"/></div>
             </div>
             <button class="btn-add-opt" onclick="addPollOption()">+ Adicionar opção</button>
           </div>
         </div>
-        <button class="btn-save" onclick="savePoll()">🗳 Publicar Enquete</button>
-        <div class="s-msg" id="msg-poll"></div>
+        <button class="btn-save" onclick="savePoll()">🗳 Publicar</button>
       </div>
-      <div class="s-card">
-        <div class="s-card-header"><div><h3>Enquetes Cadastradas</h3></div></div>
-        <div class="s-list" id="s-eq-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando...</p></div>
-      </div>
+      <div class="s-card"><div class="s-card-header"><div><h3>Enquetes Cadastradas</h3></div></div><div class="s-list" id="s-eq-list"></div></div>
     </div>
 
-    <!-- ESTATÍSTICAS -->
-    <div class="sindico-section" id="s-stats">
+    <!-- ALERTAS - NOVA ABA -->
+    <div class="sindico-section" id="s-alertas">
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Números do Condomínio</h3><p>Atualize as estatísticas exibidas na barra de destaques</p></div></div>
+        <div class="s-card-header"><div><h3>⚠️ Novo Alerta</h3><p>Adicione informações que serão exibidas no scroller da página inicial</p></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group"><label>Total de Unidades</label><input type="text" id="s-st-unidades" placeholder="Ex: 142"/></div>
-          <div class="s-form-group"><label>Fundo de Reserva</label><input type="text" id="s-st-fundo" placeholder="Ex: R$ 284k"/></div>
-          <div class="s-form-group"><label>Obras em Andamento</label><input type="text" id="s-st-adimplencia" placeholder="Ex: 1"/></div>
-          <div class="s-form-group"><label>Projetos no Ano</label><input type="text" id="s-st-projetos" placeholder="Ex: 12"/></div>
+          <div class="s-form-group"><label>Ícone (emoji)</label><input type="text" id="s-alerta-icon" placeholder="🔔" maxlength="4"/></div>
+          <div class="s-form-group s-form-full"><label>Mensagem do Alerta</label><textarea id="s-alerta-mensagem" rows="3" placeholder="Ex: Assembleia geral no dia 15/05 às 19h na sede social"></textarea></div>
         </div>
-        <button class="btn-save" onclick="saveStats()">💾 Atualizar Estatísticas</button>
-        <div class="s-msg" id="msg-stats"></div>
+        <button class="btn-save" onclick="saveAlerta()">➕ Adicionar Alerta</button>
+        <div class="s-msg" id="msg-alerta"></div>
       </div>
-
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Informações de Contato</h3><p>Atualize os dados exibidos na seção Fale Conosco</p></div></div>
-        <div class="s-form-grid">
-          <div class="s-form-group s-form-full"><label>Endereço</label><input type="text" id="s-ct-endereco" placeholder="Rua do Condomínio, 500 — Curitiba, PR"/></div>
-          <div class="s-form-group"><label>Telefone</label><input type="text" id="s-ct-telefone" placeholder="(41) 3000-0000 / (41) 99000-0000"/></div>
-          <div class="s-form-group"><label>E-mail</label><input type="email" id="s-ct-email" placeholder="sindico@condominio.com.br"/></div>
-          <div class="s-form-group s-form-full"><label>Horário de Recebimento de Encomendas</label><input type="text" id="s-ct-horario" placeholder="24 horas por dia, 7 dias por semana"/></div>
-        </div>
-        <button class="btn-save" onclick="saveContactInfo()">💾 Atualizar Contato</button>
-        <div class="s-msg" id="msg-contact-info"></div>
+        <div class="s-card-header"><div><h3>Alertas Ativos</h3><p>Estes alertas serão exibidos no scroller da página inicial</p></div></div>
+        <div class="s-list" id="s-alertas-list"><p style="color:rgba(255,255,255,0.3);">Carregando alertas...</p></div>
       </div>
     </div>
 
     <!-- MENSAGENS -->
     <div class="sindico-section" id="s-contatos">
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Mensagens Recebidas</h3><p>Formulários enviados pelos moradores</p></div></div>
-        <div id="s-contatos-list"><p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando mensagens...</p></div>
+        <div class="s-card-header"><div><h3>Mensagens Recebidas</h3></div></div>
+        <div id="s-contatos-list"><p style="color:rgba(255,255,255,0.3);">Carregando...</p></div>
       </div>
     </div>
 
-    <!-- MORADORES - COM BOTÃO DE EXCLUIR -->
+    <!-- MORADORES -->
     <div class="sindico-section" id="s-moradores">
       <div class="s-card">
-        <div class="s-card-header"><div><h3>👥 Lista de Moradores Cadastrados</h3><p>Relação de todos os condôminos registrados no portal</p></div></div>
-        <div class="s-list" id="s-moradores-list">
-          <p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Carregando moradores...</p>
-        </div>
+        <div class="s-card-header"><div><h3>👥 Lista de Moradores Cadastrados</h3></div></div>
+        <div class="s-list" id="s-moradores-list"><p style="color:rgba(255,255,255,0.3);">Carregando...</p></div>
       </div>
     </div>
   </div>
@@ -1572,11 +1423,8 @@
   const auth = getAuth(app);
   const db = getDatabase(app);
 
-  const SINDICO_EMAILS = [
-    'sindico@condmauriciognoato.com.br'
-  ];
+  const SINDICO_EMAILS = ['sindico@condmauriciognoato.com.br'];
 
-  // EXPORTA FUNÇÕES GLOBAIS
   window._auth = auth;
   window._db = db;
   window._ref = ref;
@@ -1590,31 +1438,118 @@
   window._signIn = signInWithEmailAndPassword;
   window._signOut = signOut;
   window._updateProfile = updateProfile;
-  window.SINDICO_EMAILS = SINDICO_EMAILS;
 
-  // ===== AUTH STATE =====
+  let animationInterval = null;
+  let isPlaying = true;
+
+  window.pauseScroller = function() {
+    const content = document.getElementById('scroller-content');
+    if (content) {
+      content.style.animationPlayState = 'paused';
+      isPlaying = false;
+    }
+  };
+
+  window.playScroller = function() {
+    const content = document.getElementById('scroller-content');
+    if (content) {
+      content.style.animationPlayState = 'running';
+      isPlaying = true;
+    }
+  };
+
+  function loadAlertas() {
+    onValue(ref(db, 'alertas'), (snap) => {
+      const scrollerContent = document.getElementById('scroller-content');
+      const sList = document.getElementById('s-alertas-list');
+      let count = 0;
+      
+      if (snap.exists()) {
+        const items = snap.val();
+        const keys = Object.keys(items).reverse();
+        count = keys.length;
+        
+        const alertsHtml = keys.map(key => {
+          const d = items[key];
+          return `<div class="alert-item">
+            <i>${d.icon || '🔔'}</i> ${d.mensagem}
+            <span class="alert-date">${new Date(d.createdAt).toLocaleDateString('pt-BR')}</span>
+          </div>`;
+        }).join('');
+        
+        // Duplicar para efeito de loop infinito
+        scrollerContent.innerHTML = alertsHtml + alertsHtml;
+        
+        sList.innerHTML = keys.map(key => {
+          const d = items[key];
+          return `<div class="s-list-item">
+            <div class="s-list-item-info">
+              <strong>${d.icon || '🔔'} ${d.mensagem.substring(0, 80)}${d.mensagem.length > 80 ? '...' : ''}</strong>
+              <span>${new Date(d.createdAt).toLocaleString('pt-BR')}</span>
+            </div>
+            <div class="s-list-item-actions">
+              <button class="btn-danger" onclick="deleteAlerta('${key}')">Remover</button>
+            </div>
+          </div>`;
+        }).join('');
+      } else {
+        scrollerContent.innerHTML = `<div class="empty-alerts"><i>📢</i> Nenhum alerta no momento. O síndico pode adicionar alertas no painel.</div>`;
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum alerta cadastrado ainda.</p>';
+      }
+      document.getElementById('d-alertas').textContent = count;
+    });
+  }
+
+  window.saveAlerta = async function() {
+    const icon = document.getElementById('s-alerta-icon').value.trim() || '🔔';
+    const mensagem = document.getElementById('s-alerta-mensagem').value.trim();
+    
+    if (!mensagem) {
+      alert('Preencha a mensagem do alerta');
+      return;
+    }
+    
+    try {
+      await push(ref(db, 'alertas'), {
+        icon,
+        mensagem,
+        createdAt: new Date().toISOString()
+      });
+      document.getElementById('s-alerta-icon').value = '';
+      document.getElementById('s-alerta-mensagem').value = '';
+      alert('Alerta adicionado com sucesso!');
+    } catch(e) {
+      alert('Erro ao adicionar alerta');
+    }
+  };
+
+  window.deleteAlerta = async function(key) {
+    if (!confirm('Remover este alerta?')) return;
+    try {
+      await remove(ref(db, 'alertas/' + key));
+    } catch(e) {
+      alert('Erro ao remover');
+    }
+  };
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       document.getElementById('auth-overlay').style.display = 'none';
       document.getElementById('main-site').style.display = 'block';
-
+      
       const name = user.displayName || user.email.split('@')[0];
       const initials = name.charAt(0).toUpperCase();
       document.getElementById('user-avatar').textContent = initials;
       document.getElementById('user-name-header').textContent = name;
-
+      
       const btnSindico = document.getElementById('btn-sindico-nav');
-      const emailLower = (user.email || '').toLowerCase().trim();
-      const isSindico = SINDICO_EMAILS.some(e => e.toLowerCase().trim() === emailLower);
-
-      if (isSindico) {
-        btnSindico.classList.remove('hidden');
-      } else {
-        btnSindico.classList.add('hidden');
-      }
-
+      const isSindico = SINDICO_EMAILS.some(e => e.toLowerCase() === (user.email || '').toLowerCase());
+      if (isSindico) btnSindico.classList.remove('hidden');
+      else btnSindico.classList.add('hidden');
+      
       loadDynamicData();
       loadMoradores();
+      loadAlertas();
     } else {
       document.getElementById('auth-overlay').style.display = 'flex';
       document.getElementById('main-site').style.display = 'none';
@@ -1622,30 +1557,19 @@
     }
   });
 
-  // ===== CARREGAR DADOS DINÂMICOS =====
   function loadDynamicData() {
-    // Hero
     onValue(ref(db, 'config/hero'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
-        if (d.badge) { document.getElementById('hero-badge').textContent = d.badge; document.getElementById('s-hero-badge').value = d.badge; }
-        if (d.titulo) { document.getElementById('hero-titulo').innerHTML = d.titulo; document.getElementById('s-hero-titulo').value = d.titulo; }
-        if (d.subtitulo) { document.getElementById('hero-subtitulo').textContent = d.subtitulo; document.getElementById('s-hero-subtitulo').value = d.subtitulo; }
+        if (d.badge) document.getElementById('hero-badge').textContent = d.badge;
+        if (d.titulo) document.getElementById('hero-titulo').innerHTML = d.titulo;
+        if (d.subtitulo) document.getElementById('hero-subtitulo').textContent = d.subtitulo;
+        if (d.badge) document.getElementById('s-hero-badge').value = d.badge;
+        if (d.titulo) document.getElementById('s-hero-titulo').value = d.titulo;
+        if (d.subtitulo) document.getElementById('s-hero-subtitulo').value = d.subtitulo;
       }
     });
-
-    // Stats
-    onValue(ref(db, 'config/stats'), (snap) => {
-      if (snap.exists()) {
-        const d = snap.val();
-        if (d.unidades) { document.getElementById('stat-unidades').textContent = d.unidades; document.getElementById('s-st-unidades').value = d.unidades; }
-        if (d.fundo) { document.getElementById('stat-fundo').textContent = d.fundo; document.getElementById('s-st-fundo').value = d.fundo; }
-        if (d.adimplencia) { document.getElementById('stat-adimplencia').textContent = d.adimplencia; document.getElementById('s-st-adimplencia').value = d.adimplencia; }
-        if (d.projetos) { document.getElementById('stat-projetos').textContent = d.projetos; document.getElementById('s-st-projetos').value = d.projetos; }
-      }
-    });
-
-    // Finance cards
+    
     onValue(ref(db, 'config/financeCards'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
@@ -1660,19 +1584,16 @@
         }
       }
     });
-
-    // Contact info
+    
     onValue(ref(db, 'config/contactInfo'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
         if (d.endereco) { document.getElementById('info-endereco').textContent = d.endereco; document.getElementById('s-ct-endereco').value = d.endereco; }
         if (d.telefone) { document.getElementById('info-telefone').textContent = d.telefone; document.getElementById('s-ct-telefone').value = d.telefone; }
         if (d.email) { document.getElementById('info-email').textContent = d.email; document.getElementById('s-ct-email').value = d.email; }
-        if (d.horario) { document.getElementById('info-horario').textContent = d.horario; document.getElementById('s-ct-horario').value = d.horario; }
       }
     });
-
-    // Comunicados
+    
     onValue(ref(db, 'comunicados'), (snap) => {
       const noticesList = document.getElementById('notices-list');
       const sList = document.getElementById('s-nc-list');
@@ -1683,83 +1604,50 @@
         count = keys.length;
         noticesList.innerHTML = keys.map(key => {
           const d = items[key];
-          return `<div class="notice-card">
-            <div class="notice-icon">${d.icon || '📢'}</div>
-            <div class="notice-content">
-              <h4>${d.titulo}</h4>
-              <p>${d.texto}</p>
-              <div class="notice-date">📅 ${d.data}</div>
-            </div>
-          </div>`;
+          return `<div class="notice-card"><div class="notice-icon">${d.icon || '📢'}</div><div class="notice-content"><h4>${d.titulo}</h4><p>${d.texto}</p><div class="notice-date">📅 ${d.data}</div></div></div>`;
         }).join('');
         sList.innerHTML = keys.map(key => {
           const d = items[key];
-          return `<div class="s-list-item">
-            <div class="s-list-item-info">
-              <strong>${d.icon || '📢'} ${d.titulo}</strong>
-              <span>${d.data}</span>
-            </div>
-            <div class="s-list-item-actions">
-              <button class="btn-danger" onclick="deleteItem('comunicados','${key}')">Remover</button>
-            </div>
-          </div>`;
+          return `<div class="s-list-item"><div class="s-list-item-info"><strong>${d.icon || '📢'} ${d.titulo}</strong><span>${d.data}</span></div><div class="s-list-item-actions"><button class="btn-danger" onclick="deleteItem('comunicados','${key}')">Remover</button></div></div>`;
         }).join('');
       } else {
-        noticesList.innerHTML = `<div class="empty-state"><div class="empty-icon">📢</div><p>Nenhum comunicado publicado ainda.<br><strong>O síndico pode publicar comunicados no painel administrativo.</strong></p></div>`;
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum comunicado cadastrado ainda.</p>';
+        noticesList.innerHTML = `<div class="empty-state"><div class="empty-icon">📢</div><p>Nenhum comunicado publicado ainda.</p></div>`;
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum comunicado.</p>';
       }
       document.getElementById('d-comunicados').textContent = count;
     });
-
-    // Projetos
+    
     onValue(ref(db, 'projetos'), (snap) => {
       const timeline = document.getElementById('projects-timeline');
       const sList = document.getElementById('s-pr-list');
       let count = 0;
       timeline.querySelectorAll('.dynamic-project').forEach(el => el.remove());
-
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items);
         count = keys.length;
         const empty = document.getElementById('projects-empty');
         if (empty) empty.remove();
-
         keys.forEach(key => {
           const d = items[key];
           const newItem = document.createElement('div');
           newItem.className = 'project-item dynamic-project';
-          newItem.innerHTML = `
-            <div class="project-dot ${d.status || 'planned'}"></div>
-            <div class="project-date">${d.data}</div>
-            <h3>${d.titulo}</h3>
-            <p>${d.desc}</p>
-            <span class="badge ${d.status === 'done' ? 'badge-green' : d.status === 'progress' ? 'badge-yellow' : 'badge-blue'}">${d.badge}</span>
-          `;
+          newItem.innerHTML = `<div class="project-dot ${d.status || 'planned'}"></div><div class="project-date">${d.data}</div><h3>${d.titulo}</h3><p>${d.desc}</p><span class="badge ${d.status === 'done' ? 'badge-green' : d.status === 'progress' ? 'badge-yellow' : 'badge-blue'}">${d.badge}</span>`;
           timeline.appendChild(newItem);
         });
         sList.innerHTML = keys.map(key => {
           const d = items[key];
-          return `<div class="s-list-item">
-            <div class="s-list-item-info">
-              <strong>${d.titulo}</strong>
-              <span>${d.data} — ${d.status}</span>
-            </div>
-            <div class="s-list-item-actions">
-              <button class="btn-danger" onclick="deleteItem('projetos','${key}')">Remover</button>
-            </div>
-          </div>`;
+          return `<div class="s-list-item"><div class="s-list-item-info"><strong>${d.titulo}</strong><span>${d.data} — ${d.status}</span></div><div class="s-list-item-actions"><button class="btn-danger" onclick="deleteItem('projetos','${key}')">Remover</button></div></div>`;
         }).join('');
       } else {
         if (!document.getElementById('projects-empty')) {
-          timeline.innerHTML = `<div class="empty-state" id="projects-empty"><div class="empty-icon">🏗️</div><p>Nenhum projeto cadastrado ainda.<br><strong>O síndico pode adicionar projetos no painel administrativo.</strong></p></div>`;
+          timeline.innerHTML = `<div class="empty-state" id="projects-empty"><div class="empty-icon">🏗️</div><p>Nenhum projeto cadastrado ainda.</p></div>`;
         }
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum projeto cadastrado ainda.</p>';
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum projeto.</p>';
       }
       document.getElementById('d-projetos').textContent = count;
     });
-
-    // Transações
+    
     onValue(ref(db, 'transacoes'), (snap) => {
       const tableWrap = document.getElementById('finance-table-wrap');
       const sList = document.getElementById('s-tx-list');
@@ -1773,105 +1661,50 @@
           const isPositive = d.categoria === 'Receita';
           const cor = isPositive ? 'var(--verde)' : 'var(--vermelho)';
           const sinal = isPositive ? '+' : '-';
-          const badgeClass = d.status === 'Pago' || d.status === 'Recebido' ? 'badge-green' : d.status === 'Pendente' ? 'badge-yellow' : 'badge-red';
-          return `#
-             <td>${d.descricao}</td>
-             <td>${d.categoria}</td>
-             <td>${d.data}</td>
-            <td style="color:${cor};font-weight:600">${sinal} R$ ${d.valor}</td>
-             <td><span class="badge ${badgeClass}">${d.status}</span></td>
-           `;
+          return `<tr><td>${d.descricao}</td><td>${d.categoria}</td><td>${d.data}</td><td style="color:${cor}">${sinal} R$ ${d.valor}</td><td>${d.status}</td></tr>`;
         }).join('');
-        tableWrap.innerHTML = `<div class="table-wrap">` +
-          `<table><thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+        tableWrap.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
         sList.innerHTML = keys.map(key => {
           const d = items[key];
-          return `<div class="s-list-item">
-            <div class="s-list-item-info">
-              <strong>${d.descricao}</strong>
-              <span>${d.categoria} — ${d.data} — R$ ${d.valor} — ${d.status}</span>
-            </div>
-            <div class="s-list-item-actions">
-              <button class="btn-danger" onclick="deleteItem('transacoes','${key}')">Remover</button>
-            </div>
-          </div>`;
+          return `<div class="s-list-item"><div class="s-list-item-info"><strong>${d.descricao}</strong><span>${d.categoria} — ${d.data} — R$ ${d.valor} — ${d.status}</span></div><div class="s-list-item-actions"><button class="btn-danger" onclick="deleteItem('transacoes','${key}')">Remover</button></div></div>`;
         }).join('');
       } else {
-        tableWrap.innerHTML = `<div class="empty-state"><div class="empty-icon">🧾</div><p>Nenhuma transação cadastrada ainda.<br><strong>O síndico pode adicionar transações no painel administrativo.</strong></p></div>`;
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma transação cadastrada ainda.</p>';
+        tableWrap.innerHTML = `<div class="empty-state"><div class="empty-icon">🧾</div><p>Nenhuma transação cadastrada ainda.</p></div>`;
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhuma transação.</p>';
       }
       document.getElementById('d-transacoes').textContent = count;
     });
-
-    // Enquetes
+    
     onValue(ref(db, 'enquetes'), (snap) => {
       const grid = document.getElementById('polls-grid');
       const sList = document.getElementById('s-eq-list');
       let count = 0;
       grid.querySelectorAll('.dynamic-poll').forEach(el => el.remove());
-
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items).reverse();
         count = keys.length;
         const empty = document.getElementById('polls-empty');
         if (empty) empty.remove();
-
         keys.forEach(key => {
           const d = items[key];
-          const opts = d.opcoes || [];
           const votos = d.votos || {};
-          
-          // Calcular total de votos
           let totalVotos = 0;
-          const opcoesComVotos = opts.map((op, idx) => {
+          const optsHtml = (d.opcoes || []).map(op => {
             const votosOpcao = votos[op] || [];
             totalVotos += votosOpcao.length;
-            return { nome: op, votos: votosOpcao };
-          });
-          
-          const optsHtml = opts.map((op, idx) => {
-            const votosOpcao = votos[op] || [];
             const percentual = totalVotos > 0 ? (votosOpcao.length / totalVotos * 100).toFixed(1) : 0;
-            const votantesHtml = votosOpcao.length > 0 ? 
-              `<div class="poll-voters-list"><strong>Votantes:</strong> ${votosOpcao.map(v => `<span>${v.nome} (${v.unidade})</span>`).join('')}</div>` : '';
-            return `
-              <div class="poll-option">
-                <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:${percentual}%"></div></div>
-                <div class="poll-pct">${percentual}% (${votosOpcao.length} votos)</div>
-                <label><input type="radio" name="poll_${key}" value="${op}"> ${op}</label>
-                ${votantesHtml}
-              </div>`;
+            const votantesHtml = votosOpcao.length > 0 ? `<div class="poll-voters-list"><strong>Votantes:</strong> ${votosOpcao.map(v => `<span>${v.nome} (${v.unidade})</span>`).join('')}</div>` : '';
+            return `<div class="poll-option"><div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:${percentual}%"></div></div><div class="poll-pct">${percentual}% (${votosOpcao.length} votos)</div><label><input type="radio" name="poll_${key}" value="${op}"> ${op}</label>${votantesHtml}</div>`;
           }).join('');
-          
           const card = document.createElement('div');
           card.className = 'poll-card dynamic-poll';
-          card.innerHTML = `
-            <div class="poll-header">
-              <h3>${d.titulo}</h3>
-              <span class="poll-status">● ${d.status || 'Ativa'}</span>
-            </div>
-            <div class="poll-body">
-              <p class="poll-question">${d.pergunta}</p>
-              ${optsHtml}
-            </div>
-            <div class="poll-footer">
-              <span class="poll-votes">Total: ${totalVotos} votos</span>
-              <button class="btn-sm" onclick="votePoll(this, '${key}')">Votar</button>
-            </div>`;
+          card.innerHTML = `<div class="poll-header"><h3>${d.titulo}</h3><span class="poll-status">● ${d.status || 'Ativa'}</span></div><div class="poll-body"><p class="poll-question">${d.pergunta}</p>${optsHtml}</div><div class="poll-footer"><span class="poll-votes">Total: ${totalVotos} votos</span><button class="btn-sm" onclick="votePoll(this, '${key}')">Votar</button></div>`;
           grid.appendChild(card);
         });
         sList.innerHTML = keys.map(key => {
           const d = items[key];
-          return `<div class="s-list-item">
-            <div class="s-list-item-info">
-              <strong>${d.titulo}</strong>
-              <span>${d.pergunta.substring(0,60)}...</span>
-            </div>
-            <div class="s-list-item-actions">
-              <button class="btn-danger" onclick="deleteItem('enquetes','${key}')">Remover</button>
-            </div>
-          </div>`;
+          return `<div class="s-list-item"><div class="s-list-item-info"><strong>${d.titulo}</strong><span>${d.pergunta.substring(0,60)}...</span></div><div class="s-list-item-actions"><button class="btn-danger" onclick="deleteItem('enquetes','${key}')">Remover</button></div></div>`;
         }).join('');
       } else {
         if (!document.getElementById('polls-empty')) {
@@ -1879,15 +1712,14 @@
           emptyDiv.id = 'polls-empty';
           emptyDiv.style.gridColumn = '1/-1';
           emptyDiv.className = 'empty-state';
-          emptyDiv.innerHTML = `<div class="empty-icon">🗳️</div><p>Nenhuma enquete ativa no momento.<br><strong>O síndico pode criar enquetes no painel administrativo.</strong></p>`;
+          emptyDiv.innerHTML = `<div class="empty-icon">🗳️</div><p>Nenhuma enquete ativa no momento.</p>`;
           grid.appendChild(emptyDiv);
         }
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma enquete cadastrada ainda.</p>';
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhuma enquete.</p>';
       }
       document.getElementById('d-enquetes').textContent = count;
     });
-
-    // Mensagens
+    
     onValue(ref(db, 'contatos'), (snap) => {
       const list = document.getElementById('s-contatos-list');
       let count = 0;
@@ -1898,25 +1730,15 @@
         list.innerHTML = keys.map(key => {
           const d = items[key];
           const dt = d.createdAt ? new Date(d.createdAt).toLocaleString('pt-BR') : '';
-          return `<div class="s-contact-item">
-            <div class="s-contact-meta">
-              <strong>${d.name}</strong>
-              <span>${d.email}</span>
-              <span>${dt}</span>
-              <button class="btn-danger" onclick="deleteItem('contatos','${key}')" style="margin-left:auto">Apagar</button>
-            </div>
-            <div class="s-contact-subject">${d.subject}</div>
-            <div class="s-contact-msg">${d.message}</div>
-          </div>`;
+          return `<div class="s-contact-item"><div class="s-contact-meta"><strong>${d.name}</strong><span>${d.email}</span><span>${dt}</span><button class="btn-danger" onclick="deleteItem('contatos','${key}')" style="margin-left:auto">Apagar</button></div><div class="s-contact-subject">${d.subject}</div><div class="s-contact-msg">${d.message}</div></div>`;
         }).join('');
       } else {
-        list.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma mensagem recebida ainda.</p>';
+        list.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhuma mensagem recebida.</p>';
       }
       document.getElementById('d-mensagens').textContent = count;
     });
   }
-
-  // ===== CARREGAR MORADORES COM BOTÃO DE EXCLUIR =====
+  
   function loadMoradores() {
     onValue(ref(db, 'condominios'), (snap) => {
       const listContainer = document.getElementById('s-moradores-list');
@@ -1926,23 +1748,15 @@
         const keys = Object.keys(items);
         count = keys.length;
         if (keys.length === 0) {
-          listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum morador cadastrado ainda.</p>';
+          listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum morador cadastrado ainda.</p>';
         } else {
           listContainer.innerHTML = keys.map(key => {
             const morador = items[key];
-            return `<div class="s-list-item">
-              <div class="s-list-item-info">
-                <strong>${morador.name || 'Nome não informado'}</strong>
-                <span>Unidade: ${morador.unit || 'Não informada'} | E-mail: ${morador.email || 'Não informado'}</span>
-              </div>
-              <div class="s-list-item-actions">
-                <button class="btn-danger" onclick="deleteMorador('${key}', '${morador.name}')">Excluir Morador</button>
-              </div>
-            </div>`;
+            return `<div class="s-list-item"><div class="s-list-item-info"><strong>${morador.name || 'Nome não informado'}</strong><span>Unidade: ${morador.unit || 'Não informada'} | E-mail: ${morador.email || 'Não informado'}</span></div><div class="s-list-item-actions"><button class="btn-danger" onclick="deleteMorador('${key}', '${morador.name}')">Excluir</button></div></div>`;
           }).join('');
         }
       } else {
-        listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum morador cadastrado ainda.</p>';
+        listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum morador cadastrado ainda.</p>';
       }
       document.getElementById('d-moradores').textContent = count;
     });
@@ -1950,19 +1764,13 @@
 </script>
 
 <script>
-  // ===== FUNÇÕES GLOBAIS =====
   function showMsg(id, msg, type) {
     const el = document.getElementById(id);
-    el.textContent = msg;
-    el.className = 'auth-msg ' + type;
-    setTimeout(() => { el.className = 'auth-msg'; }, 4000);
-  }
-
-  function showSMsg(id, msg, type) {
-    const el = document.getElementById(id);
-    el.textContent = msg;
-    el.className = 's-msg ' + type;
-    setTimeout(() => { el.className = 's-msg'; }, 4000);
+    if (el) {
+      el.textContent = msg;
+      el.className = 'auth-msg ' + type;
+      setTimeout(() => { if (el) el.className = 'auth-msg'; }, 4000);
+    }
   }
 
   function togglePasswordVisibility(inputId, button) {
@@ -1982,8 +1790,6 @@
     });
     document.getElementById('panel-login').classList.toggle('active', tab === 'login');
     document.getElementById('panel-register').classList.toggle('active', tab === 'register');
-    document.getElementById('login-msg').className = 'auth-msg';
-    document.getElementById('register-msg').className = 'auth-msg';
   }
 
   async function doLogin() {
@@ -1993,12 +1799,7 @@
     try {
       await window._signIn(window._auth, email, pwd);
     } catch(e) {
-      let msg = 'Erro ao entrar. Verifique seus dados.';
-      if (e.code === 'auth/user-not-found') msg = 'Usuário não encontrado.';
-      if (e.code === 'auth/wrong-password') msg = 'Senha incorreta.';
-      if (e.code === 'auth/invalid-email') msg = 'E-mail inválido.';
-      if (e.code === 'auth/invalid-credential') msg = 'Credenciais inválidas.';
-      showMsg('login-msg', msg, 'error');
+      showMsg('login-msg', 'Erro ao entrar. Verifique seus dados.', 'error');
     }
   }
 
@@ -2007,84 +1808,55 @@
     const unit = document.getElementById('reg-unit').value.trim();
     const email = document.getElementById('reg-email').value.trim();
     const pwd = document.getElementById('reg-pwd').value;
-
-    if (!name || !unit || !email || !pwd) {
-      return showMsg('register-msg', 'Preencha todos os campos.', 'error');
-    }
-    if (pwd.length < 6) {
-      return showMsg('register-msg', 'A senha deve ter ao menos 6 caracteres.', 'error');
-    }
-
+    if (!name || !unit || !email || !pwd) return showMsg('register-msg', 'Preencha todos os campos.', 'error');
+    if (pwd.length < 6) return showMsg('register-msg', 'Senha deve ter ao menos 6 caracteres.', 'error');
     const btn = document.getElementById('btn-register');
     btn.disabled = true;
     btn.textContent = 'Cadastrando...';
-
     try {
       const cred = await window._createUser(window._auth, email, pwd);
       await window._updateProfile(cred.user, { displayName: name });
-      await window._set(window._ref(window._db, 'condominios/' + cred.user.uid), {
-        name, unit, email, createdAt: new Date().toISOString()
-      });
+      await window._set(window._ref(window._db, 'condominios/' + cred.user.uid), { name, unit, email, createdAt: new Date().toISOString() });
       showMsg('register-msg', '✅ Cadastro realizado com sucesso!', 'success');
-      ['reg-name', 'reg-unit', 'reg-email', 'reg-pwd'].forEach(id => {
-        document.getElementById(id).value = '';
-      });
+      ['reg-name', 'reg-unit', 'reg-email', 'reg-pwd'].forEach(id => { document.getElementById(id).value = ''; });
     } catch(e) {
-      let msg = 'Erro ao cadastrar. Tente novamente.';
-      if (e.code === 'auth/email-already-in-use') msg = 'Este e-mail já está cadastrado.';
-      if (e.code === 'auth/invalid-email') msg = 'E-mail inválido.';
-      if (e.code === 'auth/weak-password') msg = 'Senha muito fraca. Use ao menos 6 caracteres.';
-      if (e.code === 'auth/network-request-failed') msg = 'Erro de conexão. Verifique sua internet.';
-      showMsg('register-msg', msg, 'error');
+      showMsg('register-msg', 'Erro ao cadastrar. Tente novamente.', 'error');
     } finally {
       btn.disabled = false;
       btn.textContent = 'Criar Conta';
     }
   }
 
-  document.getElementById('btn-logout').addEventListener('click', async function() {
+  document.getElementById('btn-logout').addEventListener('click', async () => {
     try {
       closeSindico();
       await window._signOut(window._auth);
-    } catch(e) {
-      console.error('Erro ao sair:', e);
-    }
+    } catch(e) {}
   });
 
   function toggleMenu() {
     document.getElementById('main-nav').classList.toggle('open');
   }
 
-  // Função de voto com nome e unidade do votante
   async function votePoll(btn, pollId) {
     const user = window._auth.currentUser;
     if (!user) {
       alert('Você precisa estar logado para votar!');
       return;
     }
-    
-    // Obter dados do usuário
     const userData = await window._get(window._ref(window._db, 'condominios/' + user.uid));
     const userName = userData.val()?.name || user.displayName || user.email.split('@')[0];
     const userUnit = userData.val()?.unit || 'Não informada';
-    
     const selectedOption = document.querySelector(`input[name="poll_${pollId}"]:checked`);
     if (!selectedOption) {
       alert('Selecione uma opção para votar!');
       return;
     }
-    
     const optionValue = selectedOption.value;
     const pollRef = window._ref(window._db, 'enquetes/' + pollId);
     const pollSnapshot = await window._get(pollRef);
     const pollData = pollSnapshot.val();
-    
-    if (!pollData) {
-      alert('Enquete não encontrada!');
-      return;
-    }
-    
-    // Verificar se o usuário já votou nesta enquete
+    if (!pollData) return;
     const votos = pollData.votos || {};
     let jaVotou = false;
     for (let op in votos) {
@@ -2093,30 +1865,18 @@
         break;
       }
     }
-    
     if (jaVotou) {
       alert('Você já votou nesta enquete!');
       return;
     }
-    
-    // Registrar o voto
     const novosVotos = { ...votos };
-    if (!novosVotos[optionValue]) {
-      novosVotos[optionValue] = [];
-    }
-    novosVotos[optionValue].push({
-      userId: user.uid,
-      nome: userName,
-      unidade: userUnit,
-      data: new Date().toISOString()
-    });
-    
+    if (!novosVotos[optionValue]) novosVotos[optionValue] = [];
+    novosVotos[optionValue].push({ userId: user.uid, nome: userName, unidade: userUnit, data: new Date().toISOString() });
     await window._update(pollRef, { votos: novosVotos });
-    
     btn.textContent = '✓ Votado';
     btn.disabled = true;
     alert('Voto registrado com sucesso!');
-    location.reload(); // Recarregar para mostrar os votos atualizados
+    location.reload();
   }
 
   async function sendContact() {
@@ -2124,13 +1884,13 @@
     const email = document.getElementById('contact-email').value.trim();
     const subject = document.getElementById('contact-subject').value.trim();
     const message = document.getElementById('contact-message').value.trim();
-    if (!name || !email || !subject || !message) return showMsg('contact-msg', 'Preencha todos os campos.', 'error');
+    if (!name || !email || !subject || !message) return alert('Preencha todos os campos');
     try {
       await window._push(window._ref(window._db, 'contatos'), { name, email, subject, message, createdAt: new Date().toISOString() });
-      showMsg('contact-msg', 'Mensagem enviada com sucesso!', 'success');
+      alert('Mensagem enviada com sucesso!');
       ['contact-name','contact-email','contact-subject','contact-message'].forEach(id => { document.getElementById(id).value = ''; });
     } catch(e) {
-      showMsg('contact-msg', 'Erro ao enviar mensagem.', 'error');
+      alert('Erro ao enviar');
     }
   }
 
@@ -2151,26 +1911,14 @@
     document.getElementById('s-' + tab).classList.add('active');
   }
 
-  // Função para excluir morador
   async function deleteMorador(userId, nomeMorador) {
-    if (!confirm(`Tem certeza que deseja excluir o morador "${nomeMorador}"?\n\nEsta ação também excluirá o acesso dele ao portal.`)) {
-      return;
-    }
-    
+    if (!confirm(`Excluir morador "${nomeMorador}"?`)) return;
     try {
-      // Excluir os dados do morador no Realtime Database
       await window._remove(window._ref(window._db, 'condominios/' + userId));
-      
-      // Tentar excluir o usuário do Authentication (requer funções de admin, pode não funcionar)
-      // Por segurança, apenas removemos os dados do banco
-      
-      alert(`Morador "${nomeMorador}" excluído com sucesso!`);
-      
-      // Recarregar a lista de moradores
-      loadMoradores();
+      alert(`Morador excluído!`);
+      location.reload();
     } catch(e) {
-      console.error('Erro ao excluir morador:', e);
-      alert('Erro ao excluir morador. Tente novamente.');
+      alert('Erro ao excluir');
     }
   }
 
@@ -2180,13 +1928,10 @@
       titulo: document.getElementById('s-hero-titulo').value.trim(),
       subtitulo: document.getElementById('s-hero-subtitulo').value.trim()
     };
-    if (!data.titulo) return showSMsg('msg-hero', 'Preencha ao menos o título.', 'error');
     try {
       await window._set(window._ref(window._db, 'config/hero'), data);
-      showSMsg('msg-hero', '✓ Hero atualizado com sucesso!', 'success');
-    } catch(e) {
-      showSMsg('msg-hero', 'Erro ao salvar. Verifique as permissões do Firebase.', 'error');
-    }
+      alert('Hero salvo!');
+    } catch(e) { alert('Erro'); }
   }
 
   async function saveFinanceCards() {
@@ -2199,10 +1944,8 @@
     };
     try {
       await window._set(window._ref(window._db, 'config/financeCards'), data);
-      showSMsg('msg-finance-cards', '✓ Resumo financeiro atualizado com sucesso!', 'success');
-    } catch(e) {
-      showSMsg('msg-finance-cards', 'Erro ao salvar. Verifique as permissões do Firebase.', 'error');
-    }
+      alert('Resumo salvo!');
+    } catch(e) { alert('Erro'); }
   }
 
   async function saveTransaction() {
@@ -2214,14 +1957,12 @@
       status: document.getElementById('s-tx-status').value,
       createdAt: new Date().toISOString()
     };
-    if (!data.descricao || !data.valor || !data.data) return showSMsg('msg-transaction', 'Preencha todos os campos.', 'error');
+    if (!data.descricao || !data.valor || !data.data) return alert('Preencha todos os campos');
     try {
       await window._push(window._ref(window._db, 'transacoes'), data);
-      showSMsg('msg-transaction', '✓ Transação adicionada com sucesso!', 'success');
+      alert('Transação adicionada!');
       ['s-tx-desc','s-tx-date','s-tx-valor'].forEach(id => { document.getElementById(id).value = ''; });
-    } catch(e) {
-      showSMsg('msg-transaction', 'Erro ao salvar.', 'error');
-    }
+    } catch(e) { alert('Erro'); }
   }
 
   async function saveProject() {
@@ -2230,17 +1971,15 @@
       desc: document.getElementById('s-pr-desc').value.trim(),
       data: document.getElementById('s-pr-data').value.trim(),
       status: document.getElementById('s-pr-status').value,
-      badge: document.getElementById('s-pr-badge').value.trim(),
+      badge: document.getElementById('s-pr-badge')?.value.trim() || '',
       createdAt: new Date().toISOString()
     };
-    if (!data.titulo || !data.desc) return showSMsg('msg-project', 'Preencha título e descrição.', 'error');
+    if (!data.titulo || !data.desc) return alert('Preencha título e descrição');
     try {
       await window._push(window._ref(window._db, 'projetos'), data);
-      showSMsg('msg-project', '✓ Projeto adicionado com sucesso!', 'success');
-      ['s-pr-titulo','s-pr-desc','s-pr-data','s-pr-badge'].forEach(id => { document.getElementById(id).value = ''; });
-    } catch(e) {
-      showSMsg('msg-project', 'Erro ao salvar.', 'error');
-    }
+      alert('Projeto adicionado!');
+      ['s-pr-titulo','s-pr-desc','s-pr-data','s-pr-badge'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+    } catch(e) { alert('Erro'); }
   }
 
   async function saveNotice() {
@@ -2251,14 +1990,12 @@
       texto: document.getElementById('s-nc-texto').value.trim(),
       createdAt: new Date().toISOString()
     };
-    if (!data.titulo || !data.texto) return showSMsg('msg-notice', 'Preencha título e texto.', 'error');
+    if (!data.titulo || !data.texto) return alert('Preencha título e texto');
     try {
       await window._push(window._ref(window._db, 'comunicados'), data);
-      showSMsg('msg-notice', '✓ Comunicado publicado com sucesso!', 'success');
+      alert('Comunicado publicado!');
       ['s-nc-icon','s-nc-data','s-nc-titulo','s-nc-texto'].forEach(id => { document.getElementById(id).value = ''; });
-    } catch(e) {
-      showSMsg('msg-notice', 'Erro ao publicar.', 'error');
-    }
+    } catch(e) { alert('Erro'); }
   }
 
   function addPollOption() {
@@ -2266,7 +2003,7 @@
     const count = container.querySelectorAll('.eq-opt').length + 1;
     const row = document.createElement('div');
     row.className = 'poll-option-row';
-    row.innerHTML = `<input type="text" class="eq-opt" placeholder="Opção ${count}" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);font-family:Montserrat,sans-serif;font-size:0.85rem;color:#fff;outline:none;"/>`;
+    row.innerHTML = `<input type="text" class="eq-opt" placeholder="Opção ${count}" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);color:#fff;"/>`;
     container.appendChild(row);
   }
 
@@ -2275,65 +2012,34 @@
     const status = document.getElementById('s-eq-status').value;
     const pergunta = document.getElementById('s-eq-pergunta').value.trim();
     const opcoes = Array.from(document.querySelectorAll('.eq-opt')).map(i => i.value.trim()).filter(v => v);
-    if (!titulo || !pergunta || opcoes.length < 2) return showSMsg('msg-poll', 'Preencha título, pergunta e ao menos 2 opções.', 'error');
+    if (!titulo || !pergunta || opcoes.length < 2) return alert('Preencha título, pergunta e ao menos 2 opções');
     try {
-      await window._push(window._ref(window._db, 'enquetes'), {
-        titulo, status, pergunta, opcoes, votos: {}, createdAt: new Date().toISOString()
-      });
-      showSMsg('msg-poll', '✓ Enquete publicada com sucesso!', 'success');
+      await window._push(window._ref(window._db, 'enquetes'), { titulo, status, pergunta, opcoes, votos: {}, createdAt: new Date().toISOString() });
+      alert('Enquete publicada!');
       document.getElementById('s-eq-titulo').value = '';
       document.getElementById('s-eq-pergunta').value = '';
       document.querySelectorAll('.eq-opt').forEach(i => { i.value = ''; });
-    } catch(e) {
-      showSMsg('msg-poll', 'Erro ao publicar.', 'error');
-    }
-  }
-
-  async function saveStats() {
-    const data = {
-      unidades: document.getElementById('s-st-unidades').value.trim(),
-      fundo: document.getElementById('s-st-fundo').value.trim(),
-      adimplencia: document.getElementById('s-st-adimplencia').value.trim(),
-      projetos: document.getElementById('s-st-projetos').value.trim()
-    };
-    try {
-      await window._set(window._ref(window._db, 'config/stats'), data);
-      showSMsg('msg-stats', '✓ Estatísticas atualizadas com sucesso!', 'success');
-    } catch(e) {
-      showSMsg('msg-stats', 'Erro ao salvar.', 'error');
-    }
-  }
-
-  async function saveContactInfo() {
-    const data = {
-      endereco: document.getElementById('s-ct-endereco').value.trim(),
-      telefone: document.getElementById('s-ct-telefone').value.trim(),
-      email: document.getElementById('s-ct-email').value.trim(),
-      horario: document.getElementById('s-ct-horario').value.trim()
-    };
-    try {
-      await window._set(window._ref(window._db, 'config/contactInfo'), data);
-      showSMsg('msg-contact-info', '✓ Informações de contato atualizadas!', 'success');
-    } catch(e) {
-      showSMsg('msg-contact-info', 'Erro ao salvar.', 'error');
-    }
+    } catch(e) { alert('Erro'); }
   }
 
   async function deleteItem(collection, key) {
-    if (!confirm('Confirma a remoção deste item?')) return;
+    if (!confirm('Remover item?')) return;
     try {
       await window._remove(window._ref(window._db, collection + '/' + key));
-    } catch(e) {
-      alert('Erro ao remover item.');
-    }
+    } catch(e) { alert('Erro'); }
   }
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      if (document.getElementById('panel-login').classList.contains('active')) doLogin();
-      else if (document.getElementById('panel-register').classList.contains('active')) doRegister();
-    }
-  });
+  window.saveHero = saveHero;
+  window.saveFinanceCards = saveFinanceCards;
+  window.saveTransaction = saveTransaction;
+  window.saveProject = saveProject;
+  window.saveNotice = saveNotice;
+  window.savePoll = savePoll;
+  window.deleteItem = deleteItem;
+  window.deleteMorador = deleteMorador;
+  window.addPollOption = addPollOption;
+  window.votePoll = votePoll;
+  window.sendContact = sendContact;
 </script>
 </body>
 </html>
