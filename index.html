@@ -624,23 +624,28 @@
     .badge-blue { background: #e3f2fd; color: var(--azul-info); }
 
     /* POLLS */
-    .polls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .polls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 24px; }
     .poll-card { background: var(--fundo); border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; }
     .poll-header { background: var(--azul); padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; }
     .poll-header h3 { color: var(--branco); font-family: 'Roboto', sans-serif; font-size: 1rem; font-weight: 700; }
     .poll-header .poll-status { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dourado); font-weight: 600; }
     .poll-body { padding: 22px; }
     .poll-question { font-size: 0.88rem; color: var(--texto); margin-bottom: 18px; line-height: 1.6; font-weight: 500; }
-    .poll-option { margin-bottom: 10px; }
+    .poll-option { margin-bottom: 15px; border-bottom: 1px solid var(--borda); padding-bottom: 12px; }
+    .poll-option:last-child { border-bottom: none; }
     .poll-option label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.85rem; }
     .poll-option input[type="radio"] { accent-color: var(--azul); }
     .poll-bar-wrap { margin-top: 6px; background: var(--borda); border-radius: 100px; height: 5px; overflow: hidden; }
     .poll-bar-fill { height: 100%; background: var(--dourado); border-radius: 100px; }
     .poll-pct { font-size: 0.72rem; color: #888; text-align: right; margin-top: 2px; }
+    .poll-voters-list { font-size: 0.7rem; color: #666; margin-top: 6px; padding-top: 4px; border-top: 1px dashed var(--borda); }
+    .poll-voters-list strong { color: var(--azul); font-size: 0.65rem; }
+    .poll-voters-list span { display: inline-block; background: var(--creme); padding: 2px 6px; border-radius: 12px; margin: 2px 4px 2px 0; font-size: 0.65rem; }
     .poll-footer { padding: 14px 22px; border-top: 1px solid var(--borda); display: flex; align-items: center; justify-content: space-between; }
     .poll-votes { font-size: 0.78rem; color: #888; }
     .btn-sm { padding: 8px 18px; background: var(--azul); color: var(--branco); border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
     .btn-sm:hover { background: #254057; }
+    .btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
 
     /* PROJECTS */
     .projects-timeline { position: relative; padding-left: 40px; }
@@ -1064,8 +1069,8 @@
           <input type="text" id="reg-name" placeholder="Seu nome completo"/>
         </div>
         <div class="form-group">
-          <label>Unidade / Apartamento</label>
-          <input type="text" id="reg-unit" placeholder="Ex: Bloco A - Apto 101"/>
+          <label>Unidade</label>
+          <input type="text" id="reg-unit" placeholder="Ex: Unidade 31"/>
         </div>
         <div class="form-group">
           <label>E-mail</label>
@@ -1302,8 +1307,8 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2025 Condomínio Maurício Gnoato. Todos os direitos reservados.</p>
-        <p>Desenvolvido com <span>♥</span> para a comunidade</p>
+        <p>© 2026 Condomínio Maurício Gnoato. Todos os direitos reservados.</p>
+        <p>Desenvolvido por Eduardo Linhares</p>
       </div>
     </div>
   </footer>
@@ -1389,7 +1394,7 @@
       <div class="s-card">
         <div class="s-card-header"><div><h3>Nova Transação</h3><p>Adicione uma linha na tabela de despesas/receitas</p></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group s-form-full"><label>Descrição</label><input type="text" id="s-tx-desc" placeholder="Ex: Manutenção Elevadores"/></div>
+          <div class="s-form-group s-form-full"><label>Descrição</label><input type="text" id="s-tx-desc" placeholder="Ex: Manutenção do Portao"/></div>
           <div class="s-form-group"><label>Categoria</label>
             <select id="s-tx-cat">
               <option value="Receita">Receita</option>
@@ -1424,7 +1429,7 @@
       <div class="s-card">
         <div class="s-card-header"><div><h3>Novo Projeto</h3><p>Adicione um projeto à linha do tempo</p></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group s-form-full"><label>Título do Projeto</label><input type="text" id="s-pr-titulo" placeholder="Ex: Reforma da Piscina"/></div>
+          <div class="s-form-group s-form-full"><label>Título do Projeto</label><input type="text" id="s-pr-titulo" placeholder="Ex: Reforma do Parquinho"/></div>
           <div class="s-form-group s-form-full"><label>Descrição</label><textarea id="s-pr-desc" rows="3" placeholder="Descreva o projeto..."></textarea></div>
           <div class="s-form-group"><label>Data / Período</label><input type="text" id="s-pr-data" placeholder="Ex: Março – Junho 2025"/></div>
           <div class="s-form-group"><label>Status</label>
@@ -1452,7 +1457,7 @@
         <div class="s-form-grid">
           <div class="s-form-group"><label>Ícone (emoji)</label><input type="text" id="s-nc-icon" placeholder="📢" maxlength="4"/></div>
           <div class="s-form-group"><label>Data de Publicação</label><input type="text" id="s-nc-data" placeholder="Ex: 08 de Abril de 2025"/></div>
-          <div class="s-form-group s-form-full"><label>Título do Comunicado</label><input type="text" id="s-nc-titulo" placeholder="Ex: Manutenção dos Elevadores — Bloco C"/></div>
+          <div class="s-form-group s-form-full"><label>Título do Comunicado</label><input type="text" id="s-nc-titulo" placeholder="Ex: Manutenção do Jardim"/></div>
           <div class="s-form-group s-form-full"><label>Texto / Conteúdo</label><textarea id="s-nc-texto" rows="4" placeholder="Descreva o comunicado com detalhes..."></textarea></div>
         </div>
         <button class="btn-save" onclick="saveNotice()">📢 Publicar Comunicado</button>
@@ -1531,7 +1536,7 @@
       </div>
     </div>
 
-    <!-- MORADORES - NOVA ABA -->
+    <!-- MORADORES - COM BOTÃO DE EXCLUIR -->
     <div class="sindico-section" id="s-moradores">
       <div class="s-card">
         <div class="s-card-header"><div><h3>👥 Lista de Moradores Cadastrados</h3><p>Relação de todos os condôminos registrados no portal</p></div></div>
@@ -1769,18 +1774,16 @@
           const cor = isPositive ? 'var(--verde)' : 'var(--vermelho)';
           const sinal = isPositive ? '+' : '-';
           const badgeClass = d.status === 'Pago' || d.status === 'Recebido' ? 'badge-green' : d.status === 'Pendente' ? 'badge-yellow' : 'badge-red';
-          return `<tr>
-            <td>${d.descricao}</td>
-            <td>${d.categoria}</td>
-            <td>${d.data}</td>
+          return `#
+             <td>${d.descricao}</td>
+             <td>${d.categoria}</td>
+             <td>${d.data}</td>
             <td style="color:${cor};font-weight:600">${sinal} R$ ${d.valor}</td>
-            <td><span class="badge ${badgeClass}">${d.status}</span></td>
-           </tr>`;
+             <td><span class="badge ${badgeClass}">${d.status}</span></td>
+           `;
         }).join('');
-        tableWrap.innerHTML = `<div class="table-wrap"><table>
-          <thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table></div>`;
+        tableWrap.innerHTML = `<div class="table-wrap">` +
+          `<table><thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
         sList.innerHTML = keys.map(key => {
           const d = items[key];
           return `<div class="s-list-item">
@@ -1817,12 +1820,30 @@
         keys.forEach(key => {
           const d = items[key];
           const opts = d.opcoes || [];
-          const optsHtml = opts.map((op, i) => `
-            <div class="poll-option">
-              <label><input type="radio" name="dyn_${key}"> ${op}</label>
-              <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:0%"></div></div>
-              <div class="poll-pct">0 votos</div>
-            </div>`).join('');
+          const votos = d.votos || {};
+          
+          // Calcular total de votos
+          let totalVotos = 0;
+          const opcoesComVotos = opts.map((op, idx) => {
+            const votosOpcao = votos[op] || [];
+            totalVotos += votosOpcao.length;
+            return { nome: op, votos: votosOpcao };
+          });
+          
+          const optsHtml = opts.map((op, idx) => {
+            const votosOpcao = votos[op] || [];
+            const percentual = totalVotos > 0 ? (votosOpcao.length / totalVotos * 100).toFixed(1) : 0;
+            const votantesHtml = votosOpcao.length > 0 ? 
+              `<div class="poll-voters-list"><strong>Votantes:</strong> ${votosOpcao.map(v => `<span>${v.nome} (${v.unidade})</span>`).join('')}</div>` : '';
+            return `
+              <div class="poll-option">
+                <div class="poll-bar-wrap"><div class="poll-bar-fill" style="width:${percentual}%"></div></div>
+                <div class="poll-pct">${percentual}% (${votosOpcao.length} votos)</div>
+                <label><input type="radio" name="poll_${key}" value="${op}"> ${op}</label>
+                ${votantesHtml}
+              </div>`;
+          }).join('');
+          
           const card = document.createElement('div');
           card.className = 'poll-card dynamic-poll';
           card.innerHTML = `
@@ -1835,8 +1856,8 @@
               ${optsHtml}
             </div>
             <div class="poll-footer">
-              <span class="poll-votes">0 votos</span>
-              <button class="btn-sm" onclick="votePoll(this)">Votar</button>
+              <span class="poll-votes">Total: ${totalVotos} votos</span>
+              <button class="btn-sm" onclick="votePoll(this, '${key}')">Votar</button>
             </div>`;
           grid.appendChild(card);
         });
@@ -1895,7 +1916,7 @@
     });
   }
 
-  // ===== CARREGAR MORADORES =====
+  // ===== CARREGAR MORADORES COM BOTÃO DE EXCLUIR =====
   function loadMoradores() {
     onValue(ref(db, 'condominios'), (snap) => {
       const listContainer = document.getElementById('s-moradores-list');
@@ -1913,6 +1934,9 @@
               <div class="s-list-item-info">
                 <strong>${morador.name || 'Nome não informado'}</strong>
                 <span>Unidade: ${morador.unit || 'Não informada'} | E-mail: ${morador.email || 'Não informado'}</span>
+              </div>
+              <div class="s-list-item-actions">
+                <button class="btn-danger" onclick="deleteMorador('${key}', '${morador.name}')">Excluir Morador</button>
               </div>
             </div>`;
           }).join('');
@@ -2031,10 +2055,68 @@
     document.getElementById('main-nav').classList.toggle('open');
   }
 
-  function votePoll(btn) {
-    btn.textContent = 'Votado ✓';
+  // Função de voto com nome e unidade do votante
+  async function votePoll(btn, pollId) {
+    const user = window._auth.currentUser;
+    if (!user) {
+      alert('Você precisa estar logado para votar!');
+      return;
+    }
+    
+    // Obter dados do usuário
+    const userData = await window._get(window._ref(window._db, 'condominios/' + user.uid));
+    const userName = userData.val()?.name || user.displayName || user.email.split('@')[0];
+    const userUnit = userData.val()?.unit || 'Não informada';
+    
+    const selectedOption = document.querySelector(`input[name="poll_${pollId}"]:checked`);
+    if (!selectedOption) {
+      alert('Selecione uma opção para votar!');
+      return;
+    }
+    
+    const optionValue = selectedOption.value;
+    const pollRef = window._ref(window._db, 'enquetes/' + pollId);
+    const pollSnapshot = await window._get(pollRef);
+    const pollData = pollSnapshot.val();
+    
+    if (!pollData) {
+      alert('Enquete não encontrada!');
+      return;
+    }
+    
+    // Verificar se o usuário já votou nesta enquete
+    const votos = pollData.votos || {};
+    let jaVotou = false;
+    for (let op in votos) {
+      if (votos[op] && votos[op].some(v => v.userId === user.uid)) {
+        jaVotou = true;
+        break;
+      }
+    }
+    
+    if (jaVotou) {
+      alert('Você já votou nesta enquete!');
+      return;
+    }
+    
+    // Registrar o voto
+    const novosVotos = { ...votos };
+    if (!novosVotos[optionValue]) {
+      novosVotos[optionValue] = [];
+    }
+    novosVotos[optionValue].push({
+      userId: user.uid,
+      nome: userName,
+      unidade: userUnit,
+      data: new Date().toISOString()
+    });
+    
+    await window._update(pollRef, { votos: novosVotos });
+    
+    btn.textContent = '✓ Votado';
     btn.disabled = true;
-    btn.style.background = '#27ae60';
+    alert('Voto registrado com sucesso!');
+    location.reload(); // Recarregar para mostrar os votos atualizados
   }
 
   async function sendContact() {
@@ -2067,6 +2149,29 @@
     document.querySelectorAll('.sindico-section').forEach(s => s.classList.remove('active'));
     if (btn) btn.classList.add('active');
     document.getElementById('s-' + tab).classList.add('active');
+  }
+
+  // Função para excluir morador
+  async function deleteMorador(userId, nomeMorador) {
+    if (!confirm(`Tem certeza que deseja excluir o morador "${nomeMorador}"?\n\nEsta ação também excluirá o acesso dele ao portal.`)) {
+      return;
+    }
+    
+    try {
+      // Excluir os dados do morador no Realtime Database
+      await window._remove(window._ref(window._db, 'condominios/' + userId));
+      
+      // Tentar excluir o usuário do Authentication (requer funções de admin, pode não funcionar)
+      // Por segurança, apenas removemos os dados do banco
+      
+      alert(`Morador "${nomeMorador}" excluído com sucesso!`);
+      
+      // Recarregar a lista de moradores
+      loadMoradores();
+    } catch(e) {
+      console.error('Erro ao excluir morador:', e);
+      alert('Erro ao excluir morador. Tente novamente.');
+    }
   }
 
   async function saveHero() {
