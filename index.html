@@ -682,6 +682,82 @@
     }
     .contact-form input:focus, .contact-form textarea:focus { border-color: var(--dourado); }
 
+    /* DOCUMENTOS SECTION - NOVA ÁREA DE DOCUMENTOS */
+    .documents-section {
+      margin-top: 40px;
+    }
+    .documents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 20px;
+    }
+    .doc-card {
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .doc-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .doc-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+    .doc-card h3 {
+      font-family: 'Roboto', sans-serif;
+      color: var(--azul);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+    .doc-card p {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 16px;
+    }
+    .doc-link {
+      display: inline-block;
+      padding: 10px 20px;
+      background: var(--azul);
+      color: var(--branco);
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .doc-link:hover {
+      background: var(--dourado);
+      color: var(--azul-escuro);
+    }
+    .doc-empty {
+      color: #999;
+      font-style: italic;
+      font-size: 0.85rem;
+    }
+    .atas-list {
+      margin-top: 12px;
+      text-align: left;
+    }
+    .ata-item {
+      display: block;
+      padding: 8px 12px;
+      margin: 5px 0;
+      background: var(--fundo);
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.8rem;
+      color: var(--azul);
+      transition: background 0.2s;
+    }
+    .ata-item:hover {
+      background: var(--creme);
+    }
+
     /* FOOTER */
     footer { background: var(--azul-escuro); color: rgba(255,255,255,0.6); padding: 48px 24px 24px; }
     .footer-inner { max-width: 1200px; margin: 0 auto; }
@@ -764,7 +840,7 @@
 
     .sindico-tab {
       flex: 1;
-      min-width: 100px;
+      min-width: 90px;
       padding: 10px 14px;
       background: transparent;
       border: none;
@@ -989,6 +1065,29 @@
     }
     .btn-add-opt:hover { background: rgba(196,167,118,0.25); }
 
+    /* Upload area */
+    .upload-area {
+      border: 2px dashed rgba(196,167,118,0.3);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      margin: 15px 0;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .upload-area:hover {
+      border-color: var(--dourado);
+      background: rgba(196,167,118,0.05);
+    }
+    .upload-area input {
+      display: none;
+    }
+    .file-name {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+    }
+
     @media (max-width: 768px) {
       .hamburger { display: flex; }
       nav {
@@ -1088,6 +1187,7 @@
       </a>
       <nav id="main-nav">
         <a href="#financeiro">Financeiro</a>
+        <a href="#documentos">Documentos</a>
         <a href="#projetos">Projetos</a>
         <a href="#enquetes">Enquetes</a>
         <a href="#comunicados">Comunicados</a>
@@ -1118,7 +1218,7 @@
     </div>
   </section>
 
-  <!-- ALERT SCROLLER - SUBSTITUI A BARRA DE ESTATÍSTICAS -->
+  <!-- ALERT SCROLLER -->
   <div class="alert-scroller">
     <div class="scroller-container">
       <div class="scroller-track">
@@ -1142,25 +1242,25 @@
         <div class="finance-card">
           <div class="finance-card-icon">💰</div>
           <h3>Receitas do Mês</h3>
-          <div class="amount positive" id="fc-receitas">—</div>
+          <div class="amount positive" id="fc-receitas">R$ 0,00</div>
           <p id="fc-mes">Aguardando dados do síndico</p>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">📊</div>
           <h3>Despesas do Mês</h3>
-          <div class="amount negative" id="fc-despesas">—</div>
+          <div class="amount negative" id="fc-despesas">R$ 0,00</div>
           <p id="fc-mes-2">Aguardando dados do síndico</p>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">📈</div>
           <h3>Saldo / Superávit</h3>
-          <div class="amount" id="fc-saldo">—</div>
+          <div class="amount" id="fc-saldo">R$ 0,00</div>
           <p>Resultado do período</p>
         </div>
         <div class="finance-card">
           <div class="finance-card-icon">🏦</div>
           <h3>Fundo de Reserva</h3>
-          <div class="amount" id="fc-fundo">—</div>
+          <div class="amount" id="fc-fundo">R$ 0,00</div>
           <p>Saldo acumulado</p>
         </div>
       </div>
@@ -1168,6 +1268,47 @@
         <div class="empty-state">
           <div class="empty-icon">🧾</div>
           <p>Nenhuma transação cadastrada ainda.<br><strong>O síndico pode adicionar transações no painel administrativo.</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCUMENTOS - NOVA SEÇÃO ESTRUTURADA -->
+  <section id="documentos">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">✦ Documentos Oficiais</span>
+        <h2 class="section-title">Documentos do Condomínio</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">Acesse os documentos importantes do condomínio: Regulamento Interno, Convenção e Atas de Assembleia.</p>
+      </div>
+      <div class="documents-grid">
+        <!-- Regulamento Interno -->
+        <div class="doc-card">
+          <div class="doc-icon">📘</div>
+          <h3>Regulamento Interno</h3>
+          <p>Normas de convivência e uso das áreas comuns</p>
+          <div id="doc-regulamento">
+            <span class="doc-empty">Nenhum arquivo disponível</span>
+          </div>
+        </div>
+        <!-- Convenção -->
+        <div class="doc-card">
+          <div class="doc-icon">⚖️</div>
+          <h3>Convenção do Condomínio</h3>
+          <p>Regras gerais e direitos dos condôminos</p>
+          <div id="doc-convencao">
+            <span class="doc-empty">Nenhum arquivo disponível</span>
+          </div>
+        </div>
+        <!-- Atas de Assembleia -->
+        <div class="doc-card">
+          <div class="doc-icon">📋</div>
+          <h3>Atas de Assembleia</h3>
+          <p>Decisões e deliberações das assembleias</p>
+          <div id="doc-atas">
+            <span class="doc-empty">Nenhuma ata disponível</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1267,6 +1408,7 @@
         <div class="footer-col">
           <h4>Portal</h4>
           <a href="#financeiro">Financeiro</a>
+          <a href="#documentos">Documentos</a>
           <a href="#projetos">Projetos</a>
           <a href="#enquetes">Enquetes</a>
           <a href="#comunicados">Comunicados</a>
@@ -1274,9 +1416,9 @@
         <div class="footer-col">
           <h4>DOCUMENTOS</h4>
           <a href="http://mauriciognoato.github.io/vagas">Mapa de Vagas</a>
-          <a href="#">Regulamento Interno</a>
-          <a href="#">Convenção</a>
-          <a href="#">Atas de Assembleia</a>
+          <a href="#" id="footer-regulamento">Regulamento Interno</a>
+          <a href="#" id="footer-convencao">Convenção</a>
+          <a href="#" id="footer-atas">Atas de Assembleia</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -1302,6 +1444,7 @@
       <button class="sindico-tab active" onclick="sindicoTab('dashboard', this)">📊 Dashboard</button>
       <button class="sindico-tab" onclick="sindicoTab('hero', this)">🖼 Hero</button>
       <button class="sindico-tab" onclick="sindicoTab('financeiro', this)">💰 Financeiro</button>
+      <button class="sindico-tab" onclick="sindicoTab('documentos', this)">📄 Documentos</button>
       <button class="sindico-tab" onclick="sindicoTab('projetos', this)">🏗 Projetos</button>
       <button class="sindico-tab" onclick="sindicoTab('comunicados', this)">📢 Comunicados</button>
       <button class="sindico-tab" onclick="sindicoTab('enquetes', this)">🗳 Enquetes</button>
@@ -1320,6 +1463,7 @@
         <div class="s-stat-card"><div class="num" id="d-mensagens">—</div><div class="lbl">Mensagens</div></div>
         <div class="s-stat-card"><div class="num" id="d-moradores">—</div><div class="lbl">Moradores</div></div>
         <div class="s-stat-card"><div class="num" id="d-alertas">—</div><div class="lbl">Alertas</div></div>
+        <div class="s-stat-card"><div class="num" id="d-documentos">—</div><div class="lbl">Documentos</div></div>
       </div>
       <div class="s-card">
         <div class="s-card-header"><div><h3>Bem-vindo ao Painel</h3><p>Use as abas acima para gerenciar cada seção do portal</p></div></div>
@@ -1331,7 +1475,7 @@
           <strong style="color:var(--dourado)">transações financeiras</strong>, gerenciar 
           <strong style="color:var(--dourado)">alertas do scroller</strong>, as 
           <strong style="color:var(--dourado)">informações de contato</strong>, ler as 
-          <strong style="color:var(--dourado)">mensagens</strong> e visualizar os <strong style="color:var(--dourado)">moradores cadastrados</strong>.
+          <strong style="color:var(--dourado)">mensagens</strong>, visualizar os <strong style="color:var(--dourado)">moradores cadastrados</strong> e <strong style="color:var(--dourado)">gerenciar documentos</strong> do condomínio.
         </p>
       </div>
     </div>
@@ -1353,7 +1497,7 @@
     <!-- FINANCEIRO -->
     <div class="sindico-section" id="s-financeiro">
       <div class="s-card">
-        <div class="s-card-header"><div><h3>Resumo Financeiro</h3><p>Atualize os valores exibidos nos cards do site</p></div></div>
+        <div class="s-card-header"><div><h3>Resumo Financeiro</h3><p>Atualize os valores exibidos nos cards do site (use o formato: R$ 48.320,00)</p></div></div>
         <div class="s-form-grid">
           <div class="s-form-group"><label>Receitas do Mês</label><input type="text" id="s-fc-receitas" placeholder="R$ 48.320,00"/></div>
           <div class="s-form-group"><label>Despesas do Mês</label><input type="text" id="s-fc-despesas" placeholder="R$ 41.750,00"/></div>
@@ -1398,12 +1542,63 @@
       </div>
     </div>
 
+    <!-- DOCUMENTOS - NOVA ABA -->
+    <div class="sindico-section" id="s-documentos">
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>📘 Regulamento Interno</h3><p>Faça upload do Regulamento Interno do condomínio (PDF ou DOCX)</p></div></div>
+        <div class="upload-area" onclick="document.getElementById('doc-reg-file').click()">
+          <input type="file" id="doc-reg-file" accept=".pdf,.docx" style="display:none" onchange="updateFileName(this, 'reg-file-name')"/>
+          <span style="font-size:2rem;">📄</span>
+          <p>Clique para selecionar o arquivo</p>
+          <div id="reg-file-name" class="file-name">Nenhum arquivo selecionado</div>
+        </div>
+        <button class="btn-save" onclick="uploadDocument('regulamento')">📤 Fazer Upload do Regulamento</button>
+        <div id="reg-status" style="margin-top:10px;"></div>
+        <div style="margin-top:20px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.1);">
+          <strong style="color:var(--dourado);">Arquivo atual:</strong>
+          <div id="current-regulamento" style="margin-top:8px;color:rgba(255,255,255,0.6);">Carregando...</div>
+        </div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>⚖️ Convenção do Condomínio</h3><p>Faça upload da Convenção do Condomínio (PDF ou DOCX)</p></div></div>
+        <div class="upload-area" onclick="document.getElementById('doc-conv-file').click()">
+          <input type="file" id="doc-conv-file" accept=".pdf,.docx" style="display:none" onchange="updateFileName(this, 'conv-file-name')"/>
+          <span style="font-size:2rem;">📜</span>
+          <p>Clique para selecionar o arquivo</p>
+          <div id="conv-file-name" class="file-name">Nenhum arquivo selecionado</div>
+        </div>
+        <button class="btn-save" onclick="uploadDocument('convencao')">📤 Fazer Upload da Convenção</button>
+        <div id="conv-status" style="margin-top:10px;"></div>
+        <div style="margin-top:20px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.1);">
+          <strong style="color:var(--dourado);">Arquivo atual:</strong>
+          <div id="current-convencao" style="margin-top:8px;color:rgba(255,255,255,0.6);">Carregando...</div>
+        </div>
+      </div>
+
+      <div class="s-card">
+        <div class="s-card-header"><div><h3>📋 Atas de Assembleia</h3><p>Faça upload das Atas de Assembleia (PDF ou DOCX)</p></div></div>
+        <div class="upload-area" onclick="document.getElementById('doc-ata-file').click()">
+          <input type="file" id="doc-ata-file" accept=".pdf,.docx" style="display:none" onchange="updateFileName(this, 'ata-file-name')"/>
+          <span style="font-size:2rem;">📝</span>
+          <p>Clique para selecionar o arquivo</p>
+          <div id="ata-file-name" class="file-name">Nenhum arquivo selecionado</div>
+        </div>
+        <button class="btn-save" onclick="uploadDocument('atas')">📤 Fazer Upload da Ata</button>
+        <div id="ata-status" style="margin-top:10px;"></div>
+        <div style="margin-top:20px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.1);">
+          <strong style="color:var(--dourado);">Atas anteriores:</strong>
+          <div id="atas-list-admin" style="margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- PROJETOS -->
     <div class="sindico-section" id="s-projetos">
       <div class="s-card">
         <div class="s-card-header"><div><h3>Novo Projeto</h3><p>Adicione um projeto à linha do tempo</p></div></div>
         <div class="s-form-grid">
-          <div class="s-form-group s-form-full"><label>Título do Projeto</label><input type="text" id="s-pr-titulo" placeholder="Ex: Reforma do Portao"/></div>
+          <div class="s-form-group s-form-full"><label>Título do Projeto</label><input type="text" id="s-pr-titulo" placeholder="Ex: Reforma do Portão"/></div>
           <div class="s-form-group s-form-full"><label>Descrição</label><textarea id="s-pr-desc" rows="3" placeholder="Descreva o projeto..."></textarea></div>
           <div class="s-form-group"><label>Data / Período</label><input type="text" id="s-pr-data" placeholder="Ex: Março – Junho 2025"/></div>
           <div class="s-form-group"><label>Status</label>
@@ -1475,7 +1670,7 @@
       </div>
     </div>
 
-    <!-- ALERTAS - NOVA ABA -->
+    <!-- ALERTAS -->
     <div class="sindico-section" id="s-alertas">
       <div class="s-card">
         <div class="s-card-header"><div><h3>⚠️ Novo Alerta</h3><p>Adicione informações que serão exibidas no scroller da página inicial</p></div></div>
@@ -1521,6 +1716,9 @@
   import {
     getDatabase, ref, set, push, get, remove, onValue, update
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import {
+    getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCwXXGdSZmtlhaOTt5QyjQUWMukTURbSRU",
@@ -1535,6 +1733,7 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getDatabase(app);
+  const storage = getStorage(app);
 
   const SINDICO_EMAILS = [
     'sindico@condmauriciognoato.com.br',
@@ -1556,7 +1755,194 @@
   window._signOut = signOut;
   window._updateProfile = updateProfile;
 
-  // Função para carregar alertas no scroller
+  // Funções auxiliares
+  function formatMoneyValue(value) {
+    if (!value) return 'R$ 0,00';
+    if (value.toString().startsWith('R$')) return value;
+    return 'R$ ' + value.toString();
+  }
+
+  // Função para atualizar nome do arquivo
+  window.updateFileName = function(input, spanId) {
+    const span = document.getElementById(spanId);
+    if (span && input.files && input.files[0]) {
+      span.textContent = input.files[0].name;
+    } else if (span) {
+      span.textContent = 'Nenhum arquivo selecionado';
+    }
+  };
+
+  // ===================== GESTÃO DE DOCUMENTOS =====================
+  window.uploadDocument = async function(tipo) {
+    let fileInput, statusDiv, storagePath;
+    
+    if (tipo === 'regulamento') {
+      fileInput = document.getElementById('doc-reg-file');
+      statusDiv = document.getElementById('reg-status');
+      storagePath = 'documentos/regulamento';
+    } else if (tipo === 'convencao') {
+      fileInput = document.getElementById('doc-conv-file');
+      statusDiv = document.getElementById('conv-status');
+      storagePath = 'documentos/convencao';
+    } else {
+      fileInput = document.getElementById('doc-ata-file');
+      statusDiv = document.getElementById('ata-status');
+      storagePath = 'documentos/atas';
+    }
+    
+    const file = fileInput.files[0];
+    if (!file) {
+      statusDiv.innerHTML = '<span style="color:#e74c3c;">Selecione um arquivo primeiro!</span>';
+      setTimeout(() => statusDiv.innerHTML = '', 3000);
+      return;
+    }
+    
+    statusDiv.innerHTML = '<span style="color:#f39c12;">📤 Enviando arquivo...</span>';
+    
+    try {
+      const timestamp = Date.now();
+      const fileName = `${timestamp}_${file.name}`;
+      const fileRef = storageRef(storage, `${storagePath}/${fileName}`);
+      await uploadBytes(fileRef, file);
+      const downloadURL = await getDownloadURL(fileRef);
+      
+      if (tipo === 'atas') {
+        const atasRef = ref(db, 'documentos/atas');
+        await push(atasRef, {
+          url: downloadURL,
+          name: file.name,
+          fileName: fileName,
+          createdAt: new Date().toISOString(),
+          size: file.size
+        });
+        statusDiv.innerHTML = '<span style="color:#27ae60;">✅ Ata adicionada com sucesso!</span>';
+      } else {
+        await set(ref(db, `documentos/${tipo}`), {
+          url: downloadURL,
+          name: file.name,
+          fileName: fileName,
+          updatedAt: new Date().toISOString(),
+          size: file.size
+        });
+        statusDiv.innerHTML = '<span style="color:#27ae60;">✅ Documento atualizado com sucesso!</span>';
+      }
+      
+      fileInput.value = '';
+      const fileNameSpan = document.getElementById(tipo === 'regulamento' ? 'reg-file-name' : (tipo === 'convencao' ? 'conv-file-name' : 'ata-file-name'));
+      if (fileNameSpan) fileNameSpan.textContent = 'Nenhum arquivo selecionado';
+      
+      setTimeout(() => statusDiv.innerHTML = '', 3000);
+      loadDocuments();
+      
+    } catch (error) {
+      console.error('Erro no upload:', error);
+      statusDiv.innerHTML = '<span style="color:#e74c3c;">❌ Erro ao fazer upload. Tente novamente.</span>';
+      setTimeout(() => statusDiv.innerHTML = '', 3000);
+    }
+  };
+
+  async function loadDocuments() {
+    const docsRef = ref(db, 'documentos');
+    const snapshot = await get(docsRef);
+    const docs = snapshot.val() || {};
+    
+    // Regulamento
+    const regulamentoDiv = document.getElementById('doc-regulamento');
+    const currentReg = document.getElementById('current-regulamento');
+    const footerReg = document.getElementById('footer-regulamento');
+    if (docs.regulamento && docs.regulamento.url) {
+      regulamentoDiv.innerHTML = `<a href="${docs.regulamento.url}" target="_blank" class="doc-link">📄 Abrir Regulamento Interno</a>`;
+      if (currentReg) currentReg.innerHTML = `<a href="${docs.regulamento.url}" target="_blank" style="color:var(--dourado);">${docs.regulamento.name || 'Documento atual'}</a> <small>(${new Date(docs.regulamento.updatedAt).toLocaleDateString('pt-BR')})</small>`;
+      if (footerReg) { footerReg.href = docs.regulamento.url; footerReg.style.opacity = '1'; footerReg.style.pointerEvents = 'auto'; }
+    } else {
+      regulamentoDiv.innerHTML = '<span class="doc-empty">Nenhum arquivo disponível</span>';
+      if (currentReg) currentReg.innerHTML = '<span style="color:rgba(255,255,255,0.4);">Nenhum arquivo enviado</span>';
+      if (footerReg) { footerReg.href = '#'; footerReg.style.opacity = '0.5'; footerReg.style.pointerEvents = 'none'; }
+    }
+    
+    // Convenção
+    const convencaoDiv = document.getElementById('doc-convencao');
+    const currentConv = document.getElementById('current-convencao');
+    const footerConv = document.getElementById('footer-convencao');
+    if (docs.convencao && docs.convencao.url) {
+      convencaoDiv.innerHTML = `<a href="${docs.convencao.url}" target="_blank" class="doc-link">📄 Abrir Convenção</a>`;
+      if (currentConv) currentConv.innerHTML = `<a href="${docs.convencao.url}" target="_blank" style="color:var(--dourado);">${docs.convencao.name || 'Documento atual'}</a> <small>(${new Date(docs.convencao.updatedAt).toLocaleDateString('pt-BR')})</small>`;
+      if (footerConv) { footerConv.href = docs.convencao.url; footerConv.style.opacity = '1'; footerConv.style.pointerEvents = 'auto'; }
+    } else {
+      convencaoDiv.innerHTML = '<span class="doc-empty">Nenhum arquivo disponível</span>';
+      if (currentConv) currentConv.innerHTML = '<span style="color:rgba(255,255,255,0.4);">Nenhum arquivo enviado</span>';
+      if (footerConv) { footerConv.href = '#'; footerConv.style.opacity = '0.5'; footerConv.style.pointerEvents = 'none'; }
+    }
+    
+    // Atas
+    const atasDiv = document.getElementById('doc-atas');
+    const atasListAdmin = document.getElementById('atas-list-admin');
+    const footerAtas = document.getElementById('footer-atas');
+    
+    if (docs.atas) {
+      const atasArray = Object.entries(docs.atas).map(([key, value]) => ({ key, ...value }));
+      atasArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      
+      if (atasArray.length > 0) {
+        const atasHtml = atasArray.map(ata => `
+          <a href="${ata.url}" target="_blank" class="ata-item">
+            📄 ${new Date(ata.createdAt).toLocaleDateString('pt-BR')} - ${ata.name || 'Ata'}
+          </a>
+        `).join('');
+        atasDiv.innerHTML = atasHtml;
+        
+        if (atasListAdmin) {
+          atasListAdmin.innerHTML = atasArray.map(ata => `
+            <div class="s-list-item">
+              <div class="s-list-item-info">
+                <strong>📋 ${ata.name || 'Ata'}</strong>
+                <span>${new Date(ata.createdAt).toLocaleString('pt-BR')}</span>
+              </div>
+              <div class="s-list-item-actions">
+                <a href="${ata.url}" target="_blank" class="btn-save" style="padding:5px 12px;font-size:0.7rem;margin:0;text-decoration:none;">🔍 Ver</a>
+                <button class="btn-danger" onclick="deleteDocument('atas', '${ata.key}')">🗑️ Excluir</button>
+              </div>
+            </div>
+          `).join('');
+        }
+        
+        if (footerAtas) { footerAtas.href = atasArray[0].url; footerAtas.style.opacity = '1'; footerAtas.style.pointerEvents = 'auto'; }
+        const docCount = (docs.regulamento ? 1 : 0) + (docs.convencao ? 1 : 0) + atasArray.length;
+        document.getElementById('d-documentos').textContent = docCount;
+      } else {
+        atasDiv.innerHTML = '<span class="doc-empty">Nenhuma ata disponível</span>';
+        if (atasListAdmin) atasListAdmin.innerHTML = '<p style="color:rgba(255,255,255,0.4);">Nenhuma ata cadastrada</p>';
+        if (footerAtas) { footerAtas.href = '#'; footerAtas.style.opacity = '0.5'; footerAtas.style.pointerEvents = 'none'; }
+      }
+    } else {
+      atasDiv.innerHTML = '<span class="doc-empty">Nenhuma ata disponível</span>';
+      if (atasListAdmin) atasListAdmin.innerHTML = '<p style="color:rgba(255,255,255,0.4);">Nenhuma ata cadastrada</p>';
+      if (footerAtas) { footerAtas.href = '#'; footerAtas.style.opacity = '0.5'; footerAtas.style.pointerEvents = 'none'; }
+    }
+  }
+
+  window.deleteDocument = async function(tipo, key) {
+    if (!confirm('Tem certeza que deseja excluir este documento?')) return;
+    try {
+      if (tipo === 'atas') {
+        const ataRef = ref(db, `documentos/atas/${key}`);
+        const snapshot = await get(ataRef);
+        const ataData = snapshot.val();
+        if (ataData && ataData.fileName) {
+          const fileRef = storageRef(storage, `documentos/atas/${ataData.fileName}`);
+          await deleteObject(fileRef).catch(e => console.log('Arquivo não encontrado no storage'));
+        }
+        await remove(ataRef);
+      }
+      alert('Documento excluído com sucesso!');
+      loadDocuments();
+    } catch (error) {
+      console.error('Erro ao excluir:', error);
+      alert('Erro ao excluir documento');
+    }
+  };
+
+  // ===================== FUNÇÕES DE ALERTAS =====================
   function loadAlertas() {
     onValue(ref(db, 'alertas'), (snap) => {
       const scrollerContent = document.getElementById('scroller-content');
@@ -1576,7 +1962,6 @@
           </div>`;
         }).join('');
         
-        // Duplicar para efeito de loop infinito
         scrollerContent.innerHTML = alertsHtml + alertsHtml;
         
         sList.innerHTML = keys.map(key => {
@@ -1631,187 +2016,100 @@
     }
   };
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      document.getElementById('auth-overlay').style.display = 'none';
-      document.getElementById('main-site').style.display = 'block';
-      
-      const name = user.displayName || user.email.split('@')[0];
-      const initials = name.charAt(0).toUpperCase();
-      document.getElementById('user-avatar').textContent = initials;
-      document.getElementById('user-name-header').textContent = name;
-      
-      const btnSindico = document.getElementById('btn-sindico-nav');
-      const isSindico = SINDICO_EMAILS.some(e => e.toLowerCase() === (user.email || '').toLowerCase());
-      if (isSindico) btnSindico.classList.remove('hidden');
-      else btnSindico.classList.add('hidden');
-      
-      loadDynamicData();
-      loadMoradores();
-      loadAlertas();
-    } else {
-      document.getElementById('auth-overlay').style.display = 'flex';
-      document.getElementById('main-site').style.display = 'none';
-      document.getElementById('sindico-panel').style.display = 'none';
-    }
-  });
-
-  // ===== CARREGAR DADOS DINÂMICOS (mantido igual) =====
-  function loadDynamicData() {
-    // Hero
+  // ===================== OUTRAS FUNÇÕES =====================
+  async function loadHero() {
     onValue(ref(db, 'config/hero'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
-        if (d.badge) { document.getElementById('hero-badge').textContent = d.badge; document.getElementById('s-hero-badge').value = d.badge; }
-        if (d.titulo) { document.getElementById('hero-titulo').innerHTML = d.titulo; document.getElementById('s-hero-titulo').value = d.titulo; }
-        if (d.subtitulo) { document.getElementById('hero-subtitulo').textContent = d.subtitulo; document.getElementById('s-hero-subtitulo').value = d.subtitulo; }
+        if (d.badge) document.getElementById('hero-badge').textContent = d.badge;
+        if (d.titulo) document.getElementById('hero-titulo').innerHTML = d.titulo;
+        if (d.subtitulo) document.getElementById('hero-subtitulo').textContent = d.subtitulo;
+        document.getElementById('s-hero-badge').value = d.badge || '';
+        document.getElementById('s-hero-titulo').value = d.titulo || '';
+        document.getElementById('s-hero-subtitulo').value = d.subtitulo || '';
       }
     });
+  }
 
-    // Finance cards
+  window.saveHero = async function() {
+    const data = {
+      badge: document.getElementById('s-hero-badge').value.trim(),
+      titulo: document.getElementById('s-hero-titulo').value.trim(),
+      subtitulo: document.getElementById('s-hero-subtitulo').value.trim()
+    };
+    try {
+      await set(ref(db, 'config/hero'), data);
+      alert('Hero salvo!');
+    } catch(e) { alert('Erro ao salvar'); }
+  };
+
+  async function loadFinanceCards() {
     onValue(ref(db, 'config/financeCards'), (snap) => {
       if (snap.exists()) {
         const d = snap.val();
-        if (d.receitas) { document.getElementById('fc-receitas').textContent = d.receitas; document.getElementById('s-fc-receitas').value = d.receitas; }
-        if (d.despesas) { document.getElementById('fc-despesas').textContent = d.despesas; document.getElementById('s-fc-despesas').value = d.despesas; }
-        if (d.saldo) { document.getElementById('fc-saldo').textContent = d.saldo; document.getElementById('s-fc-saldo').value = d.saldo; }
-        if (d.fundo) { document.getElementById('fc-fundo').textContent = d.fundo; document.getElementById('s-fc-fundo').value = d.fundo; }
-        if (d.mes) {
-          document.getElementById('fc-mes').textContent = d.mes;
-          document.getElementById('fc-mes-2').textContent = d.mes;
-          document.getElementById('s-fc-mes').value = d.mes;
-        }
+        document.getElementById('fc-receitas').textContent = formatMoneyValue(d.receitas);
+        document.getElementById('fc-despesas').textContent = formatMoneyValue(d.despesas);
+        document.getElementById('fc-saldo').textContent = formatMoneyValue(d.saldo);
+        document.getElementById('fc-fundo').textContent = formatMoneyValue(d.fundo);
+        document.getElementById('fc-mes').textContent = d.mes || '';
+        document.getElementById('fc-mes-2').textContent = d.mes || '';
+        document.getElementById('s-fc-receitas').value = d.receitas || '';
+        document.getElementById('s-fc-despesas').value = d.despesas || '';
+        document.getElementById('s-fc-saldo').value = d.saldo || '';
+        document.getElementById('s-fc-fundo').value = d.fundo || '';
+        document.getElementById('s-fc-mes').value = d.mes || '';
       }
     });
+  }
 
-    // Contact info
-    onValue(ref(db, 'config/contactInfo'), (snap) => {
-      if (snap.exists()) {
-        const d = snap.val();
-        if (d.endereco) { document.getElementById('info-endereco').textContent = d.endereco; document.getElementById('s-ct-endereco').value = d.endereco; }
-        if (d.telefone) { document.getElementById('info-telefone').textContent = d.telefone; document.getElementById('s-ct-telefone').value = d.telefone; }
-        if (d.email) { document.getElementById('info-email').textContent = d.email; document.getElementById('s-ct-email').value = d.email; }
-        if (d.horario) { document.getElementById('info-horario').textContent = d.horario; document.getElementById('s-ct-horario').value = d.horario; }
-      }
-    });
+  window.saveFinanceCards = async function() {
+    const data = {
+      receitas: document.getElementById('s-fc-receitas').value.trim(),
+      despesas: document.getElementById('s-fc-despesas').value.trim(),
+      saldo: document.getElementById('s-fc-saldo').value.trim(),
+      fundo: document.getElementById('s-fc-fundo').value.trim(),
+      mes: document.getElementById('s-fc-mes').value.trim()
+    };
+    try {
+      await set(ref(db, 'config/financeCards'), data);
+      alert('Resumo salvo!');
+    } catch(e) { alert('Erro ao salvar'); }
+  };
 
-    // Comunicados
-    onValue(ref(db, 'comunicados'), (snap) => {
-      const noticesList = document.getElementById('notices-list');
-      const sList = document.getElementById('s-nc-list');
-      let count = 0;
-      if (snap.exists()) {
-        const items = snap.val();
-        const keys = Object.keys(items).reverse();
-        count = keys.length;
-        noticesList.innerHTML = keys.map(key => {
-          const d = items[key];
-          return `<div class="notice-card">
-            <div class="notice-icon">${d.icon || '📢'}</div>
-            <div class="notice-content">
-              <h4>${d.titulo}</h4>
-              <p>${d.texto}</p>
-              <div class="notice-date">📅 ${d.data}</div>
-            </div>
-          </div>`;
-        }).join('');
-        sList.innerHTML = keys.map(key => {
-          const d = items[key];
-          return `<div class="s-list-item">
-            <div class="s-list-item-info">
-              <strong>${d.icon || '📢'} ${d.titulo}</strong>
-              <span>${d.data}</span>
-            </div>
-            <div class="s-list-item-actions">
-              <button class="btn-danger" onclick="deleteItem('comunicados','${key}')">Remover</button>
-            </div>
-          </div>`;
-        }).join('');
-      } else {
-        noticesList.innerHTML = `<div class="empty-state"><div class="empty-icon">📢</div><p>Nenhum comunicado publicado ainda.<br><strong>O síndico pode publicar comunicados no painel administrativo.</strong></p></div>`;
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum comunicado cadastrado ainda.</p>';
-      }
-      document.getElementById('d-comunicados').textContent = count;
-    });
-
-    // Projetos
-    onValue(ref(db, 'projetos'), (snap) => {
-      const timeline = document.getElementById('projects-timeline');
-      const sList = document.getElementById('s-pr-list');
-      let count = 0;
-      timeline.querySelectorAll('.dynamic-project').forEach(el => el.remove());
-
-      if (snap.exists()) {
-        const items = snap.val();
-        const keys = Object.keys(items);
-        count = keys.length;
-        const empty = document.getElementById('projects-empty');
-        if (empty) empty.remove();
-
-        keys.forEach(key => {
-          const d = items[key];
-          const newItem = document.createElement('div');
-          newItem.className = 'project-item dynamic-project';
-          newItem.innerHTML = `
-            <div class="project-dot ${d.status || 'planned'}"></div>
-            <div class="project-date">${d.data}</div>
-            <h3>${d.titulo}</h3>
-            <p>${d.desc}</p>
-            <span class="badge ${d.status === 'done' ? 'badge-green' : d.status === 'progress' ? 'badge-yellow' : 'badge-blue'}">${d.badge}</span>
-          `;
-          timeline.appendChild(newItem);
-        });
-        sList.innerHTML = keys.map(key => {
-          const d = items[key];
-          return `<div class="s-list-item">
-            <div class="s-list-item-info">
-              <strong>${d.titulo}</strong>
-              <span>${d.data} — ${d.status}</span>
-            </div>
-            <div class="s-list-item-actions">
-              <button class="btn-danger" onclick="deleteItem('projetos','${key}')">Remover</button>
-            </div>
-          </div>`;
-        }).join('');
-      } else {
-        if (!document.getElementById('projects-empty')) {
-          timeline.innerHTML = `<div class="empty-state" id="projects-empty"><div class="empty-icon">🏗️</div><p>Nenhum projeto cadastrado ainda.<br><strong>O síndico pode adicionar projetos no painel administrativo.</strong></p></div>`;
-        }
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum projeto cadastrado ainda.</p>';
-      }
-      document.getElementById('d-projetos').textContent = count;
-    });
-
-    // Transações
+  async function loadTransactions() {
     onValue(ref(db, 'transacoes'), (snap) => {
       const tableWrap = document.getElementById('finance-table-wrap');
       const sList = document.getElementById('s-tx-list');
       let count = 0;
+      
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items).reverse();
         count = keys.length;
+        
         const rows = keys.map(key => {
-          const d = items[key];
-          const isPositive = d.categoria === 'Receita';
+          const t = items[key];
+          const isPositive = t.categoria === 'Receita';
           const cor = isPositive ? 'var(--verde)' : 'var(--vermelho)';
           const sinal = isPositive ? '+' : '-';
-          const badgeClass = d.status === 'Pago' || d.status === 'Recebido' ? 'badge-green' : d.status === 'Pendente' ? 'badge-yellow' : 'badge-red';
-          return `#
-              <td>${d.descricao}</td>
-              <td>${d.categoria}</td>
-              <td>${d.data}</td>
-              <td style="color:${cor};font-weight:600">${sinal} R$ ${d.valor}</td>
-              <td><span class="badge ${badgeClass}">${d.status}</span></td>
-           `;
+          const badgeClass = t.status === 'Pago' || t.status === 'Recebido' ? 'badge-green' : t.status === 'Pendente' ? 'badge-yellow' : 'badge-red';
+          return `<tr>
+            <td>${t.descricao || '-'}</td>
+            <td>${t.categoria || '-'}</td>
+            <td>${t.data || '-'}</td>
+            <td style="color:${cor};font-weight:600">${sinal} ${formatMoneyValue(t.valor)}</td>
+            <td><span class="badge ${badgeClass}">${t.status || 'Pendente'}</span></td>
+          </tr>`;
         }).join('');
-        tableWrap.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+        
+        tableWrap.innerHTML = `<div class="table-wrap">\n<table>\n<thead>\n<tr>\n<th>Descrição</th><th>Categoria</th><th>Data</th><th>Valor</th><th>Status</th>\n</tr>\n</thead>\n<tbody>${rows}</tbody>\n</table>\n</div>`;
+        
         sList.innerHTML = keys.map(key => {
-          const d = items[key];
+          const t = items[key];
           return `<div class="s-list-item">
             <div class="s-list-item-info">
-              <strong>${d.descricao}</strong>
-              <span>${d.categoria} — ${d.data} — R$ ${d.valor} — ${d.status}</span>
+              <strong>${t.descricao || 'Sem descrição'}</strong>
+              <span>${t.categoria} — ${t.data} — ${formatMoneyValue(t.valor)} — ${t.status}</span>
             </div>
             <div class="s-list-item-actions">
               <button class="btn-danger" onclick="deleteItem('transacoes','${key}')">Remover</button>
@@ -1820,31 +2118,186 @@
         }).join('');
       } else {
         tableWrap.innerHTML = `<div class="empty-state"><div class="empty-icon">🧾</div><p>Nenhuma transação cadastrada ainda.<br><strong>O síndico pode adicionar transações no painel administrativo.</strong></p></div>`;
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma transação cadastrada ainda.</p>';
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhuma transação cadastrada</p>';
       }
       document.getElementById('d-transacoes').textContent = count;
     });
+  }
 
-    // Enquetes
-    onValue(ref(db, 'enquetes'), (snap) => {
-      const grid = document.getElementById('polls-grid');
-      const sList = document.getElementById('s-eq-list');
+  window.saveTransaction = async function() {
+    const data = {
+      descricao: document.getElementById('s-tx-desc').value.trim(),
+      categoria: document.getElementById('s-tx-cat').value,
+      data: document.getElementById('s-tx-date').value,
+      valor: document.getElementById('s-tx-valor').value.trim(),
+      status: document.getElementById('s-tx-status').value,
+      createdAt: new Date().toISOString()
+    };
+    if (!data.descricao || !data.valor || !data.data) {
+      alert('Preencha descrição, data e valor');
+      return;
+    }
+    try {
+      await push(ref(db, 'transacoes'), data);
+      alert('Transação adicionada!');
+      document.getElementById('s-tx-desc').value = '';
+      document.getElementById('s-tx-date').value = '';
+      document.getElementById('s-tx-valor').value = '';
+    } catch(e) { alert('Erro ao adicionar'); }
+  };
+
+  async function loadProjects() {
+    onValue(ref(db, 'projetos'), (snap) => {
+      const timeline = document.getElementById('projects-timeline');
+      const sList = document.getElementById('s-pr-list');
       let count = 0;
-      grid.querySelectorAll('.dynamic-poll').forEach(el => el.remove());
+      
+      if (snap.exists()) {
+        const items = snap.val();
+        const keys = Object.keys(items);
+        count = keys.length;
+        
+        const empty = document.getElementById('projects-empty');
+        if (empty) empty.remove();
+        
+        timeline.innerHTML = keys.map(key => {
+          const p = items[key];
+          return `<div class="project-item">
+            <div class="project-dot ${p.status || 'planned'}"></div>
+            <div class="project-date">${p.data || ''}</div>
+            <h3>${p.titulo || ''}</h3>
+            <p>${p.desc || ''}</p>
+            <span class="badge ${p.status === 'done' ? 'badge-green' : p.status === 'progress' ? 'badge-yellow' : 'badge-blue'}">${p.badge || (p.status === 'done' ? '✓ Concluído' : p.status === 'progress' ? '⏳ Em andamento' : '📋 Planejado')}</span>
+          </div>`;
+        }).join('');
+        
+        sList.innerHTML = keys.map(key => {
+          const p = items[key];
+          return `<div class="s-list-item">
+            <div class="s-list-item-info">
+              <strong>${p.titulo || ''}</strong>
+              <span>${p.data || ''} — ${p.status || ''}</span>
+            </div>
+            <div class="s-list-item-actions">
+              <button class="btn-danger" onclick="deleteItem('projetos','${key}')">Remover</button>
+            </div>
+          </div>`;
+        }).join('');
+      } else {
+        timeline.innerHTML = `<div class="empty-state" id="projects-empty"><div class="empty-icon">🏗️</div><p>Nenhum projeto cadastrado ainda.<br><strong>O síndico pode adicionar projetos no painel administrativo.</strong></p></div>`;
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum projeto cadastrado</p>';
+      }
+      document.getElementById('d-projetos').textContent = count;
+    });
+  }
 
+  window.saveProject = async function() {
+    const data = {
+      titulo: document.getElementById('s-pr-titulo').value.trim(),
+      desc: document.getElementById('s-pr-desc').value.trim(),
+      data: document.getElementById('s-pr-data').value.trim(),
+      status: document.getElementById('s-pr-status').value,
+      badge: document.getElementById('s-pr-badge').value.trim(),
+      createdAt: new Date().toISOString()
+    };
+    if (!data.titulo || !data.desc) {
+      alert('Preencha título e descrição');
+      return;
+    }
+    try {
+      await push(ref(db, 'projetos'), data);
+      alert('Projeto adicionado!');
+      document.getElementById('s-pr-titulo').value = '';
+      document.getElementById('s-pr-desc').value = '';
+      document.getElementById('s-pr-data').value = '';
+      document.getElementById('s-pr-badge').value = '';
+    } catch(e) { alert('Erro ao adicionar'); }
+  };
+
+  async function loadNotices() {
+    onValue(ref(db, 'comunicados'), (snap) => {
+      const noticesList = document.getElementById('notices-list');
+      const sList = document.getElementById('s-nc-list');
+      let count = 0;
+      
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items).reverse();
         count = keys.length;
-        const empty = document.getElementById('polls-empty');
-        if (empty) empty.remove();
+        
+        noticesList.innerHTML = keys.map(key => {
+          const n = items[key];
+          return `<div class="notice-card">
+            <div class="notice-icon">${n.icon || '📢'}</div>
+            <div class="notice-content">
+              <h4>${n.titulo || ''}</h4>
+              <p>${n.texto || ''}</p>
+              <div class="notice-date">📅 ${n.data || new Date(n.createdAt).toLocaleDateString('pt-BR')}</div>
+            </div>
+          </div>`;
+        }).join('');
+        
+        sList.innerHTML = keys.map(key => {
+          const n = items[key];
+          return `<div class="s-list-item">
+            <div class="s-list-item-info">
+              <strong>${n.icon || '📢'} ${n.titulo || ''}</strong>
+              <span>${n.data || ''}</span>
+            </div>
+            <div class="s-list-item-actions">
+              <button class="btn-danger" onclick="deleteItem('comunicados','${key}')">Remover</button>
+            </div>
+          </div>`;
+        }).join('');
+      } else {
+        noticesList.innerHTML = `<div class="empty-state"><div class="empty-icon">📢</div><p>Nenhum comunicado publicado ainda.<br><strong>O síndico pode publicar comunicados no painel administrativo.</strong></p></div>`;
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum comunicado cadastrado</p>';
+      }
+      document.getElementById('d-comunicados').textContent = count;
+    });
+  }
 
+  window.saveNotice = async function() {
+    const data = {
+      icon: document.getElementById('s-nc-icon').value.trim() || '📢',
+      titulo: document.getElementById('s-nc-titulo').value.trim(),
+      texto: document.getElementById('s-nc-texto').value.trim(),
+      data: document.getElementById('s-nc-data').value.trim() || new Date().toLocaleDateString('pt-BR'),
+      createdAt: new Date().toISOString()
+    };
+    if (!data.titulo || !data.texto) {
+      alert('Preencha título e texto');
+      return;
+    }
+    try {
+      await push(ref(db, 'comunicados'), data);
+      alert('Comunicado publicado!');
+      document.getElementById('s-nc-icon').value = '';
+      document.getElementById('s-nc-titulo').value = '';
+      document.getElementById('s-nc-texto').value = '';
+      document.getElementById('s-nc-data').value = '';
+    } catch(e) { alert('Erro ao publicar'); }
+  };
+
+  async function loadPolls() {
+    onValue(ref(db, 'enquetes'), (snap) => {
+      const grid = document.getElementById('polls-grid');
+      const sList = document.getElementById('s-eq-list');
+      let count = 0;
+      
+      grid.innerHTML = '';
+      
+      if (snap.exists()) {
+        const items = snap.val();
+        const keys = Object.keys(items).reverse();
+        count = keys.length;
+        
         keys.forEach(key => {
-          const d = items[key];
-          const opts = d.opcoes || [];
-          const votos = d.votos || {};
-          
+          const e = items[key];
+          const opts = e.opcoes || [];
+          const votos = e.votos || {};
           let totalVotos = 0;
+          
           const optsHtml = opts.map(op => {
             const votosOpcao = votos[op] || [];
             totalVotos += votosOpcao.length;
@@ -1861,28 +2314,29 @@
           }).join('');
           
           const card = document.createElement('div');
-          card.className = 'poll-card dynamic-poll';
+          card.className = 'poll-card';
           card.innerHTML = `
             <div class="poll-header">
-              <h3>${d.titulo}</h3>
-              <span class="poll-status">● ${d.status || 'Ativa'}</span>
+              <h3>${e.titulo || ''}</h3>
+              <span class="poll-status">● ${e.status || 'Ativa'}</span>
             </div>
             <div class="poll-body">
-              <p class="poll-question">${d.pergunta}</p>
+              <p class="poll-question">${e.pergunta || ''}</p>
               ${optsHtml}
             </div>
             <div class="poll-footer">
-              <span class="poll-votes">Total: ${totalVotos} votos</span>
+              <span class="poll-votes">Total: ${totalVotos} voto${totalVotos !== 1 ? 's' : ''}</span>
               <button class="btn-sm" onclick="votePoll(this, '${key}')">Votar</button>
             </div>`;
           grid.appendChild(card);
         });
+        
         sList.innerHTML = keys.map(key => {
-          const d = items[key];
+          const e = items[key];
           return `<div class="s-list-item">
             <div class="s-list-item-info">
-              <strong>${d.titulo}</strong>
-              <span>${d.pergunta.substring(0,60)}...</span>
+              <strong>${e.titulo || ''}</strong>
+              <span>${e.pergunta ? e.pergunta.substring(0, 50) : ''}...</span>
             </div>
             <div class="s-list-item-actions">
               <button class="btn-danger" onclick="deleteItem('enquetes','${key}')">Remover</button>
@@ -1890,58 +2344,162 @@
           </div>`;
         }).join('');
       } else {
-        if (!document.getElementById('polls-empty')) {
-          const emptyDiv = document.createElement('div');
-          emptyDiv.id = 'polls-empty';
-          emptyDiv.style.gridColumn = '1/-1';
-          emptyDiv.className = 'empty-state';
-          emptyDiv.innerHTML = `<div class="empty-icon">🗳️</div><p>Nenhuma enquete ativa no momento.<br><strong>O síndico pode criar enquetes no painel administrativo.</strong></p>`;
-          grid.appendChild(emptyDiv);
-        }
-        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma enquete cadastrada ainda.</p>';
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🗳️</div><p>Nenhuma enquete ativa no momento.<br><strong>O síndico pode criar enquetes no painel administrativo.</strong></p></div>`;
+        sList.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhuma enquete cadastrada</p>';
       }
       document.getElementById('d-enquetes').textContent = count;
     });
+  }
 
-    // Mensagens
+  window.votePoll = async function(btn, pollId) {
+    const user = auth.currentUser;
+    if (!user) {
+      alert('Você precisa estar logado para votar!');
+      return;
+    }
+    
+    const userData = await get(ref(db, 'condominios/' + user.uid));
+    const userName = userData.val()?.name || user.displayName || user.email.split('@')[0];
+    const userUnit = userData.val()?.unit || 'Não informada';
+    const selectedOption = document.querySelector(`input[name="poll_${pollId}"]:checked`);
+    
+    if (!selectedOption) {
+      alert('Selecione uma opção para votar!');
+      return;
+    }
+    
+    const optionValue = selectedOption.value;
+    const pollRef = ref(db, 'enquetes/' + pollId);
+    const pollSnapshot = await get(pollRef);
+    const pollData = pollSnapshot.val();
+    
+    if (!pollData) return;
+    
+    const votos = pollData.votos || {};
+    let jaVotou = false;
+    for (let op in votos) {
+      if (votos[op] && votos[op].some(v => v.userId === user.uid)) {
+        jaVotou = true;
+        break;
+      }
+    }
+    
+    if (jaVotou) {
+      alert('Você já votou nesta enquete!');
+      return;
+    }
+    
+    const novosVotos = { ...votos };
+    if (!novosVotos[optionValue]) novosVotos[optionValue] = [];
+    novosVotos[optionValue].push({ userId: user.uid, nome: userName, unidade: userUnit, data: new Date().toISOString() });
+    
+    await update(pollRef, { votos: novosVotos });
+    btn.textContent = '✓ Votado';
+    btn.disabled = true;
+    alert('Voto registrado com sucesso!');
+    location.reload();
+  };
+
+  window.addPollOption = function() {
+    const container = document.getElementById('s-eq-opcoes');
+    const count = container.querySelectorAll('.eq-opt').length + 1;
+    const row = document.createElement('div');
+    row.className = 'poll-option-row';
+    row.innerHTML = `<input type="text" class="eq-opt" placeholder="Opção ${count}" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);color:#fff;"/>`;
+    container.appendChild(row);
+  };
+
+  window.savePoll = async function() {
+    const titulo = document.getElementById('s-eq-titulo').value.trim();
+    const status = document.getElementById('s-eq-status').value;
+    const pergunta = document.getElementById('s-eq-pergunta').value.trim();
+    const opcoes = Array.from(document.querySelectorAll('.eq-opt')).map(i => i.value.trim()).filter(v => v);
+    
+    if (!titulo || !pergunta || opcoes.length < 2) {
+      alert('Preencha título, pergunta e ao menos 2 opções');
+      return;
+    }
+    
+    try {
+      await push(ref(db, 'enquetes'), {
+        titulo,
+        status,
+        pergunta,
+        opcoes,
+        votos: {},
+        createdAt: new Date().toISOString()
+      });
+      alert('Enquete publicada!');
+      document.getElementById('s-eq-titulo').value = '';
+      document.getElementById('s-eq-pergunta').value = '';
+      document.querySelectorAll('.eq-opt').forEach(i => { i.value = ''; });
+    } catch(e) { alert('Erro ao criar enquete'); }
+  };
+
+  async function loadMessages() {
     onValue(ref(db, 'contatos'), (snap) => {
       const list = document.getElementById('s-contatos-list');
       let count = 0;
+      
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items).reverse();
         count = keys.length;
+        
         list.innerHTML = keys.map(key => {
-          const d = items[key];
-          const dt = d.createdAt ? new Date(d.createdAt).toLocaleString('pt-BR') : '';
+          const m = items[key];
+          const dt = m.createdAt ? new Date(m.createdAt).toLocaleString('pt-BR') : '';
           return `<div class="s-contact-item">
             <div class="s-contact-meta">
-              <strong>${d.name}</strong>
-              <span>${d.email}</span>
+              <strong>${m.name || 'Anônimo'}</strong>
+              <span>${m.email || ''}</span>
               <span>${dt}</span>
               <button class="btn-danger" onclick="deleteItem('contatos','${key}')" style="margin-left:auto">Apagar</button>
             </div>
-            <div class="s-contact-subject">${d.subject}</div>
-            <div class="s-contact-msg">${d.message}</div>
+            <div class="s-contact-subject">${m.subject || 'Sem assunto'}</div>
+            <div class="s-contact-msg">${m.message || ''}</div>
           </div>`;
         }).join('');
       } else {
-        list.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhuma mensagem recebida ainda.</p>';
+        list.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhuma mensagem recebida ainda.</p>';
       }
       document.getElementById('d-mensagens').textContent = count;
     });
   }
 
-  function loadMoradores() {
+  window.sendContact = async function() {
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const subject = document.getElementById('contact-subject').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    
+    if (!name || !email || !subject || !message) {
+      alert('Preencha todos os campos');
+      return;
+    }
+    
+    try {
+      await push(ref(db, 'contatos'), { name, email, subject, message, createdAt: new Date().toISOString() });
+      alert('Mensagem enviada com sucesso!');
+      document.getElementById('contact-name').value = '';
+      document.getElementById('contact-email').value = '';
+      document.getElementById('contact-subject').value = '';
+      document.getElementById('contact-message').value = '';
+    } catch(e) { alert('Erro ao enviar mensagem'); }
+  };
+
+  async function loadMoradores() {
     onValue(ref(db, 'condominios'), (snap) => {
       const listContainer = document.getElementById('s-moradores-list');
       let count = 0;
+      
       if (snap.exists()) {
         const items = snap.val();
         const keys = Object.keys(items);
         count = keys.length;
+        
         if (keys.length === 0) {
-          listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum morador cadastrado ainda.</p>';
+          listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum morador cadastrado ainda.</p>';
         } else {
           listContainer.innerHTML = keys.map(key => {
             const morador = items[key];
@@ -1957,24 +2515,50 @@
           }).join('');
         }
       } else {
-        listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:0.83rem;">Nenhum morador cadastrado ainda.</p>';
+        listContainer.innerHTML = '<p style="color:rgba(255,255,255,0.3);">Nenhum morador cadastrado ainda.</p>';
       }
       document.getElementById('d-moradores').textContent = count;
     });
   }
-</script>
 
-<script>
-  function showMsg(id, msg, type) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.textContent = msg;
-      el.className = 'auth-msg ' + type;
-      setTimeout(() => { if (el) el.className = 'auth-msg'; }, 4000);
-    }
+  window.deleteMorador = async function(userId, nomeMorador) {
+    if (!confirm(`Excluir morador "${nomeMorador}"? Esta ação não pode ser desfeita.`)) return;
+    try {
+      await remove(ref(db, 'condominios/' + userId));
+      alert('Morador excluído com sucesso!');
+    } catch(e) { alert('Erro ao excluir morador'); }
+  };
+
+  window.deleteItem = async function(collection, key) {
+    if (!confirm('Remover este item permanentemente?')) return;
+    try {
+      await remove(ref(db, collection + '/' + key));
+      alert('Item removido com sucesso!');
+    } catch(e) { alert('Erro ao remover'); }
+  };
+
+  async function loadContactInfo() {
+    onValue(ref(db, 'config/contactInfo'), (snap) => {
+      if (snap.exists()) {
+        const d = snap.val();
+        document.getElementById('info-endereco').textContent = d.endereco || 'Aguardando informação do síndico';
+        document.getElementById('info-telefone').textContent = d.telefone || 'Aguardando informação do síndico';
+        document.getElementById('info-email').textContent = d.email || 'Aguardando informação do síndico';
+        document.getElementById('info-horario').textContent = d.horario || 'Aguardando informação do síndico';
+      }
+    });
   }
 
-  function togglePasswordVisibility(inputId, button) {
+  // ===================== AUTH E INICIALIZAÇÃO =====================
+  window.switchTab = function(tab) {
+    document.querySelectorAll('.auth-tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+    });
+    document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+    document.getElementById('panel-register').classList.toggle('active', tab === 'register');
+  };
+
+  window.togglePasswordVisibility = function(inputId, button) {
     const input = document.getElementById(inputId);
     if (input.type === 'password') {
       input.type = 'text';
@@ -1983,264 +2567,118 @@
       input.type = 'password';
       button.textContent = '👁️';
     }
-  }
+  };
 
-  function switchTab(tab) {
-    document.querySelectorAll('.auth-tab').forEach((t, i) => {
-      t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
-    });
-    document.getElementById('panel-login').classList.toggle('active', tab === 'login');
-    document.getElementById('panel-register').classList.toggle('active', tab === 'register');
-  }
-
-  async function doLogin() {
+  window.doLogin = async function() {
     const email = document.getElementById('login-email').value.trim();
     const pwd = document.getElementById('login-pwd').value;
-    if (!email || !pwd) return showMsg('login-msg', 'Preencha todos os campos.', 'error');
-    try {
-      await window._signIn(window._auth, email, pwd);
-    } catch(e) {
-      showMsg('login-msg', 'Erro ao entrar. Verifique seus dados.', 'error');
+    if (!email || !pwd) {
+      alert('Preencha e-mail e senha');
+      return;
     }
-  }
+    try {
+      await signInWithEmailAndPassword(auth, email, pwd);
+    } catch(e) {
+      alert('Erro ao entrar. Verifique seus dados.');
+    }
+  };
 
-  async function doRegister() {
+  window.doRegister = async function() {
     const name = document.getElementById('reg-name').value.trim();
     const unit = document.getElementById('reg-unit').value.trim();
     const email = document.getElementById('reg-email').value.trim();
     const pwd = document.getElementById('reg-pwd').value;
-    if (!name || !unit || !email || !pwd) return showMsg('register-msg', 'Preencha todos os campos.', 'error');
-    if (pwd.length < 6) return showMsg('register-msg', 'Senha deve ter ao menos 6 caracteres.', 'error');
+    
+    if (!name || !unit || !email || !pwd) {
+      alert('Preencha todos os campos');
+      return;
+    }
+    if (pwd.length < 6) {
+      alert('Senha deve ter pelo menos 6 caracteres');
+      return;
+    }
+    
     const btn = document.getElementById('btn-register');
     btn.disabled = true;
     btn.textContent = 'Cadastrando...';
+    
     try {
-      const cred = await window._createUser(window._auth, email, pwd);
-      await window._updateProfile(cred.user, { displayName: name });
-      await window._set(window._ref(window._db, 'condominios/' + cred.user.uid), { name, unit, email, createdAt: new Date().toISOString() });
-      showMsg('register-msg', '✅ Cadastro realizado com sucesso!', 'success');
-      ['reg-name', 'reg-unit', 'reg-email', 'reg-pwd'].forEach(id => { document.getElementById(id).value = ''; });
+      const cred = await createUserWithEmailAndPassword(auth, email, pwd);
+      await updateProfile(cred.user, { displayName: name });
+      await set(ref(db, 'condominios/' + cred.user.uid), {
+        name,
+        unit,
+        email,
+        createdAt: new Date().toISOString()
+      });
+      alert('✅ Cadastro realizado com sucesso!');
+      document.getElementById('reg-name').value = '';
+      document.getElementById('reg-unit').value = '';
+      document.getElementById('reg-email').value = '';
+      document.getElementById('reg-pwd').value = '';
     } catch(e) {
-      showMsg('register-msg', 'Erro ao cadastrar. Tente novamente.', 'error');
+      alert('Erro ao cadastrar. Tente novamente.');
     } finally {
       btn.disabled = false;
       btn.textContent = 'Criar Conta';
     }
-  }
+  };
 
-  document.getElementById('btn-logout').addEventListener('click', async () => {
-    try {
-      closeSindico();
-      await window._signOut(window._auth);
-    } catch(e) {}
-  });
-
-  function toggleMenu() {
+  window.toggleMenu = function() {
     document.getElementById('main-nav').classList.toggle('open');
-  }
+  };
 
-  async function votePoll(btn, pollId) {
-    const user = window._auth.currentUser;
-    if (!user) {
-      alert('Você precisa estar logado para votar!');
-      return;
-    }
-    const userData = await window._get(window._ref(window._db, 'condominios/' + user.uid));
-    const userName = userData.val()?.name || user.displayName || user.email.split('@')[0];
-    const userUnit = userData.val()?.unit || 'Não informada';
-    const selectedOption = document.querySelector(`input[name="poll_${pollId}"]:checked`);
-    if (!selectedOption) {
-      alert('Selecione uma opção para votar!');
-      return;
-    }
-    const optionValue = selectedOption.value;
-    const pollRef = window._ref(window._db, 'enquetes/' + pollId);
-    const pollSnapshot = await window._get(pollRef);
-    const pollData = pollSnapshot.val();
-    if (!pollData) return;
-    const votos = pollData.votos || {};
-    let jaVotou = false;
-    for (let op in votos) {
-      if (votos[op] && votos[op].some(v => v.userId === user.uid)) {
-        jaVotou = true;
-        break;
-      }
-    }
-    if (jaVotou) {
-      alert('Você já votou nesta enquete!');
-      return;
-    }
-    const novosVotos = { ...votos };
-    if (!novosVotos[optionValue]) novosVotos[optionValue] = [];
-    novosVotos[optionValue].push({ userId: user.uid, nome: userName, unidade: userUnit, data: new Date().toISOString() });
-    await window._update(pollRef, { votos: novosVotos });
-    btn.textContent = '✓ Votado';
-    btn.disabled = true;
-    alert('Voto registrado com sucesso!');
-    location.reload();
-  }
-
-  async function sendContact() {
-    const name = document.getElementById('contact-name').value.trim();
-    const email = document.getElementById('contact-email').value.trim();
-    const subject = document.getElementById('contact-subject').value.trim();
-    const message = document.getElementById('contact-message').value.trim();
-    if (!name || !email || !subject || !message) return alert('Preencha todos os campos');
-    try {
-      await window._push(window._ref(window._db, 'contatos'), { name, email, subject, message, createdAt: new Date().toISOString() });
-      alert('Mensagem enviada com sucesso!');
-      ['contact-name','contact-email','contact-subject','contact-message'].forEach(id => { document.getElementById(id).value = ''; });
-    } catch(e) {
-      alert('Erro ao enviar');
-    }
-  }
-
-  function openSindico() {
+  window.openSindico = function() {
     document.getElementById('sindico-panel').style.display = 'block';
     document.body.style.overflow = 'hidden';
-  }
+  };
 
-  function closeSindico() {
+  window.closeSindico = function() {
     document.getElementById('sindico-panel').style.display = 'none';
     document.body.style.overflow = '';
-  }
+  };
 
-  function sindicoTab(tab, btn) {
+  window.sindicoTab = function(tab, btn) {
     document.querySelectorAll('.sindico-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.sindico-section').forEach(s => s.classList.remove('active'));
     if (btn) btn.classList.add('active');
     document.getElementById('s-' + tab).classList.add('active');
-  }
+  };
 
-  async function deleteMorador(userId, nomeMorador) {
-    if (!confirm(`Excluir morador "${nomeMorador}"?`)) return;
-    try {
-      await window._remove(window._ref(window._db, 'condominios/' + userId));
-      alert(`Morador excluído!`);
-      location.reload();
-    } catch(e) {
-      alert('Erro ao excluir');
+  // Inicialização do Firebase Auth
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById('auth-overlay').style.display = 'none';
+      document.getElementById('main-site').style.display = 'block';
+      
+      const name = user.displayName || user.email.split('@')[0];
+      const initials = name.charAt(0).toUpperCase();
+      document.getElementById('user-avatar').textContent = initials;
+      document.getElementById('user-name-header').textContent = name;
+      
+      const btnSindico = document.getElementById('btn-sindico-nav');
+      const isSindico = SINDICO_EMAILS.some(e => e.toLowerCase() === (user.email || '').toLowerCase());
+      if (isSindico) btnSindico.classList.remove('hidden');
+      else btnSindico.classList.add('hidden');
+      
+      // Carregar todos os dados
+      loadHero();
+      loadFinanceCards();
+      loadTransactions();
+      loadDocuments();
+      loadProjects();
+      loadNotices();
+      loadPolls();
+      loadAlertas();
+      loadMessages();
+      loadMoradores();
+      loadContactInfo();
+    } else {
+      document.getElementById('auth-overlay').style.display = 'flex';
+      document.getElementById('main-site').style.display = 'none';
+      document.getElementById('sindico-panel').style.display = 'none';
     }
-  }
-
-  async function saveHero() {
-    const data = {
-      badge: document.getElementById('s-hero-badge').value.trim(),
-      titulo: document.getElementById('s-hero-titulo').value.trim(),
-      subtitulo: document.getElementById('s-hero-subtitulo').value.trim()
-    };
-    try {
-      await window._set(window._ref(window._db, 'config/hero'), data);
-      alert('Hero salvo!');
-    } catch(e) { alert('Erro'); }
-  }
-
-  async function saveFinanceCards() {
-    const data = {
-      receitas: document.getElementById('s-fc-receitas').value.trim(),
-      despesas: document.getElementById('s-fc-despesas').value.trim(),
-      saldo: document.getElementById('s-fc-saldo').value.trim(),
-      fundo: document.getElementById('s-fc-fundo').value.trim(),
-      mes: document.getElementById('s-fc-mes').value.trim()
-    };
-    try {
-      await window._set(window._ref(window._db, 'config/financeCards'), data);
-      alert('Resumo salvo!');
-    } catch(e) { alert('Erro'); }
-  }
-
-  async function saveTransaction() {
-    const data = {
-      descricao: document.getElementById('s-tx-desc').value.trim(),
-      categoria: document.getElementById('s-tx-cat').value,
-      data: document.getElementById('s-tx-date').value,
-      valor: document.getElementById('s-tx-valor').value.trim(),
-      status: document.getElementById('s-tx-status').value,
-      createdAt: new Date().toISOString()
-    };
-    if (!data.descricao || !data.valor || !data.data) return alert('Preencha todos os campos');
-    try {
-      await window._push(window._ref(window._db, 'transacoes'), data);
-      alert('Transação adicionada!');
-      ['s-tx-desc','s-tx-date','s-tx-valor'].forEach(id => { document.getElementById(id).value = ''; });
-    } catch(e) { alert('Erro'); }
-  }
-
-  async function saveProject() {
-    const data = {
-      titulo: document.getElementById('s-pr-titulo').value.trim(),
-      desc: document.getElementById('s-pr-desc').value.trim(),
-      data: document.getElementById('s-pr-data').value.trim(),
-      status: document.getElementById('s-pr-status').value,
-      badge: document.getElementById('s-pr-badge')?.value.trim() || '',
-      createdAt: new Date().toISOString()
-    };
-    if (!data.titulo || !data.desc) return alert('Preencha título e descrição');
-    try {
-      await window._push(window._ref(window._db, 'projetos'), data);
-      alert('Projeto adicionado!');
-      ['s-pr-titulo','s-pr-desc','s-pr-data','s-pr-badge'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
-    } catch(e) { alert('Erro'); }
-  }
-
-  async function saveNotice() {
-    const data = {
-      icon: document.getElementById('s-nc-icon').value.trim() || '📢',
-      data: document.getElementById('s-nc-data').value.trim(),
-      titulo: document.getElementById('s-nc-titulo').value.trim(),
-      texto: document.getElementById('s-nc-texto').value.trim(),
-      createdAt: new Date().toISOString()
-    };
-    if (!data.titulo || !data.texto) return alert('Preencha título e texto');
-    try {
-      await window._push(window._ref(window._db, 'comunicados'), data);
-      alert('Comunicado publicado!');
-      ['s-nc-icon','s-nc-data','s-nc-titulo','s-nc-texto'].forEach(id => { document.getElementById(id).value = ''; });
-    } catch(e) { alert('Erro'); }
-  }
-
-  function addPollOption() {
-    const container = document.getElementById('s-eq-opcoes');
-    const count = container.querySelectorAll('.eq-opt').length + 1;
-    const row = document.createElement('div');
-    row.className = 'poll-option-row';
-    row.innerHTML = `<input type="text" class="eq-opt" placeholder="Opção ${count}" style="width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.06);color:#fff;"/>`;
-    container.appendChild(row);
-  }
-
-  async function savePoll() {
-    const titulo = document.getElementById('s-eq-titulo').value.trim();
-    const status = document.getElementById('s-eq-status').value;
-    const pergunta = document.getElementById('s-eq-pergunta').value.trim();
-    const opcoes = Array.from(document.querySelectorAll('.eq-opt')).map(i => i.value.trim()).filter(v => v);
-    if (!titulo || !pergunta || opcoes.length < 2) return alert('Preencha título, pergunta e ao menos 2 opções');
-    try {
-      await window._push(window._ref(window._db, 'enquetes'), { titulo, status, pergunta, opcoes, votos: {}, createdAt: new Date().toISOString() });
-      alert('Enquete publicada!');
-      document.getElementById('s-eq-titulo').value = '';
-      document.getElementById('s-eq-pergunta').value = '';
-      document.querySelectorAll('.eq-opt').forEach(i => { i.value = ''; });
-    } catch(e) { alert('Erro'); }
-  }
-
-  async function deleteItem(collection, key) {
-    if (!confirm('Remover item?')) return;
-    try {
-      await window._remove(window._ref(window._db, collection + '/' + key));
-    } catch(e) { alert('Erro'); }
-  }
-
-  window.saveHero = saveHero;
-  window.saveFinanceCards = saveFinanceCards;
-  window.saveTransaction = saveTransaction;
-  window.saveProject = saveProject;
-  window.saveNotice = saveNotice;
-  window.savePoll = savePoll;
-  window.deleteItem = deleteItem;
-  window.deleteMorador = deleteMorador;
-  window.addPollOption = addPollOption;
-  window.votePoll = votePoll;
-  window.sendContact = sendContact;
+  });
 </script>
 </body>
 </html>
